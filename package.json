@@ -1,0 +1,26 @@
+{
+  "name": "tyxchen.github.io",
+  "version": "0.0.1",
+  "description": "Personal web page",
+  "main": "index.html",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tyxchen/tyxchen.github.io.git"
+  },
+  "author": "tyxchen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tyxchen/tyxchen.github.io/issues"
+  },
+  "homepage": "https://github.com/tyxchen/tyxchen.github.io#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-typescript": "^2.13.6",
+    "pump": "^1.0.1"
+  }
+}
