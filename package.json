@@ -21,6 +21,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.2",
     "gulp-typescript": "^2.13.6",
+    "mocha": "^2.5.3",
     "pump": "^1.0.1"
   }
 }
