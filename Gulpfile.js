@@ -12,12 +12,12 @@ const gulp = require('gulp'),
   },
   folders = {
     src: {
-      css: 'src/scss/',
-      js: 'src/ts/'
+      css: 'app/src/scss/',
+      js: 'app/src/ts/'
     },
     built: {
-      css: 'built/css/',
-      js: 'built/js/'
+      css: 'app/built/css/',
+      js: 'app/built/js/'
     }
   },
   tsProject = gmodules.ts.createProject('tsconfig.json', {

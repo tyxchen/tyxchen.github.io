@@ -1,1 +1,0 @@
-{"version":3,"file":"app.css","sources":["main.scss"],"sourcesContent":["/**\r\n * main.scss\r\n *\r\n * (c) 2015 @tyxchen, MIT License\r\n */\r\n\r\n// Import modules\r\n\r\n// Basic styling\r\nbody {\r\n  font-family: sans-serif;\r\n}\r\n"],"mappings":"AAAA;;;;GAIG;AAKH,AAAA,IAAI,CAAC;EACH,WAAW,EAAE,UAAW;CACzB","names":[],"sourceRoot":"./"}
