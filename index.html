@@ -5,9 +5,67 @@
 
     <title>@tyxchen - Home</title>
 
-    <link href="app/built/css/app.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i" rel="stylesheet">
+
+    <link href="app/built/css/skeleton.min.css" rel="stylesheet">
+    <link href="app/built/css/app.min.css" rel="stylesheet">
 </head>
 <body>
-    Hi, I'm @tyxchen. Please ignore the state of this page; it's under construction.
+  <div class="menu-btn menu-btn-close">
+    <span class="menu-line menu-line-1"></span>
+    <span class="menu-line menu-line-2"></span>
+    <span class="menu-line menu-line-3"></span>
+  </div>
+  <nav class="sidebar sidebar-open">
+    <section class="sidebar-section sidebar-home">
+      <a href="/" alt="Home" class="sidebar-link link-selected">
+        <span>Home</span>
+      </a>
+    </section>
+    <section class="sidebar-section sidebar-about">
+      <a href="/" alt="About" class="sidebar-link">
+        <span>About</span>
+      </a>
+    </section>
+    <section class="sidebar-section sidebar-projects sidebar-has-subsection">
+      <a href="/" alt="Projects" class="sidebar-link">
+        <span>Projects</span>
+      </a>
+      <div class="sidebar-subsection">
+        <div class="sidebar-section sidebar-projects-something">
+          <a href="/" alt="Something" class="sidebar-link">
+            <span>Some Project</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </nav>
+  <main class="container">
+    <header>
+      <h1 class="title">Hi, I'm @tyxchen.</h1>
+    </header>
+    <p>Please ignore the state of this page; it's under construction.</p>
+    <section class="tiled">
+      <h3 class="title">Projects</h3>
+      <div class="row">
+        <div class="one-half column">
+          Something
+        </div>
+        <div class="one-half column">
+          Something
+        </div>
+      </div>
+      <div class="row">
+        <div class="one-half column">
+          Something
+        </div>
+        <div class="one-half column">
+          Something
+        </div>
+      </div>
+    </section>
+  </main>
 </body>
+
+<script src="app/built/js/App.js"></script>
 </html>
