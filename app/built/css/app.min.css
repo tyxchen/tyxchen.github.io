@@ -1,0 +1,14 @@
+/**
+ * main.scss
+ *
+ * (c) 2015 @tyxchen, MIT License
+ */
+body {
+  font-family: sans-serif;
+}
+
+body.ready {
+  font-family: "Lato", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/*# sourceMappingURL=app.min.css.map */
