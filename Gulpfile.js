@@ -35,7 +35,7 @@ gulp.task('build:skeleton', (err) => {
   ], err);
 });
 
-gulp.task('build:sass', (err) => {
+gulp.task('build:sass', ['build:skeleton'], (err) => {
   pump([
     gulp.src(folders.src.css + 'main.scss'),
     gmodules.maps.init(),

@@ -8,6 +8,9 @@
 * Sass Version by Seth Coelen https://github.com/whatsnewsaes
 */
 
+/* Overwrites for base files */
+@import "../globals/variables";
+
 /* Base files. */
 @import "base/variables";
 @import "base/functions";

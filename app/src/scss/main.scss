@@ -4,9 +4,16 @@
  * (c) 2015 @tyxchen, MIT License
  */
 
+// Import globals
+
+@import "globals/variables";
+@import "globals/mixins";
+@import "globals/placeholders";
+
 // Import modules
 
-// Basic styling
-body {
-  font-family: sans-serif;
-}
+@import "modules/inputs";
+@import "modules/layout";
+@import "modules/header";
+@import "modules/content";
+@import "modules/menu";
