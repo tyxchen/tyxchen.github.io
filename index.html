@@ -6,68 +6,31 @@
     <title>@tyxchen - Home</title>
 
     <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i" rel="stylesheet">
-
-    <link href="app/built/css/skeleton.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
     <link href="app/built/css/app.min.css" rel="stylesheet">
 </head>
 <body>
-  <div class="menu-btn menu-btn-close">
-    <span class="menu-line menu-line-1"></span>
-    <span class="menu-line menu-line-2"></span>
-    <span class="menu-line menu-line-3"></span>
-  </div>
-  <nav class="sidebar sidebar-open">
-    <section class="sidebar-section sidebar-home">
-      <a href="/" alt="Home" class="sidebar-link link-selected">
-        <span>Home</span>
-      </a>
+  <header id="site-header">
+    <h1 id="title"><span class="text-wrap">Hi, I'm Terry.</span></h1>
+    <h2 class="subtitle">High-school student, language aficionado.</h2>
+    <h2 class="subtitle">Find me on <a href="https://github.com/tyxchen">GitHub</a>.</h2>
+  </header>
+  <main>
+    <section>
+      <h1 id="about-heading"><a class="text-wrap">About</a></h1>
     </section>
-    <section class="sidebar-section sidebar-about">
-      <a href="/" alt="About" class="sidebar-link">
-        <span>About</span>
-      </a>
+    <section>
+      <h1 id="portfolio-heading"><a class="text-wrap">Portfolio</a></h1>
     </section>
-    <section class="sidebar-section sidebar-projects sidebar-has-subsection">
-      <a href="/" alt="Projects" class="sidebar-link">
-        <span>Projects</span>
-      </a>
-      <div class="sidebar-subsection">
-        <div class="sidebar-section sidebar-projects-something">
-          <a href="/" alt="Something" class="sidebar-link">
-            <span>Some Project</span>
-          </a>
-        </div>
-      </div>
+    <section>
+      <h1 id="blog-heading"><a class="text-wrap">Blog</a></h1>
     </section>
-  </nav>
-  <main class="container">
-    <header>
-      <h1 class="title">Hi, I'm @tyxchen.</h1>
-    </header>
-    <p>Please ignore the state of this page; it's under construction.</p>
-    <section class="tiled">
-      <h3 class="title">Projects</h3>
-      <div class="row">
-        <div class="one-half column">
-          Something
-        </div>
-        <div class="one-half column">
-          Something
-        </div>
-      </div>
-      <div class="row">
-        <div class="one-half column">
-          Something
-        </div>
-        <div class="one-half column">
-          Something
-        </div>
-      </div>
+    <section>
+      <h1 id="contact-heading"><a class="text-wrap">Contact</a></h1>
     </section>
   </main>
 </body>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
-<script src="app/built/js/App.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.1.0/trianglify.min.js"></script>
+<script src="app/built/js/app.js"></script>
 </html>

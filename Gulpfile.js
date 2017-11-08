@@ -3,84 +3,49 @@
 "use strict";
 
 const gulp = require('gulp'),
-  pump = require('pump'),
-  gmodules = {
-    sass: require('gulp-sass'),
-    ts: require('gulp-typescript'),
-    maps: require('gulp-sourcemaps'),
-    rename: require('gulp-rename')
-  },
+  sourcemaps = require('gulp-sourcemaps'),
+  postcss = require('gulp-postcss'),
+  rename = require('gulp-rename'),
+  babel = require('gulp-babel'),
   folders = {
     src: {
-      css: 'app/src/scss/',
-      js: 'app/src/ts/'
+      css: 'app/src/css/',
+      js: 'app/src/es6/'
     },
     built: {
       css: 'app/built/css/',
       js: 'app/built/js/'
     }
   },
-  tsProject = gmodules.ts.createProject('tsconfig.json', {
-    typescript: require('typescript')
-  });
+  plugins = [
+    require('autoprefixer')(),
+    require('postcss-nested')()
+  ];
 
-gulp.task('build:skeleton', (err) => {
-  pump([
-    gulp.src(folders.src.css + 'skeleton/skeleton.scss'),
-    gmodules.sass({
-      outputStyle: 'compressed'
-    }).on('error', gmodules.sass.logError),
-    gmodules.rename({ suffix: '.min' }),
-    gulp.dest(folders.built.css)
-  ], err);
+gulp.task('build:css', (err) => {
+  return gulp.src(folders.src.css + 'app.css')
+    .pipe(sourcemaps.init())
+    .pipe(postcss(plugins))
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(folders.built.css));
 });
 
-gulp.task('build:sass', ['build:skeleton'], (err) => {
-  pump([
-    gulp.src(folders.src.css + 'main.scss'),
-    gmodules.maps.init(),
-    gmodules.sass({
-      sourcemap: true,
-      outputStyle: 'expanded'
-    }).on('error', gmodules.sass.logError),
-    gmodules.rename({ suffix: '.min', basename: 'app' }),
-    gmodules.maps.write('./', { sourceRoot: './' }),
-    gulp.dest(folders.built.css)
-  ], err);
-})
-
-gulp.task('build:ts', () => {
-  let tsResult = tsProject.src(folders.src.js + 'app.ts')
-    .pipe(gmodules.ts(tsProject));
-
-  return tsResult.js.pipe(gulp.dest(folders.built.js));
+gulp.task('build:js', () => {
+  return gulp.src(folders.src.js + 'app.js')
+    .pipe(sourcemaps.init())
+    .pipe(babel({ presets: ['env', 'stage-3'] }))
+    .on('error', function (err) { console.log(err.toString()); this.emit('end'); })
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(folders.built.js));
 });
 
-gulp.task('production', ['build:sass', 'build:ts'], (err) => {
-  let autoprefixer = require('gulp-autoprefixer'),
-    cleanCss = require('gulp-clean-css'),
-    uglify = require('gulp-uglify');
-
-  pump([
-    gulp.src(folders.built.css + 'app.css'),
-    autoprefixer({ browsers: ['last 2 versions'] }),
-    cleanCss(),
-    gulp.dest(folders.built.css)
-  ], err);
-
-  pump([
-    gulp.src(folders.built.js + 'app.ts'),
-    gmodules.rename({ suffix: '.min' }),
-    uglify(),
-    gulp.dest(folders.built.js)
-  ], err)
-
-  return;
+gulp.task('production', ['build:css', 'build:js'], (err) => {
 });
 
-gulp.task('default', ['build:sass', 'build:ts', 'watch']);
+gulp.task('default', ['build:css', 'build:js']);
 
 gulp.task('watch', () => {
-  gulp.watch([folders.src.css + '**/*.scss', folders.src.css + 'main.scss'], ['build:sass']);
-  gulp.watch([folders.src.js + '**/*.ts', folders.src.js + 'App.ts'], ['build:ts']);
+  gulp.watch([folders.src.css + '**/*.css', folders.src.css + 'app.css'], ['build:css']);
+  gulp.watch([folders.src.js + '**/*.js', folders.src.js + 'app.js'], ['build:js']);
 })

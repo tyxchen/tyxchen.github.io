@@ -63,27 +63,23 @@ a {
   line-height: 1;
   margin-left: -7px;
   margin-bottom: 0;
-}
-
-@media (min-width: 768px) {
-
-#title {
+  
+  @media (min-width: 768px) {
     font-size: 8rem;
-    height: 8rem
-}
+    height: 8rem;
   }
+}
 
 .subtitle {
   color: #888;
   font-weight: 700;
   margin: .1em 0;
-}
 
-.subtitle a {
+  a {
     opacity: 0.8;
   }
-
-.subtitle a:hover {
+    
+  a:hover {
     opacity: 1;
   }
-/*# sourceMappingURL=app.min.css.map */
+}
