@@ -4,18 +4,16 @@ html, body {
   font: 16px/1.5 Aileron, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizelegibility; 
-  margin: 0;
-}
-
-body {
-  margin: 0 2rem;
+  text-rendering: optimizelegibility;
 }
 
 h1 {
   font-size: 2.4rem;
   font-weight: 900;
-  margin: 1em 0;
+  
+  a {
+    text-decoration: none; 
+  }
 }
 
 a {
@@ -46,41 +44,87 @@ a {
 .trianglify-svg {
   width: 100%;
   height: 100%;
-}
+  
+  mask rect,
+  mask text {
+    transition: fill .3s ease;
+  }
 
-.trianglify-svg mask rect,
-.trianglify-svg.inverted mask text {
-  fill: white;
-}
+  mask rect,
+  &.inverted mask text {
+    fill: white;
+  }
 
-.trianglify-svg mask text,
-.trianglify-svg.inverted mask rect {
-  fill: black;
+  mask text,
+  &.inverted mask rect {
+    fill: black;
+  }
 }
 
 .trianglify-ghost-text {
   position: absolute;
   top: .08em;
-  text-indent: -9999px;
+  color: transparent;
   line-height: 1;
   z-index: 1;
 }
 
 #site-header {
-  margin-bottom: 5rem;
+  dl {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  dt {
+    display: block;
+    font-size: 1.6em;
+    font-weight: 700;
+    
+    a {
+      text-decoration: none;
+    }
+    
+    .trianglify-ghost-text {
+      color: currentColor;
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+    
+    a:hover,
+    &:hover .trianglify-ghost-text {
+      opacity: 1;
+    }
+  }
+
+  dt#site-header__home {
+    font-weight: 900;
+    margin: 0 20px;
+  }
+}
+
+#header {
+  margin-top: 5rem;
+  margin-bottom: 3rem;
 }
 
 #title {
-  color: #00f;
+  color: #111;
   font-size: 5rem;
   font-weight: 900;
   line-height: 1;
-  margin-left: -7px;
-  margin-bottom: 0;
+  margin: 0;
   
   @media (min-width: 768px) {
     font-size: 8rem;
     height: 8rem;
+  }
+  
+  &[data-changeable] {
+    cursor: pointer;
+  }
+  
+  &[data-changeable] .trianglify-ghost-text {
+    text-indent: -9999px;
   }
 }
 

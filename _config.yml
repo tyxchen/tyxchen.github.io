@@ -13,10 +13,13 @@ kramdown:
   input: GFM
   hard_wrap: false
 
+include:
+  - assets/
 exclude:
   - app/
   - Gemfile
   - Gemfile.lock
+  - Gulpfile.js
   - node_modules/
   - package.json
   - package.json.lock

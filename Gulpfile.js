@@ -9,8 +9,8 @@ const gulp = require('gulp'),
   babel = require('gulp-babel'),
   folders = {
     src: {
-      css: 'app/src/css/',
-      js: 'app/src/es6/'
+      css: 'app/css/',
+      js: 'app/es6/'
     },
     built: {
       css: 'assets/css/',

@@ -1,0 +1,12 @@
+---
+layout: default
+---
+<header id="header">
+  <h1 id="title" data-clr="{{ page.clr }}"><span class="text-wrap">{{ page.title }}</span></h1>
+  {% if page.subtitle %}
+    <h2 class="subtitle">{{ page.subtitle | markdownify }}</h2>
+  {% endif %}
+</header>
+<div>
+  {{ content }}
+</div>
