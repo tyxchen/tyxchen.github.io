@@ -24,6 +24,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   };
   var colors = _extends({}, choosableColors, baseColors);
 
+  var $ = function $(ctx, sel) {
+    return (!sel ? document : ctx).querySelector(sel || ctx);
+  },
+      $$ = function $$(ctx, sel) {
+    return Array.prototype.slice.call((!sel ? document : ctx).querySelectorAll(sel || ctx));
+  };
+
   var chooseRandomFromArray = function chooseRandomFromArray(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
   };
@@ -117,11 +124,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   var trianglify = function trianglify(el, colorSet) {
     var animate = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
     var cell_size = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 32;
-    var text = el.textContent,
+    var wrapper = $(el, '.text-wrap'),
+        wrapperParent = wrapper.parentNode,
+        text = wrapper.textContent,
         maskId = 'mask-' + el.getAttribute('id'),
-        _el$querySelector$get = el.querySelector('.text-wrap').getBoundingClientRect(),
-        width = _el$querySelector$get.width,
-        height = _el$querySelector$get.height,
+        _wrapper$getBoundingC = wrapper.getBoundingClientRect(),
+        width = _wrapper$getBoundingC.width,
+        height = _wrapper$getBoundingC.height,
         canvas = document.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         _Trianglify = Trianglify({
@@ -131,7 +140,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       variance: .69
     }),
         polys = _Trianglify.polys,
-        templ = "<span class=\"trianglify-text\" style=\"width:" + width + "px;height:" + height + "px\">\n    <svg class=\"trianglify-svg\" xmlns=\"http://www.w3.org/2000/svg\">\n      <defs>\n        <mask id=\"" + maskId + "\" x=\"0\" y=\"0\" width=\"100%\" height=\"100%\">\n          <rect x=\"0\" y=\"0\" width=\"100%\" height=\"100%\"></rect>\n          <text class=\"" + el.className + "\" x=\"0\" y=\"0\" dy=\".95em\">" + wrapText(text, el.querySelector('.text-wrap')) + "</text>\n        </mask>\n      </defs>\n      <rect x=\"0\" y=\"0\" width=\"100%\" height=\"100%\" fill=\"white\" mask=\"url(#" + maskId + ")\"/>\n  </span>",
+        templ = "<span class=\"trianglify-text\" style=\"width:" + width + "px;height:" + height + "px\">\n    <svg class=\"trianglify-svg\" xmlns=\"http://www.w3.org/2000/svg\">\n      <defs>\n        <mask id=\"" + maskId + "\" x=\"0\" y=\"0\" width=\"100%\" height=\"100%\">\n          <rect x=\"0\" y=\"0\" width=\"100%\" height=\"100%\"></rect>\n          <text class=\"" + el.className + "\" x=\"0\" y=\"0\" dy=\".95em\">" + wrapText(text, wrapper) + "</text>\n        </mask>\n      </defs>\n      <rect x=\"0\" y=\"0\" width=\"100%\" height=\"100%\" fill=\"white\" mask=\"url(#" + maskId + ")\"/>\n  </span>\n  <span class=\"trianglify-ghost-text\">" + text + "</span>",
         fading = [],
         defaultNumStops = 75,
         lastTimestamp = 0,
@@ -166,7 +175,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
       }
     };
 
-    ctx.lineWidth = 0.0001;
+    ctx.lineWidth = 0.001;
 
     el.style.position = 'relative';
     el.style.height = height + 'px';
@@ -178,33 +187,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
     changeColorSet(colorSet);
 
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
+    wrapperParent.removeChild(wrapper);
 
-    try {
-      for (var _iterator = el.childNodes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var n = _step.value;
-
-        el.removeChild(n);
-      }
-    } catch (err) {
-      _didIteratorError = true;
-      _iteratorError = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion && _iterator.return) {
-          _iterator.return();
-        }
-      } finally {
-        if (_didIteratorError) {
-          throw _iteratorError;
-        }
-      }
-    }
-
-    el.insertAdjacentHTML('beforeend', templ);
-    el.appendChild(canvas);
+    wrapperParent.insertAdjacentHTML('beforeend', templ);
+    wrapperParent.appendChild(canvas);
 
     if (animate) {
       var animFrame = function animFrame(timestamp) {
@@ -258,75 +244,93 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     };
   };
 
-  var chosenRandClr = chooseRandomFromObject(choosableColors),
+  var chosenRandClr = chooseRandomFromArray(Object.keys(choosableColors)),
       titleCanvas = void 0,
       changeTitleColorSet = void 0;
   window.onload = function () {
-    var _trianglify = trianglify(document.querySelector('#title'), chosenRandClr, true),
+    var randClr = choosableColors[chosenRandClr],
+        _trianglify = trianglify($('#title'), randClr, true),
         canvas = _trianglify.canvas,
         changeColorSet = _trianglify.changeColorSet;
+
 
     titleCanvas = canvas;
     changeTitleColorSet = changeColorSet;
 
-    var _iteratorNormalCompletion2 = true;
-    var _didIteratorError2 = false;
-    var _iteratorError2 = undefined;
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
 
     try {
-      for (var _iterator2 = document.querySelectorAll('#site-header .subtitle a')[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-        var a = _step2.value;
+      for (var _iterator = $$('#site-header .subtitle a')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var a = _step.value;
 
-        a.style.color = chosenRandClr[3];
+        a.style.color = randClr[2];
       }
     } catch (err) {
-      _didIteratorError2 = true;
-      _iteratorError2 = err;
+      _didIteratorError = true;
+      _iteratorError = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion2 && _iterator2.return) {
-          _iterator2.return();
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
         }
       } finally {
-        if (_didIteratorError2) {
-          throw _iteratorError2;
+        if (_didIteratorError) {
+          throw _iteratorError;
         }
       }
     }
 
-    document.querySelector('#title').onclick = function () {
-      chosenRandClr = chooseRandomFromObject(choosableColors);
-      changeTitleColorSet(chosenRandClr);
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
+    $('#title').style.cursor = 'pointer';
+    $('#title').onclick = function () {
+      var choosableClrs = Object.keys(choosableColors);
+      choosableClrs.splice(choosableClrs.indexOf(chosenRandClr), 1);
+
+      chosenRandClr = chooseRandomFromArray(choosableClrs);
+      randClr = choosableColors[chosenRandClr];
+
+      changeTitleColorSet(randClr);
+
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
 
       try {
-        for (var _iterator3 = document.querySelectorAll('#site-header .subtitle a')[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var _a = _step3.value;
+        for (var _iterator2 = $$('#site-header .subtitle a')[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var _a = _step2.value;
 
-          _a.style.color = chosenRandClr[3];
+          _a.style.color = randClr[2];
         }
       } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-            _iterator3.return();
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
           }
         } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
+          if (_didIteratorError2) {
+            throw _iteratorError2;
           }
         }
       }
     };
 
-    trianglify(document.querySelector('#about-heading'), colors.Or);
-    trianglify(document.querySelector('#portfolio-heading'), colors.Rd);
-    trianglify(document.querySelector('#blog-heading'), colors.Bu);
-    trianglify(document.querySelector('#contact-heading'), colors.Gn);
+    trianglify($('#about-heading'), colors.Or);
+    trianglify($('#portfolio-heading'), colors.Rd);
+    trianglify($('#blog-heading'), colors.Bu);
+    trianglify($('#contact-heading'), colors.Gn);
+  };
+
+  window.onresize = function () {
+    var _trianglify2 = trianglify($('#title'), choosableColors[chosenRandClr], true),
+        canvas = _trianglify2.canvas,
+        changeColorSet = _trianglify2.changeColorSet;
+
+    titleCanvas = canvas;
+    changeTitleColorSet = changeColorSet;
   };
 })();
 //# sourceMappingURL=app.js.map

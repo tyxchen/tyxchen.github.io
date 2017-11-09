@@ -17,6 +17,9 @@
     Rd: ["#ef3b2c","#cb181d","#a50f15","#67000d"]
   };
   const colors = { ...choosableColors, ...baseColors };
+  
+  const $ = (ctx, sel) => (!sel ? document : ctx).querySelector(sel || ctx),
+        $$ = (ctx, sel) => Array.prototype.slice.call((!sel ? document : ctx).querySelectorAll(sel || ctx));
 
   const chooseRandomFromArray = (arr) => arr[Math.floor(Math.random()*arr.length)];
 
@@ -88,9 +91,11 @@
   };
 
   let trianglify = (el, colorSet, animate = false, cell_size = 32) => {
-    let text = el.textContent,
+    let wrapper = $(el, '.text-wrap'),
+        wrapperParent = wrapper.parentNode, // no guarantee wrapper.parentNode === el
+        text = wrapper.textContent,
         maskId = 'mask-' + el.getAttribute('id'),
-        { width, height } = el.querySelector('.text-wrap').getBoundingClientRect(),
+        { width, height } = wrapper.getBoundingClientRect(),
         canvas = document.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         { polys } = Trianglify({
@@ -104,11 +109,12 @@
       <defs>
         <mask id="${maskId}" x="0" y="0" width="100%" height="100%">
           <rect x="0" y="0" width="100%" height="100%"></rect>
-          <text class="${el.className}" x="0" y="0" dy=".95em">${wrapText(text, el.querySelector('.text-wrap'))}</text>
+          <text class="${el.className}" x="0" y="0" dy=".95em">${wrapText(text, wrapper)}</text>
         </mask>
       </defs>
       <rect x="0" y="0" width="100%" height="100%" fill="white" mask="url(#${maskId})"/>
-  </span>`,
+  </span>
+  <span class="trianglify-ghost-text">${text}</span>`,
         fading = [],
         defaultNumStops = 75, // 4500 / 60; each change takes 4.5 seconds
         lastTimestamp = 0, // for animation
@@ -137,7 +143,7 @@
       }
     };
       
-    ctx.lineWidth = 0.0001;
+    ctx.lineWidth = 0.001;
 
     el.style.position = 'relative';
     el.style.height = height + 'px';
@@ -149,12 +155,10 @@
     
     changeColorSet(colorSet);
     
-    for (let n of el.childNodes) {
-      el.removeChild(n);
-    }
+    wrapperParent.removeChild(wrapper);
     
-    el.insertAdjacentHTML('beforeend', templ);
-    el.appendChild(canvas);
+    wrapperParent.insertAdjacentHTML('beforeend', templ);
+    wrapperParent.appendChild(canvas);
     
     if (animate) {
       let animFrame = (timestamp) => {
@@ -203,24 +207,43 @@
     };
   }
 
-  let chosenRandClr = chooseRandomFromObject(choosableColors), titleCanvas, changeTitleColorSet;
+  let chosenRandClr = chooseRandomFromArray(Object.keys(choosableColors)), titleCanvas, changeTitleColorSet;
   window.onload = () => {
-    let { canvas, changeColorSet } = trianglify(document.querySelector('#title'), chosenRandClr, true);
+    let randClr = choosableColors[chosenRandClr],
+        { canvas, changeColorSet } = trianglify($('#title'), randClr, true);
+    
     titleCanvas = canvas;
     changeTitleColorSet = changeColorSet;
     
-    for (let a of document.querySelectorAll('#site-header .subtitle a'))
-      a.style.color = chosenRandClr[3];
-    document.querySelector('#title').onclick = () => {
-      chosenRandClr = chooseRandomFromObject(choosableColors);
-      changeTitleColorSet(chosenRandClr);
-      for (let a of document.querySelectorAll('#site-header .subtitle a'))
-        a.style.color = chosenRandClr[3];
+    for (let a of $$('#site-header .subtitle a')) {
+      a.style.color = randClr[2];
+    }
+  
+    $('#title').style.cursor = 'pointer';
+    $('#title').onclick = () => {
+      let choosableClrs = Object.keys(choosableColors);
+      choosableClrs.splice(choosableClrs.indexOf(chosenRandClr), 1);
+      
+      chosenRandClr = chooseRandomFromArray(choosableClrs);
+      randClr = choosableColors[chosenRandClr];
+      
+      changeTitleColorSet(randClr);
+      
+      for (let a of $$('#site-header .subtitle a')) {
+        a.style.color = randClr[2];
+      }
     };
 
-    trianglify(document.querySelector('#about-heading'), colors.Or);
-    trianglify(document.querySelector('#portfolio-heading'), colors.Rd);
-    trianglify(document.querySelector('#blog-heading'), colors.Bu);
-    trianglify(document.querySelector('#contact-heading'), colors.Gn);
+    trianglify($('#about-heading'), colors.Or);
+    trianglify($('#portfolio-heading'), colors.Rd);
+    trianglify($('#blog-heading'), colors.Bu);
+    trianglify($('#contact-heading'), colors.Gn);
   };
+  
+  window.onresize = () => {
+    let { canvas, changeColorSet } = trianglify($('#title'), choosableColors[chosenRandClr], true);
+    
+    titleCanvas = canvas;
+    changeTitleColorSet = changeColorSet;
+  }
 })();
