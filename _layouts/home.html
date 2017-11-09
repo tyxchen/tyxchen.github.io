@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% include html-head.html %}
+</head>
+<body>
+  <header id="site-header">
+    <h1 id="title"><span class="text-wrap">Hi, I'm Terry.</span></h1>
+    <h2 class="subtitle">High-school student, language aficionado.</h2>
+    <h2 class="subtitle">Find me on <a href="https://github.com/tyxchen">GitHub</a>.</h2>
+  </header>
+  <main>
+    <section>
+      <h1 id="about-heading"><a href="/about"><span class="text-wrap">About</span></a></h1>
+    </section>
+    <section>
+      <h1 id="portfolio-heading"><a href="/portfolio"><span class="text-wrap">Portfolio</span></a></h1>
+    </section>
+    <section>
+      <h1 id="blog-heading"><a href="/blog"><span class="text-wrap">Blog</span></a></h1>
+    </section>
+    <section>
+      <h1 id="contact-heading"><a href="/contact"><span class="text-wrap">Contact</span></a></h1>
+    </section>
+  </main>
+  
+  <style>section h1 a { color: #222; text-decoration: none; }</style>
+
+  {% include scripts.html %}
+</body>
+</html>

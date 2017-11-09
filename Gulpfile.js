@@ -13,8 +13,8 @@ const gulp = require('gulp'),
       js: 'app/src/es6/'
     },
     built: {
-      css: 'app/built/css/',
-      js: 'app/built/js/'
+      css: 'assets/css/',
+      js: 'assets/js/'
     }
   },
   plugins = [

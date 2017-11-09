@@ -1,5 +1,3 @@
-@import url(//brick.a.ssl.fastly.net/Aileron:100,300,700,900);
-
 html, body {
   background-color: #fff;
   color: #222;
@@ -22,11 +20,11 @@ h1 {
 
 a {
   color: #00f;
-}
-
-a:hover {
+  
+  &:hover {
     opacity: .7;
   }
+}
 
 .trianglify-text,
 .trianglify-canvas {
@@ -79,25 +77,20 @@ a:hover {
   line-height: 1;
   margin-left: -7px;
   margin-bottom: 0;
-}
-
-@media (min-width: 768px) {
-
-#title {
+  
+  @media (min-width: 768px) {
     font-size: 8rem;
-    height: 8rem
-}
+    height: 8rem;
   }
+}
 
 .subtitle {
   color: #888;
   font-weight: 700;
   margin: .1em 0;
-}
-
-.subtitle a {
+  
+  a {
     color: #333;
   }
+}
 
-
-/*# sourceMappingURL=app.min.css.map */
