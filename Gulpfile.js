@@ -32,11 +32,7 @@ gulp.task('build:css', (err) => {
 });
 
 gulp.task('build:js', () => {
-  return gulp.src(folders.src.js + 'app.js')
-    .pipe(sourcemaps.init())
-    .pipe(babel({ presets: ['env', 'stage-3'] }))
-    .on('error', function (err) { console.log(err.toString()); this.emit('end'); })
-    .pipe(sourcemaps.write('.'))
+  return gulp.src(folders.src.js + '*.js')
     .pipe(gulp.dest(folders.built.js));
 });
 

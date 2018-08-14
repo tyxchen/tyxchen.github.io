@@ -2,8 +2,16 @@
 
 <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }} &bull; {{ site.description }}</title>
 
-<link href="//brick.a.ssl.fastly.net/Aileron:400,400i,700,900" rel="stylesheet">
+<link href="https://brick.a.ssl.fastly.net/Aileron:400,400i,700,900" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" rel="stylesheet">
-<link href="assets/css/app.min.css" rel="stylesheet">
+<link href="/assets/css/app.min.css" rel="stylesheet">
+
+<style>html[data-theme="light"]{background-color:#fff}html[data-theme="dark"]{background-color:#050723}</style>
+
+<script>document.documentElement.dataset.theme=localStorage.getItem('theme')||'light'</script>
 
 <style>#site-header,main { width: 90%; max-width: 800px; margin: 0 auto; }</style>
+
+{% if page.add_styles %}
+<style>{{ page.add_styles }}</style>
+{% endif %}
