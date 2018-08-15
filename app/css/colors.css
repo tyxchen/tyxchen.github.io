@@ -1,0 +1,39 @@
+.fg-or {
+  color: var(--color-or2);
+}
+
+.fg-rd {
+  color: var(--color-rd2);
+}
+
+.fg-pu {
+  color: var(--color-pu2);
+}
+
+.fg-bu {
+  color: var(--color-bu2);
+}
+
+.fg-gn {
+  color: var(--color-gn2);
+}
+
+.bg-or {
+  background-color: var(--color-or2);
+}
+
+.bg-rd {
+  background-color: var(--color-rd2);
+}
+
+.bg-pu {
+  background-color: var(--color-pu2);
+}
+
+.bg-bu {
+  background-color: var(--color-bu2);
+}
+
+.bg-gn {
+  background-color: var(--color-gn2);
+}

@@ -9,8 +9,6 @@ clr: Rd
 
 # Showcase
 
-<canvas id="showcase-bg"></canvas>
-
 <div class="showcase" id="mss-csec" data-clr="Rd" data-skills="JS Ruby CSS3 CircleCI">
   <h2>Markville CSEC</h2>
   <p class="summary">Markville Secondary School's Computer Science Education Club needed a better system than Google Drive to store and disseminate its lessons. 
