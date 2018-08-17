@@ -97,7 +97,7 @@ const trianglify = window.trianglify = (el, colorSet, animate = false, cell_size
         variance: .69
       });
 
-  let templ = `<span class="trianglify-text" style="width:${width + 2}px;height:${height + 2}px">
+  const templ = `<span class="trianglify-text" style="width:${width + 2}px;height:${height + 2}px">
   <svg class="trianglify-svg" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <mask id="${maskId}" x="0" y="0" width="100%" height="100%">
@@ -109,24 +109,31 @@ const trianglify = window.trianglify = (el, colorSet, animate = false, cell_size
 </span>
 <span class="trianglify-ghost-text">${text}</span>`;
 
-  let changeColorSet = (set) => {
+  const changeColorSet = (set) => {
     chosenColors = set;
     polys = polys.map((a) => [chooseRandomIndex(chosenColors), a[1]]);
     fading = new Array(polys.length);
 
-    for (let i=0; i<polys.length; i++) {
-      let [clr, p] = polys[i];
+    for (const [i, [clr, poly]] of polys.entries()) {
       ctx.fillStyle = ctx.strokeStyle = chosenColors[clr];
       ctx.beginPath();
-      ctx.moveTo.apply(ctx, p[0]);
-      ctx.lineTo.apply(ctx, p[1]);
-      ctx.lineTo.apply(ctx, p[2]);
+      ctx.moveTo(...poly[0]);
+      ctx.lineTo(...poly[1]);
+      ctx.lineTo(...poly[2]);
       ctx.fill();
       ctx.stroke();
 
       if (animate && Math.random() < 0.1) {
-        let randClr = chooseRandomIndex(chosenColors);
-        fading[i] = [0, getGradient(chosenColors[clr], chosenColors[randClr], defaultNumStops), p];
+        const randClr = chooseRandomIndex(chosenColors);
+        fading[i] = [
+          0,
+          getGradient(
+            chosenColors[clr],
+            chosenColors[randClr],
+            defaultNumStops
+          ),
+          poly
+        ];
         polys[i][0] = randClr;
       }
     }
@@ -151,33 +158,46 @@ const trianglify = window.trianglify = (el, colorSet, animate = false, cell_size
   wrapperParent.appendChild(canvas);
 
   if (animate) {
-    let animFrame = (timestamp) => {
+    const animFrame = (timestamp) => {
       // randomly fade a few polygons
-      for (let i=0; i<fading.length; i++) {
-        if (!fading[i]) continue;
-        let [stop, clrStops, p] = fading[i];
+      for (const [i, entry] of fading.entries()) {
+        if (!entry) {
+          continue;
+        }
+
+        const [stop, clrStops, poly] = entry;
+
         ctx.fillStyle = ctx.strokeStyle = clrStops[stop];
         ctx.beginPath();
-        ctx.moveTo.apply(ctx, p[0]);
-        ctx.lineTo.apply(ctx, p[1]);
-        ctx.lineTo.apply(ctx, p[2]);
+        ctx.moveTo(...poly[0]);
+        ctx.lineTo(...poly[1]);
+        ctx.lineTo(...poly[2]);
         ctx.fill();
         ctx.stroke();
 
-        if (stop + 1 < clrStops.length)
+        if (stop + 1 < clrStops.length) {
           fading[i][0] = stop + 1;
-        else
+        } else {
           delete fading[i];
+        }
       }
 
       // every 1/2 second, fade a few more
       if (timestamp - lastTimestamp > 500) {
-        for (let i=0; i<polys.length; i++) {
-          let [clr, p] = polys[i];
-          if (!!fading[i]) continue;
+        for (const [i, [clr, poly]] of polys.entries()) {
+          if (!!fading[i]) {
+            continue;
+          }
+
           if (Math.random() < 0.03) {
-            let randClr = chooseRandomIndex(chosenColors);
-            fading[i] = [0, getGradient(chosenColors[clr], chosenColors[randClr], defaultNumStops), p];
+            const randClr = chooseRandomIndex(chosenColors);
+            fading[i] = [
+              0,
+              getGradient(chosenColors[clr],
+                chosenColors[randClr],
+                defaultNumStops),
+              poly
+            ];
             polys[i][0] = randClr;
           }
         }
@@ -197,13 +217,13 @@ const trianglify = window.trianglify = (el, colorSet, animate = false, cell_size
   };
 }
 
-let trianglifyHeaderBar = () => {
+const trianglifyHeaderBar = () => {
   const siteHeader_Bar = $('#site-header__bar'),
         ctx = siteHeader_Bar.getContext('2d');
 
   let polys;
 
-  let init = () => {
+  const init = () => {
     const barWidth = $('#site-header').getBoundingClientRect().width,
           barColors = [
             baseColors.Or[1],
@@ -219,7 +239,9 @@ let trianglifyHeaderBar = () => {
       width: barWidth,
       height: siteHeader_Bar.height,
       cell_size: 15,
-      color_fcn: ([x]) => RGBToHex(randBrightness(interpolate(barColors, 0.015, x / barWidth), 50)),
+      color_fcn: ([x]) => RGBToHex(
+        randBrightness(interpolate(barColors, 0.015, x / barWidth), 50)
+      ),
       variance: 1
     });
 
@@ -227,26 +249,28 @@ let trianglifyHeaderBar = () => {
 
     ctx.lineWidth = 1.51;
   };
-  let changeBarColors = (set) => {
-    for (let [, p] of polys) {
+
+  const changeBarColors = (set) => {
+    for (const [, poly] of polys) {
       ctx.fillStyle = ctx.strokeStyle = chooseRandomFromArray(set);
       ctx.globalAlpha = Math.random() * 0.2 + 0.8;
       ctx.beginPath();
-      ctx.moveTo(...p[0]);
-      ctx.lineTo(...p[1]);
-      ctx.lineTo(...p[2]);
+      ctx.moveTo(...poly[0]);
+      ctx.lineTo(...poly[1]);
+      ctx.lineTo(...poly[2]);
       ctx.fill();
       ctx.stroke();
     }
     ctx.globalAlpha = 1;
   };
-  let resetBarColors = () => {
-    for (let [clr, p] of polys) {
+
+  const resetBarColors = () => {
+    for (const [clr, poly] of polys) {
       ctx.fillStyle = ctx.strokeStyle = clr;
       ctx.beginPath();
-      ctx.moveTo(...p[0]);
-      ctx.lineTo(...p[1]);
-      ctx.lineTo(...p[2]);
+      ctx.moveTo(...poly[0]);
+      ctx.lineTo(...poly[1]);
+      ctx.lineTo(...poly[2]);
       ctx.fill();
       ctx.stroke();
     }
@@ -274,12 +298,12 @@ window.addEventListener('load', () => {
     chosenTitleClr = title.dataset.clr || chooseRandomFromArray(Object.keys(choosableColors));
     chosenClr = colors[chosenTitleClr];
 
-    let { canvas, changeColorSet } = trianglify(title, chosenClr, true);
+    const { canvas, changeColorSet } = trianglify(title, chosenClr, true);
 
     titleCanvas = canvas;
     changeTitleColorSet = changeColorSet;
 
-    for (let a of $$('#header .subtitle a')) {
+    for (const a of $$('#header .subtitle a')) {
       a.style.color = chosenClr[2];
       if (a.classList.contains('resume-link')) {
         a.style.color = chosenClr[3];
@@ -288,7 +312,7 @@ window.addEventListener('load', () => {
 
     if (title.dataset.hasOwnProperty('changeable') && title.dataset.changeable !== 'false') {
       title.onclick = () => {
-        let choosableClrs = Object.keys(choosableColors);
+        const choosableClrs = Object.keys(choosableColors);
         if (~choosableClrs.indexOf(chosenTitleClr)) {
           choosableClrs.splice(choosableClrs.indexOf(chosenTitleClr), 1);
         }
@@ -298,7 +322,7 @@ window.addEventListener('load', () => {
 
         changeTitleColorSet(chosenClr);
 
-        for (let a of $$('#header .subtitle a')) {
+        for (const a of $$('#header .subtitle a')) {
           a.style.color = chosenClr[2];
           if (a.classList.contains('resume-link')) {
             a.style.color = chosenClr[3];
@@ -310,15 +334,15 @@ window.addEventListener('load', () => {
     title.classList.remove('trianglify');
   }
 
-  for (let t of $$('.trianglify')) {
+  for (const t of $$('.trianglify')) {
     trianglify(t, colors[t.dataset.clr || chooseRandomFromArray(Object.keys(choosableColors))]);
     t.classList.remove('trianglify');
   }
 
   // trianglify bar
   if ($('#site-header__bar')) {
-    let { init, changeBarColors, resetBarColors } = trianglifyHeaderBar();
-    for (let l of $$('#site-header dt a')) {
+    const { init, changeBarColors, resetBarColors } = trianglifyHeaderBar();
+    for (const l of $$('#site-header dt a')) {
       l.addEventListener('mouseover', () => {
         changeBarColors(colors[l.parentNode.dataset.clr].slice(0,3));
       });
@@ -342,7 +366,7 @@ window.addEventListener('resize', () => {
       let title = $('#title.trianglify'),
           childNodes = Array.prototype.slice.call(title.childNodes);
 
-      for (let n of childNodes) {
+      for (const n of childNodes) {
         if (n.className === 'trianglify-text' || n.className === 'trianglify-canvas') {
           title.removeChild(n);
         } else if (n.className === 'trianglify-ghost-text') {
@@ -352,7 +376,7 @@ window.addEventListener('resize', () => {
 
       title.setAttribute('style', '');
 
-      let { canvas, changeColorSet } = trianglify(title, colors[chosenTitleClr], true);
+      const { canvas, changeColorSet } = trianglify(title, colors[chosenTitleClr], true);
 
       titleCanvas = canvas;
       changeTitleColorSet = changeColorSet;

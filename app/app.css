@@ -160,19 +160,20 @@
   --fg-color: #e7e7f1;
 
   position: relative;
+  box-sizing: border-box;
   background-color: var(--bg-color);
   border: 5px solid var(--bg-color);
   margin-bottom: 1em;
   overflow: hidden;
 
-  /* 9.6em is exact height with only one line of summary */
+  /* 10.1em is exact height with only one line of summary */
   &.loaded {
-    min-height: 9.6em;
+    min-height: 10.1em;
     transition: height var(--tn-fcn);
   }
 
   &.loaded:not(:hover) {
-    height: 9.6em !important;
+    height: 10.1em !important;
   }
 
   img {
@@ -196,6 +197,10 @@
     background-color: var(--bg-color);
     opacity: 0;
     transition: opacity var(--tn-fcn);
+  }
+
+  &-canvas {
+    opacity: .6;
   }
 
   &-content {
@@ -279,7 +284,7 @@
   }
 
   &:hover &-bg {
-    opacity: .5;
+    opacity: .6;
   }
 
   &:hover &-content {

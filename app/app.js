@@ -10,7 +10,7 @@ import {
   hexToRGB,
   RGBToHex,
   luminance,
-  shade
+  mix
 } from './js/colors.js';
 
 import {
@@ -56,12 +56,45 @@ if ($('.showcase')) {
   for (const [i, el] of $$('.showcase').entries()) {
     const clrs = allColors[el.dataset.clr || 'random'] || [el.dataset.clr],
           bgClr = clrs.length > 1 ? chooseRandomFromArray(clrs) : clrs[0],
-          fgClr = luminance(hexToRGB(bgClr)) > 0.5 ? '#222' : '#fff';
+          fgClr = luminance(hexToRGB(bgClr)) > 0.5 ? '#222' : '#fff',
+          dims = el.getBoundingClientRect();
+
+    async function drawBg() {
+      const canvas = $(el, '.showcase-canvas'),
+            ctx = canvas.getContext('2d'),
+            mixClrs = [
+              [0x66, 0x66, 0x66],
+              [0x77, 0x77, 0x77],
+              [0x88, 0x88, 0x88],
+              [0x99, 0x99, 0x99]
+            ].map(c => RGBToHex(mix(hexToRGB(bgClr), c, .3))),
+            polys = generate_triangles({
+              width: dims.width,
+              height: dims.height,
+              color_fcn: () => chooseRandomFromArray(mixClrs)
+            });
+
+      canvas.width = dims.width;
+      canvas.height = dims.height;
+
+      for (const [clr, poly] of polys) {
+        ctx.fillStyle = ctx.strokeStyle = clr;
+        ctx.beginPath();
+        ctx.moveTo(...poly[0]);
+        ctx.lineTo(...poly[1]);
+        ctx.lineTo(...poly[2]);
+        ctx.fill();
+        ctx.stroke();
+      }
+    }
 
     el.style.setProperty('--bg-color', bgClr);
     el.style.setProperty('--fg-color', fgClr);
-    el.style.height = (el.getBoundingClientRect().height - 10) + 'px';
+    el.style.height = dims.height + 'px';
+
     el.classList.add('loaded');
+
+    drawBg();
   }
 
   $('.showcase-show-more').addEventListener('click', (e) => {
