@@ -1,0 +1,3 @@
+[submodule "_includes/icons"]
+	path = _includes/icons
+	url = https://github.com/tyxchen/fa-svg-icons
