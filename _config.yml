@@ -17,6 +17,7 @@ include:
   - assets/
 exclude:
   - app/
+  - assets/static
   - Gemfile
   - Gemfile.lock
   - Gulpfile.js

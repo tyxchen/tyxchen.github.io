@@ -1,8 +1,16 @@
-.center-hor {
+.hor-center {
   margin-left: auto;
   margin-right: auto;
 }
 
-.center-text {
+.text-left {
+  text-align: left;
+}
+
+.text-center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }

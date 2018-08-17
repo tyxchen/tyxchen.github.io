@@ -1,0 +1,15 @@
+<div class="showcase" id="{{ include.id }}" data-clr="{{ include.color | default: 'random' }}" data-skills="{{ include.skills }}">
+  <picture>
+    <source srcset="/assets/images/projects/{{ include.id }}/{{ include.cover }}.png 1x, /assets/images/projects/{{ include.id }}/{{ include.cover }}-2x.png 2x">
+    <img src="/assets/images/projects/{{ include.id }}/{{ include.cover }}.png">
+  </picture>
+  <div class="showcase-bg"></div>
+  <div class="showcase-content">
+    <h2 class="showcase-heading">{{ include.title }}</h2>
+    <p class="showcase-summary">{{ include.summary | markdownify }}</p>
+    <p class="showcase-footer">
+      <span class="showcase-skills">{{ include.skills }}</span>
+      {% if include.link %}<a class="btn pill small" href="{{ include.link }}" target="_blank">Visit {% include icons/external-link-alt.svg %}</a>{% endif %}
+      <a class="btn pill small inverted" href="/portfolio/{{ include.id }}">Learn more {% include icons/arrow-right.svg %}</a></p>
+  </div>
+</div>

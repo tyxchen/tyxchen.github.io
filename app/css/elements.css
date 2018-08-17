@@ -47,3 +47,8 @@ a {
     color: #78a;
   }
 }
+
+.icon {
+  stroke: currentColor;
+  fill: currentColor;
+}

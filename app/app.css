@@ -1,10 +1,11 @@
 @import "css/variables.css";
 @import "css/elements.css";
+@import "css/buttons.css";
+
+@import "css/utils.css";
 @import "css/alignment.css";
 @import "css/sizes.css";
 @import "css/colors.css";
-
-@import "css/buttons.css";
 
 @import "css/trianglify.css";
 
@@ -154,10 +155,155 @@
 }
 
 /* Portfolio */
-.showcase-wrapper {
-  position: relative;
-}
+.showcase {
+  --bg-color: #777;
+  --fg-color: #e7e7f1;
 
-#showcase-bg {
-  position: absolute;
+  position: relative;
+  background-color: var(--bg-color);
+  border: 5px solid var(--bg-color);
+  margin-bottom: 1em;
+  overflow: hidden;
+
+  /* 9.6em is exact height with only one line of summary */
+  &.loaded {
+    min-height: 9.6em;
+    transition: height var(--tn-fcn);
+  }
+
+  &.loaded:not(:hover) {
+    height: 9.6em !important;
+  }
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transform: scale(1);
+    transition: var(--tn-fcn);
+  }
+
+  &-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: var(--bg-color);
+    opacity: 0;
+    transition: opacity var(--tn-fcn);
+  }
+
+  &-content {
+    color: var(--fg-color);
+    margin: 1em;
+    transform: translateY(5.6em);
+    transition: transform var(--tn-fcn);
+  }
+
+  &-content > :not(&-heading) {
+    opacity: 0;
+    transition: opacity var(--tn-fcn);
+  }
+
+  &-heading {
+    position: relative;
+    display: inline-block;
+    color: var(--fg-color);
+    padding: 0 5px;
+    margin: 0;
+    transform: translateX(0);
+    transition: transform var(--tn-fcn);
+  }
+
+  &-heading::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: var(--bg-color);
+    opacity: 1;
+    z-index: -1;
+    transition: opacity var(--tn-fcn);
+  }
+
+  &-footer {
+    display: flex;
+  }
+
+  &-skills {
+    flex: 1;
+  }
+
+  .btn {
+    padding: .3em 1em;
+    opacity: .9;
+    transition: opacity var(--tn-fcn);
+  }
+
+  .btn.inverted {
+    color: var(--bg-color);
+    background-color: var(--fg-color);
+    border-color: var(--fg-color);
+    margin-left: 1em;
+  }
+
+  .btn .icon {
+    vertical-align: -.15em;
+    margin-left: .1em;
+    transform: translate(0);
+    transition: transform var(--tn-fcn);
+  }
+
+  .btn:hover {
+    opacity: 1;
+  }
+
+  .btn:hover .icon-external-link-alt {
+    transform: translate(.2em, -.2em);
+  }
+
+  .btn:hover .icon-arrow-right {
+    transform: translate(.2em, 0);
+  }
+
+  &:hover img {
+    opacity: .4;
+    transform: scale(1.02);
+  }
+
+  &:hover &-bg {
+    opacity: .5;
+  }
+
+  &:hover &-content {
+    transform: translateY(0);
+  }
+
+  &:hover &-content > * {
+    opacity: 1;
+  }
+
+  &:hover &-heading {
+    background-color: transparent;
+    transform: translateX(-5px);
+  }
+
+  &:hover &-heading::before {
+    opacity: 0;
+  }
+
+  &-show-more,
+  &-show-less {
+    display: block;
+    font-family: var(--font-accent);
+    font-weight: 700;
+    text-align: center;
+  }
 }

@@ -1,4 +1,4 @@
-import { leftPad } from './utils.js';
+import { chooseRandomFromObject, leftPad } from './utils.js';
 
 // Colours from ColorBrewer
 // https://bl.ocks.org/mbostock/5577023
@@ -31,7 +31,14 @@ export const constColors = {
   white: ['#fff']
 };
 
-export const colors = { ...choosableColors, ...baseColors, ...constColors };
+export const colors = {
+  ...choosableColors,
+  ...baseColors,
+  ...constColors,
+  get random() {
+    return chooseRandomFromObject(choosableColors);
+  }
+};
 
 // Color functions
 
@@ -105,6 +112,18 @@ export const getGradient = (fromClr, toClr, numStops) => {
 
   return stops;
 };
+
+export const luminance = (clr) => {
+  return (Math.max(...clr) + Math.min(...clr)) / 510; // 510 = 2 * 255
+};
+
+export const mix = (clrA, clrB, factor = 0.5) => {
+  return clrA.map((c, i) => c + (clrB[i] - c) * factor);
+};
+
+export const shade = (clr, factor) => mix(clr, [0, 0, 0], factor);
+
+export const tint = (clr, factor) => mix(clr, [255, 255, 255], factor);
 
 export const randBrightness = (clr, variance = 40) => {
   return clr.map(x => x + variance * (Math.random() - 0.5));

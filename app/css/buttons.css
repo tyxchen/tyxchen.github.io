@@ -1,5 +1,8 @@
 .btn {
+  --btn-color: var(--fg-color);
+
   display: inline-block;
+  color: var(--btn-color);
   font-family: var(--font-accent);
   font-weight: 700;
   padding: .5em;
@@ -30,6 +33,10 @@ a.btn {
 .btn.inline {
   display: inline;
   padding: .3em;
+}
+
+.btn.pill {
+  border-radius: 100px;
 }
 
 .btn.fg-or,

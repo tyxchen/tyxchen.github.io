@@ -6,6 +6,14 @@ import {
 } from './js/utils.js';
 
 import {
+  colors as allColors,
+  hexToRGB,
+  RGBToHex,
+  luminance,
+  shade
+} from './js/colors.js';
+
+import {
   generate_triangles
 } from './js/generators.js';
 
@@ -13,8 +21,6 @@ import './js/trianglify.js';
 
 // general import for css
 import './app.css';
-
-const ABCDEF = "";
 
 // Basic router functionality
 
@@ -45,36 +51,32 @@ if (localStorage.getItem('theme') === 'dark') {
 
 // Page-specific
 
-// Portfolio - trianglify background
+// Portfolio showcases
 if ($('.showcase')) {
-  const canvas = document.createElement('canvas'),
-        ctx = canvas.getContext('2d'),
-        colors = ['#ccc', '#ddd', '#eee', '#fff'];
+  for (const [i, el] of $$('.showcase').entries()) {
+    const clrs = allColors[el.dataset.clr || 'random'] || [el.dataset.clr],
+          bgClr = clrs.length > 1 ? chooseRandomFromArray(clrs) : clrs[0],
+          fgClr = luminance(hexToRGB(bgClr)) > 0.5 ? '#222' : '#fff';
 
-  canvas.width = $('main').getBoundingClientRect().width;
-  canvas.height = window.innerHeight;
+    el.style.setProperty('--bg-color', bgClr);
+    el.style.setProperty('--fg-color', fgClr);
+    el.style.height = (el.getBoundingClientRect().height - 10) + 'px';
+    el.classList.add('loaded');
+  }
 
-  const polys = generate_triangles({
-    width: canvas.width,
-    height: canvas.height,
-    color_fcn: () => chooseRandomFromArray(colors)
+  $('.showcase-show-more').addEventListener('click', (e) => {
+    e.preventDefault();
+
+    $('.showcase-more').classList.remove('hidden');
+    $('.showcase-show-more').classList.add('hidden');
   });
 
-  ctx.lineWidth = 1.51;
+  $('.showcase-show-less').addEventListener('click', (e) => {
+    e.preventDefault();
 
-  for (const [clr, poly] of polys) {
-    ctx.fillStyle = ctx.strokeStyle = clr;
-    ctx.beginPath();
-    ctx.moveTo.apply(ctx, poly[0]);
-    ctx.lineTo.apply(ctx, poly[1]);
-    ctx.lineTo.apply(ctx, poly[2]);
-    ctx.fill();
-    ctx.stroke();
-  }
+    $('.showcase-more').classList.add('hidden');
+    $('.showcase-show-more').classList.remove('hidden');
+  });
 
-  const img = canvas.toDataURL('image/png');
-
-  for (const [i, el] of $$('.showcase').entries()) {
-    el.style.backgroundImage = `url(${img})`;
-  }
+  $('.showcase-more').classList.add('hidden');
 }

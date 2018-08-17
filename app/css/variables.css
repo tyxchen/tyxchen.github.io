@@ -38,6 +38,8 @@
   --font-copy: Georgia, serif;
   --font-accent: Aileron, sans-serif;
 
+  --tn-fcn: .25s ease;
+
   &[data-theme="dark"] {
     --bg-color: #050723;
     --fg-color: #e7e7f1;
