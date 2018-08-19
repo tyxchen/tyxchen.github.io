@@ -2,7 +2,8 @@ import {
   $,
   $$,
   chooseRandomIndex,
-  chooseRandomFromArray
+  chooseRandomFromArray,
+  letterOffsets
 } from './js/utils.js';
 
 import {
@@ -25,6 +26,12 @@ import './app.css';
 // Basic router functionality
 
 //document.
+{
+  let title = $('#title:not(.trianglify)');
+  if (title) {
+    title.style.textIndent = letterOffsets[title.textContent[0]] + 'em';
+  }
+}
 
 // Toggle theme
 $('#toggle-theme').addEventListener('click', function(e) {
@@ -112,4 +119,36 @@ if ($('.showcase')) {
   });
 
   $('.showcase-more').classList.add('hidden');
+}
+
+// Image carousel
+
+if ($('.image-carousel')) {
+  for (const carousel of $$('.image-carousel')) {
+    const pictures = $$(carousel, 'picture').map(p => p.dataset.id);
+    let currentPic = pictures.indexOf(carousel.dataset.start);
+
+    const loadPic = (pic) => {
+      currentPic = pic
+      carousel.dataset.start = pictures[pic];
+
+      $(carousel, '.image-carousel-container').style.transform = `translateX(-${pic * carousel.getBoundingClientRect().width}px)`;
+      $(carousel, '.image-carousel-pagination-current').textContent = pic + 1;
+    };
+
+    const prevBtn = $(carousel, '.image-carousel-prev'),
+          nextBtn = $(carousel, '.image-carousel-next');
+
+    prevBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      loadPic((currentPic - 1 + pictures.length) % pictures.length);
+    });
+
+    nextBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      loadPic((currentPic + 1) % pictures.length);
+    });
+
+    loadPic(currentPic);
+  }
 }

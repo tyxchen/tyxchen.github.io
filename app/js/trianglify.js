@@ -8,7 +8,13 @@ import {
   getGradient,
   randBrightness
 } from './colors.js';
-import { $, $$, chooseRandomIndex, chooseRandomFromArray } from './utils.js';
+import {
+  $,
+  $$,
+  chooseRandomIndex,
+  chooseRandomFromArray,
+  letterOffsets
+} from './utils.js';
 import { generate_triangles } from './generators.js';
 
 const trianglify = window.trianglify = (el, colorSet, animate = false, cell_size = 32) => {
@@ -16,32 +22,7 @@ const trianglify = window.trianglify = (el, colorSet, animate = false, cell_size
   // returns a SVG string
   // inspired by https://bl.ocks.org/mbostock/7555321
   const wrapText = (text, el) => {
-    const SVG = "http://www.w3.org/2000/svg",
-          offset = {
-            A: -0.0078,
-            B: 0.0625,
-            C: 0.0391,
-            D: 0.0625,
-            E: 0.0625,
-            F: 0.0625,
-            G: 0.0391,
-            H: 0.0625,
-            I: 0.0625,
-            J: 0.0313,
-            K: 0.0625,
-            L: 0.0625,
-            M: 0.0625,
-            N: 0.0625,
-            O: 0.0391,
-            P: 0.0625,
-            Q: 0.0391,
-            R: 0.0625,
-            S: 0.0156,
-            U: 0.0547,
-            V: 0.0156,
-            W: 0.0078,
-            Z: 0.0625
-          };
+    const SVG = "http://www.w3.org/2000/svg";
     let words = text.split(/\s/),
         line = [],
         lineHeight = 1,
@@ -66,12 +47,12 @@ const trianglify = window.trianglify = (el, colorSet, animate = false, cell_size
       tspan.textContent = line.join(' ');
       if (tspan.getComputedTextLength() > width) {
         line.pop();
-        builder.push(`<tspan x="0" y="0" dx="${fontSizeGr72 ? (-offset[line[0][0]] || 0) : 0}em" dy="${dy}em">${line.join(' ')}</tspan>`);
+        builder.push(`<tspan x="0" y="0" dx="${fontSizeGr72 ? (letterOffsets[line[0][0]] || 0) : 0}em" dy="${dy}em">${line.join(' ')}</tspan>`);
         line = [word];
         dy += lineHeight;
       }
     }
-    builder.push(`<tspan x="0" y="0" dx="${fontSizeGr72 ? (-offset[line[0][0]] || 0) : 0}em" dy="${dy}em">${line.join(' ')}</tspan>`);
+    builder.push(`<tspan x="0" y="0" dx="${fontSizeGr72 ? (letterOffsets[line[0][0]] || 0) : 0}em" dy="${dy}em">${line.join(' ')}</tspan>`);
 
     el.removeChild(svg);
 

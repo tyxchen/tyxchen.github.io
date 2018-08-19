@@ -27,6 +27,6 @@ exclude:
   - README.md
 
 collections:
-  portfolio:
+  projects:
     output: true
     permalink: /:collection/:path

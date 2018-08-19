@@ -60,6 +60,7 @@ clr: Rd
 
 My side projects, in reverse chronological order.
 
+
+
 # Other projects
 
-Some of my projects that I don't see as being especially interesting to share or talk about.

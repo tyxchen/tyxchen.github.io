@@ -2,6 +2,7 @@
   --bg-color: #fff;
   --fg-color: #222;
   --title-color: #111;
+  --subtitle-color: #888;
   --link-color: #13f;
 
   --color-or1: #f16913;
@@ -44,6 +45,7 @@
     --bg-color: #050723;
     --fg-color: #e7e7f1;
     --title-color: #fff;
+    --subtitle-color: #889;
     --link-color: #35f;
   }
 }
