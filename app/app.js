@@ -136,18 +136,24 @@ if ($('.image-carousel')) {
       $(carousel, '.image-carousel-pagination-current').textContent = pic + 1;
     };
 
-    const prevBtn = $(carousel, '.image-carousel-prev'),
-          nextBtn = $(carousel, '.image-carousel-next');
+    for (const img of $$(carousel, 'img')) {
+      img.style.width = (carousel.getBoundingClientRect().width - 10) + 'px';
+    }
 
-    prevBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      loadPic((currentPic - 1 + pictures.length) % pictures.length);
-    });
+    if ($(carousel, '.image-carousel-controls')) {
+      const prevBtn = $(carousel, '.image-carousel-prev'),
+            nextBtn = $(carousel, '.image-carousel-next');
 
-    nextBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      loadPic((currentPic + 1) % pictures.length);
-    });
+      prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        loadPic((currentPic - 1 + pictures.length) % pictures.length);
+      });
+
+      nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        loadPic((currentPic + 1) % pictures.length);
+      });
+    }
 
     loadPic(currentPic);
   }

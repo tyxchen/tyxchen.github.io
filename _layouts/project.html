@@ -6,21 +6,6 @@ layout: default
   <h1 id="title">{{ page.title }}</h1>
 </header>
 <div>
-  <div class="image-carousel" data-start="{{ page.images[0] }}">
-    <div class="image-carousel-container">
-      {% for img in page.images %}
-        {% assign base_img_url = "/assets/images" | append: page.id  | append: "/" | append: img %}
-      <picture data-id="{{ img }}">
-        <source srcset="{{ base_img_url }}.png 1x, {{ base_img_url }}-2x.png 2x">
-        <img src="{{ base_img_url }}.png">
-      </picture>
-      {% endfor %}
-    </div>
-    <div class="image-carousel-controls">
-      <a class="image-carousel-prev" href="#">{% include icons/arrow-left.svg %} <span class="lt-mobile">Previous</span></a>
-      <span class="image-carousel-pagination"><span class="image-carousel-pagination-current">1</span> / {{ page.images | size }}</span>
-      <a class="image-carousel-next" href="#"><span class="lt-mobile">Next {% include icons/arrow-right.svg %}</span></a>
-    </div>
-  </div>
+  {% include img-carousel.html images=page.images images_subpath=page.id %}
   {{ content }}
 </div>
