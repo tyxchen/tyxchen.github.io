@@ -132,11 +132,16 @@ if ($('.image-carousel')) {
       currentPic = pic
       carousel.dataset.start = pictures[pic];
 
+      $(carousel, '.image-carousel-current').classList.remove('image-carousel-current');
+      $(carousel, `[data-id="${pictures[pic]}"]`).classList.add('image-carousel-current');
+
       $(carousel, '.image-carousel-container').style.transform = `translateX(-${pic * carousel.getBoundingClientRect().width}px)`;
       $(carousel, '.image-carousel-pagination-current').textContent = pic + 1;
+
+      $(carousel, '.image-carousel-lightbox img').src = $(carousel, `.image-carousel-current img`).src;
     };
 
-    for (const img of $$(carousel, 'img')) {
+    for (const img of $$(carousel, 'picture img')) {
       img.style.width = (carousel.getBoundingClientRect().width - 10) + 'px';
     }
 
@@ -154,6 +159,14 @@ if ($('.image-carousel')) {
         loadPic((currentPic + 1) % pictures.length);
       });
     }
+
+    $(carousel, '.image-carousel-container').addEventListener('click', () => {
+      $('.image-carousel-lightbox').classList.remove('hidden')
+    });
+
+    $(carousel, '.image-carousel-lightbox').addEventListener('click', () => {
+      $('.image-carousel-lightbox').classList.add('hidden')
+    });
 
     loadPic(currentPic);
   }

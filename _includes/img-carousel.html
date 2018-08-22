@@ -2,12 +2,13 @@
   <div class="image-carousel-container">
     {% for img in include.images %}
       {% assign base_img_url = "/assets/images" | append: include.images_subpath  | append: "/" | append: img %}
-    <picture data-id="{{ img }}">
+    <picture data-id="{{ img }}" class="{% if img == include.images[0] %}image-carousel-current{% endif %}">
       <source srcset="{{ base_img_url }}.png 1x, {{ base_img_url }}-2x.png 2x">
-      <img src="{{ base_img_url }}.png">
+      <img src="{{ base_img_url }}-orig.png">
     </picture>
     {% endfor %}
   </div>
+  <div class="image-carousel-lightbox hidden"><img></div>
   {% if include.images.size > 1 %}
   <div class="image-carousel-controls">
     <a class="image-carousel-prev text-left" href="#">{% include icons/arrow-left.svg %} <span class="lt-mobile">Previous</span></a>

@@ -311,14 +311,51 @@
   padding: 5px;
   overflow: hidden;
 
-  img {
+  picture img {
     margin-right: 10px;
+    cursor: zoom-in;
   }
 
   &-container {
     display: flex;
     transform: translateX(0);
     transition: transform var(--tn-fcn);
+  }
+
+  &-lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 1;
+    z-index: 10;
+    cursor: zoom-out;
+    transition: opacity var(--tn-fcn);
+  }
+
+  &-lightbox::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #222;
+    opacity: .9;
+  }
+
+  &-lightbox.hidden {
+    display: block !important;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &-lightbox img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    max-width: calc(100vw - 2em);
+    max-height: calc(100vh - 2em);
+    transform: translateX(-50%) translateY(-50%);
   }
 
   &-controls {

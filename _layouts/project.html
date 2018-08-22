@@ -4,6 +4,8 @@ layout: default
 
 <header id="header">
   <h1 id="title">{{ page.title }}</h1>
+  <h4><a href="{{ page.link }}">{{ page.link }} {% include icons/external-link-alt.svg %}</a></h4>
+  <style>#header{--link-color:{{ page.color }};}</style>
 </header>
 <div>
   {% include img-carousel.html images=page.images images_subpath=page.id %}

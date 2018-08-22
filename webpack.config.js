@@ -12,6 +12,7 @@ module.exports = {
     module: {
         rules: [{
             test: /\.css$/,
+            include: [ resolve(__dirname, 'app') ],
             use: [
                 MiniCssExtractPlugin.loader,
                 'css-loader',
@@ -33,5 +34,10 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: '[name].css'
         })
-    ]
+    ],
+    resolve: {
+        modules: [
+            resolve(__dirname, 'app')
+        ]
+    }
 }
