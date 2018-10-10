@@ -1,13 +1,22 @@
 <a id="top"></a>
-<header id="site-header">
-  <dl>
-    <dt id="site-header__about" data-clr="Or"><a href="/about">About</a></dt>
-    <dt id="site-header__portfolio" data-clr="Rd"><a href="/portfolio">Portfolio</a></dt>
-    <dt id="site-header__home" data-clr="Pu"><a href="/">Terry Chen</a></dt>
-    <dt id="site-header__blog" data-clr="Bu"><a href="/archive">Blog</a></dt>
-    <dt id="site-header__contact" data-clr="Gn"><a href="/contact">Contact</a></dt>
+<header class="site-header">
+  <dl class="site-header__wrapper">
+    <dt class="site-header__home site-header__highlight"><a id="header-home" class="trianglify" href="/" data-cell-size="8"><span class="text-wrap">TC</span></a></dt>
+    <dt class="site-header__about"><a href="/about">About</a></dt>
+    <dt class="site-header__portfolio"><a href="/portfolio">Portfolio</a></dt>
+    <dt class="site-header__resume"><a href="/">Resume</a></dt>
+    <dt class="site-header__blog"><a href="/archive">Blog</a></dt>
+    <dt class="site-header__contact"><a href="/contact">Contact</a></dt>
+    <dt class="site-header__menu-toggler site-header__highlight"><a class="menu-button" href="#"><span class="menu-blip menu-blip__1"><span></span></span><span class="menu-blip menu-blip__2"><span></span></span><span class="menu-blip menu-blip__3"><span></span></span><span class="menu-blip menu-blip__4"><span></span></span></a></dt>
   </dl>
-  <div id="site-header__bar-wrapper">
-    <a href="#top" onclick="event.preventDefault();window.scroll(window.scrollX, 0);" style="display:block;height:2rem;"><canvas id="site-header__bar" height="6"></canvas></a>
+  <div class="site-header__menu-background"></div>
+  <div class="site-header__menu">
+    <dl class="site-header__menu-wrapper">
+      <dt class="site-header__about"><a href="/about">About</a></dt>
+      <dt class="site-header__portfolio"><a href="/portfolio">Portfolio</a></dt>
+      <dt class="site-header__resume"><a href="/">Resume</a></dt>
+      <dt class="site-header__blog"><a href="/archive">Blog</a></dt>
+      <dt class="site-header__contact"><a href="/contact">Contact</a></dt>
+    </dl>
   </div>
 </header>

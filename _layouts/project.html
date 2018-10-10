@@ -4,10 +4,19 @@ layout: default
 
 <header id="header">
   <h1 id="title">{{ page.title }}</h1>
-  <h4><a href="{{ page.link }}">{{ page.link }} {% include icons/external-link-alt.svg %}</a></h4>
-  <style>#header{--link-color:{{ page.color }};}</style>
+  <style>.info-summary{--link-color:{{ page.color }};}</style>
 </header>
 <div>
   {% include img-carousel.html images=page.images images_subpath=page.id %}
+
+  <div class="info-summary">
+    {% if page.link %}<h4><a href="{{ page.link }}" target="_blank">{{ page.link }} {% include icons/external-link-alt.svg %}</a></h4> {% endif %}
+    <table class="responsive-table">
+    {% for thing in page.summary %}
+    <tr><th nowrap>{{ thing[0] | replace: '-', ' ' | capitalize }}:</th> <td>{{ thing[1] | markdownify | remove: '<p>' | remove: '</p>' }}<td></tr>
+    {% endfor %}
+    </table>
+  </div>
+
   {{ content }}
 </div>

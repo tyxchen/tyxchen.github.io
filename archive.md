@@ -1,5 +1,5 @@
 ---
-title: Blog
+title: Blog archive
 subtitle: >
   Random rambunctious ramblings.
 layout: page

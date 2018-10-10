@@ -1,12 +1,16 @@
 ---
 layout: project
 title: The Markville CSEC Website
-link: https://mss-csec.github.io
 color: '#f52f2f'
 images:
   - home
   - lesson
   - quiz
+link: https://mss-csec.github.io
+summary:
+  task: Design, build, and release a website to host lessons and resources for a high school computer science club.
+  skills-used: JS, CSS3, Jekyll, Ruby, CircleCI
+  source: <https://github.com/mss-csec/mss-csec.github.io>
 ---
 
 Markville Secondary School's Computer Science Education Club (CSEC) is a student-run club for students interesting in competitive programming, and computer science in general. 

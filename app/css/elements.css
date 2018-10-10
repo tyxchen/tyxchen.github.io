@@ -48,6 +48,11 @@ a {
   }
 }
 
+img.block {
+  display: block;
+  max-width: 100%;
+}
+
 .icon {
   stroke: currentColor;
   fill: currentColor;

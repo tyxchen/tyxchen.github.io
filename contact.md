@@ -1,7 +1,5 @@
 ---
-title: Contact
-subtitle: >
-  We can be friends.
+title: Contact me
 layout: page
 permalink: /contact
 clr: Gn

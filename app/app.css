@@ -9,30 +9,55 @@
 
 @import "css/trianglify.css";
 
-#site-header {
-  position: sticky;
-  top: -5.2rem;
+.menu-open {
+  overflow: hidden;
+
+  .site-header__home rect {
+    --bg-color: var(--color-bg3);
+  }
+}
+
+.site-header {
+  display: flex;
+  flex-direction: row;
   height: 3rem;
   font-size: 1.6em;
   z-index: 10;
 
-  dl {
+  &__wrapper {
     display: flex;
+    width: 100%;
     flex-flow: row wrap;
     justify-content: space-between;
+
+    dt {
+      display: none;
+    }
+
+    .site-header__highlight {
+      display: block;
+    }
+  }
+
+  a {
+    display: block;
+    height: 100%;
+    color: currentColor;
   }
 
   &__about,
   &__portfolio,
-  &__home,
+  &__resume,
   &__blog,
   &__contact {
-    display: none;
     font-weight: 700;
+  }
 
-    a {
-      color: currentColor;
-    }
+  &__home {
+    font-weight: 900;
+    font-size: 1.5em;
+    margin-top: -0.1em;
+    z-index: 1;
   }
 
   &__about {
@@ -43,7 +68,7 @@
     color: var(--portfolio-color);
   }
 
-  &__home {
+  &__resume {
     color: var(--home-color);
   }
 
@@ -55,64 +80,162 @@
     color: var(--contact-color);
   }
 
-  dl:hover dt a {
+  &__wrapper:hover dt a {
     opacity: .7;
   }
-  dl dt a:hover {
+
+  &__wrapper:hover &__highlight a,
+  &__wrapper dt a:hover {
     opacity: 1;
-  }
-
-  &__bar-wrapper {
-    width: 100%;
-    /*background-image: linear-gradient(to right, #d8580d 0, #ef3b2c 30%, #62439d 50%, #4292c6 73%, #2b964c 100%);*/
-    margin-top: -1rem;
-    overflow: hidden;
-  }
-
-  &__bar {
-    display: block;
-  }
-
-  &__home {
-    display: block;
-    width: 100%;
-    font-weight: 900;
-    text-align: center;
-    margin-top: -1rem;
-
-    a {
-      padding: .5rem;
-    }
   }
 
   @media (--gt-than-tablet) {
     top: -4.7rem;
 
-    dt {
+    &__wrapper dt {
       display: block;
     }
 
-    &__home {
-      width: auto;
-      font-size: 1em;
-      margin: 0 20px;
+    &__wrapper &__menu-toggler {
+      display: none;
+    }
 
-      a {
-        padding: 0;
-      }
+    &__menu {
+      display: none;
     }
-    dl:hover &__home a:not(:hover) {
-      opacity: .9;
+  }
+}
+
+.site-header__menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease;
+
+  &-toggler {
+    position: relative;
+    width: 2rem;
+    height: 2rem;
+    z-index: 1;
+  }
+
+  &-background {
+    position: absolute;
+    top: 2.475rem;
+    right: 8.4vw;
+    width: 5px;
+    height: 5px;
+    background-color: var(--color-bg3);
+    border-radius: 100%;
+    transform: scale(0);
+    transition: transform .3s ease;
+  }
+
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 90%;
+    height: calc(100vh - 10rem);
+    text-align: center;
+    margin: 5rem auto;
+  }
+
+  .menu-open & {
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+.menu-blip {
+  position: absolute;
+  width: .3rem;
+  height: .3rem;
+  transition: transform var(--tn-fcn);
+
+  span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--title-color);
+    transform-origin: 0 50%;
+    transition: transform var(--tn-fcn);
+  }
+
+  &__1 {
+    top: .4rem;
+    left: .6rem;
+    transform: translate(.35rem, -.1rem);
+
+    span {
+      transform: rotate(45deg);
     }
+  }
+
+  &__2 {
+    bottom: .4rem;
+    left: .6rem;
+    transform: translate(-.1rem, -.35rem);
+    
+    span {
+      transform: rotate(-45deg);
+    }
+  }
+
+  &__3 {
+    bottom: .4rem;
+    right: .2rem;
+    transform: translate(-.35rem, .1rem);
+
+    span {
+      transform: rotate(-135deg);
+    }
+  }
+
+  &__4 {
+    top: .4rem;
+    right: .2rem;
+    transform: translate(.1rem, .35rem);
+
+    span {
+      transform: rotate(135deg);
+    }
+  }
+}
+
+.menu-button:hover .menu-blip {
+  transform: translate(0, 0);
+}
+
+.menu-open .menu-blip {
+  &__1 span {
+    transform: rotate(45deg) scaleX(2.5);
+  }
+
+  &__2 span {
+    transform: rotate(-45deg) scaleX(2.5);
+  }
+
+  &__3 span {
+    transform: rotate(-135deg) scaleX(2.5);
+  }
+
+  &__4 span {
+    transform: rotate(135deg) scaleX(2.5);
   }
 }
 
 #header {
   line-height: 1.2;
-  margin-top: 1.5rem;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
 
   @media (--gt-than-tablet) {
-    margin-top: 5rem;
+    margin-top: 4rem;
     margin-bottom: 3rem;
   }
 }
@@ -165,7 +288,7 @@
     transition: height var(--tn-fcn);
   }
 
-  &.loaded:not(:hover) {
+  &.loaded:not(:hover):not(:target) {
     height: 10.1em !important;
   }
 
@@ -233,14 +356,13 @@
 
   &-footer {
     display: flex;
-  }
-
-  &-skills {
-    flex: 1;
+    flex-flow: row wrap;
+    justify-content: flex-end;
   }
 
   .btn {
     padding: .3em 1em;
+    margin-top: .3em;
     opacity: .9;
     transition: opacity var(--tn-fcn);
   }
@@ -264,36 +386,42 @@
   }
 
   .btn:hover .icon-external-link-alt {
-    transform: translate(.2em, -.2em);
+    transform: translate(.1em, -.1em);
   }
 
   .btn:hover .icon-arrow-right {
-    transform: translate(.2em, 0);
+    transform: translate(.14em, 0);
   }
 
-  &:hover img {
+  &:hover img,
+  &:target img {
     opacity: .4;
     transform: scale(1.02);
   }
 
-  &:hover &-bg {
+  &:hover &-bg,
+  &:target &-bg {
     opacity: .6;
   }
 
-  &:hover &-content {
+  &:hover &-content,
+  &:target &-content {
     transform: translateY(0);
   }
 
-  &:hover &-content > * {
+  &:hover &-content > *,
+  &:target &-content > * {
     opacity: 1;
   }
 
-  &:hover &-heading {
+  &:hover &-heading,
+  &:target &-heading {
     background-color: transparent;
     transform: translateX(-5px);
   }
 
-  &:hover &-heading::before {
+  &:hover &-heading::before,
+  &:target &-heading::before {
     opacity: 0;
   }
 
@@ -387,5 +515,45 @@
     &-pagination {
       order: 0;
     }
+  }
+}
+
+.responsive-table {
+  th, td {
+    display: block;
+  }
+
+  th:first-child + td {
+    margin-left: 1em;
+  }
+
+  @media (--gt-than-tablet) {
+    th, td {
+      display: table-cell;
+    }
+  }
+}
+
+.info-summary {
+  padding: 1em;
+  border: 5px solid var(--link-color);
+  margin: 2em 0 1.5em;
+
+  h4 {
+    padding-bottom: .5em;
+    border-bottom: 1px solid var(--color-fg3);
+    margin: 0;
+    margin-bottom: .5em;
+  }
+
+  th {
+    text-align: left;
+    vertical-align: top;
+    padding-right: .5em;
+  }
+
+  @media (--gt-than-tablet) {
+    margin-left: 1em;
+    margin-right: 1em;
   }
 }

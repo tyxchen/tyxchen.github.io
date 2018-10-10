@@ -8,7 +8,6 @@
     <h2 class="showcase-heading">{{ include.title }}</h2>
     <p class="showcase-summary">{{ include.summary | markdownify }}</p>
     <p class="showcase-footer">
-      <span class="showcase-skills">{{ include.skills }}</span>
       {% if include.link %}<a class="btn pill small" href="{{ include.link }}" target="_blank">Visit {% include icons/external-link-alt.svg %}</a>{% endif %}
       <a class="btn pill small inverted" href="/projects/{{ include.id }}">Learn more {% include icons/arrow-right.svg %}</a></p>
   </div>

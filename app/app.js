@@ -18,6 +18,8 @@ import {
   generate_triangles
 } from './js/generators.js';
 
+import Resizer from './js/resizer.js';
+
 import './js/trianglify.js';
 
 // general import for css
@@ -56,6 +58,20 @@ if (localStorage.getItem('theme') === 'dark') {
   $('#toggle-theme').textContent = 'Switch to light mode';
 }
 
+if ($('.site-header__menu-toggler')) {
+  $('.site-header__menu-toggler').addEventListener('click', (e) => {
+    e.preventDefault();
+
+    $('.site-header__menu-background').style.transform = $('body').classList.contains('menu-open') ?
+      'scale(0)' :
+      `scale(${
+        2 * Math.sqrt(window.innerHeight * window.innerHeight + window.innerWidth * window.innerWidth) / 5
+      })`;
+
+    $('body').classList.toggle('menu-open');
+  });
+}
+
 // Page-specific
 
 // Portfolio showcases
@@ -63,8 +79,8 @@ if ($('.showcase')) {
   for (const [i, el] of $$('.showcase').entries()) {
     const clrs = allColors[el.dataset.clr || 'random'] || [el.dataset.clr],
           bgClr = clrs.length > 1 ? chooseRandomFromArray(clrs) : clrs[0],
-          fgClr = luminance(hexToRGB(bgClr)) > 0.5 ? '#222' : '#fff',
-          dims = el.getBoundingClientRect();
+          fgClr = luminance(hexToRGB(bgClr)) > 0.5 ? '#222' : '#fff';
+    let dims = el.getBoundingClientRect();
 
     async function drawBg() {
       const canvas = $(el, '.showcase-canvas'),
@@ -102,6 +118,35 @@ if ($('.showcase')) {
     el.classList.add('loaded');
 
     drawBg();
+
+    if (location.hash.slice(1) === el.id) {
+      const listener = () => {
+        location.hash = 'null';
+        history.replaceState({}, '', location.pathname);
+        document.removeEventListener('click', listener);
+      };
+      document.addEventListener('click', listener);
+    }
+
+    Resizer.addListener(() => {
+      const wasHidden = $('.showcase-more').classList.contains('hidden');
+
+      if (wasHidden) {
+        $('.showcase-more').classList.remove('hidden');
+      }
+      el.style.height = 'auto';
+      el.classList.remove('loaded');
+
+      dims = el.getBoundingClientRect();
+
+      el.classList.add('loaded');
+      el.style.height = dims.height + 'px';
+      if (wasHidden) {
+        $('.showcase-more').classList.add('hidden');
+      }
+
+      drawBg();
+    });
   }
 
   $('.showcase-show-more').addEventListener('click', (e) => {
@@ -169,5 +214,14 @@ if ($('.image-carousel')) {
     });
 
     loadPic(currentPic);
+
+    Resizer.addListener(() => {
+      for (const img of $$(carousel, 'picture img')) {
+        img.style.width = (carousel.getBoundingClientRect().width - 10) + 'px';
+      }
+      loadPic(currentPic);
+    })
   }
 }
+
+Resizer.run();

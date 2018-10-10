@@ -17,6 +17,8 @@ import {
 } from './utils.js';
 import { generate_triangles } from './generators.js';
 
+import Resizer from './resizer.js';
+
 const trianglify = window.trianglify = (el, colorSet, animate = false, cell_size = 32) => {
   // wrap text to constraints of el
   // returns a SVG string
@@ -198,78 +200,9 @@ const trianglify = window.trianglify = (el, colorSet, animate = false, cell_size
   };
 }
 
-const trianglifyHeaderBar = () => {
-  const siteHeader_Bar = $('#site-header__bar'),
-        ctx = siteHeader_Bar.getContext('2d');
-
-  let polys;
-
-  const init = () => {
-    const barWidth = $('#site-header').getBoundingClientRect().width,
-          barColors = [
-            baseColors.Or[1],
-            baseColors.Rd[1],
-            baseColors.Pu[1],
-            baseColors.Bu[1],
-            baseColors.Gn[1]
-          ].map(hexToRGB);
-
-    siteHeader_Bar.width = barWidth
-
-    polys = generate_triangles({
-      width: barWidth,
-      height: siteHeader_Bar.height,
-      cell_size: 15,
-      color_fcn: ([x]) => RGBToHex(
-        randBrightness(interpolate(barColors, 0.015, x / barWidth), 50)
-      ),
-      variance: 1
-    });
-
-    resetBarColors();
-
-    ctx.lineWidth = 1.51;
-  };
-
-  const changeBarColors = (set) => {
-    for (const [, poly] of polys) {
-      ctx.fillStyle = ctx.strokeStyle = chooseRandomFromArray(set);
-      ctx.globalAlpha = Math.random() * 0.2 + 0.8;
-      ctx.beginPath();
-      ctx.moveTo(...poly[0]);
-      ctx.lineTo(...poly[1]);
-      ctx.lineTo(...poly[2]);
-      ctx.fill();
-      ctx.stroke();
-    }
-    ctx.globalAlpha = 1;
-  };
-
-  const resetBarColors = () => {
-    for (const [clr, poly] of polys) {
-      ctx.fillStyle = ctx.strokeStyle = clr;
-      ctx.beginPath();
-      ctx.moveTo(...poly[0]);
-      ctx.lineTo(...poly[1]);
-      ctx.lineTo(...poly[2]);
-      ctx.fill();
-      ctx.stroke();
-    }
-  };
-
-  init();
-
-  return {
-    init,
-    changeBarColors,
-    resetBarColors
-  }
-};
-
 let chosenTitleClr,
     titleCanvas,
-    changeTitleColorSet,
-    initHeaderBarTrianglify;
+    changeTitleColorSet = () => {};
 
 window.addEventListener('load', () => {
   if ($('#title.trianglify')) {
@@ -316,55 +249,30 @@ window.addEventListener('load', () => {
   }
 
   for (const t of $$('.trianglify')) {
-    trianglify(t, colors[t.dataset.clr || chooseRandomFromArray(Object.keys(choosableColors))]);
+    trianglify(t, colors[t.dataset.clr || chooseRandomFromArray(Object.keys(choosableColors))], 
+      t.dataset.hasOwnProperty('animate'), parseInt(t.dataset.cellSize) || undefined);
     t.classList.remove('trianglify');
-  }
-
-  // trianglify bar
-  if ($('#site-header__bar')) {
-    const { init, changeBarColors, resetBarColors } = trianglifyHeaderBar();
-    for (const l of $$('#site-header dt a')) {
-      l.addEventListener('mouseover', () => {
-        changeBarColors(colors[l.parentNode.dataset.clr].slice(0,3));
-      });
-      l.addEventListener('mouseout', () => {
-        resetBarColors();
-      });
-    }
-
-    initHeaderBarTrianglify = init;
   }
 });
 
-let resizeTimeout, lastWindowWidth = window.innerWidth;
+Resizer.addListener(() => {
+  if ($('#title.trianglify-rendered')) {
+    let title = $('#title.trianglify-rendered'),
+        childNodes = Array.prototype.slice.call(title.childNodes);
 
-window.addEventListener('resize', () => {
-  if (window.innerWidth === lastWindowWidth) return;
-
-  clearTimeout(resizeTimeout);
-  resizeTimeout = setTimeout(() => {
-    if ($('#title.trianglify')) {
-      let title = $('#title.trianglify'),
-          childNodes = Array.prototype.slice.call(title.childNodes);
-
-      for (const n of childNodes) {
-        if (n.className === 'trianglify-text' || n.className === 'trianglify-canvas') {
-          title.removeChild(n);
-        } else if (n.className === 'trianglify-ghost-text') {
-          n.className = 'text-wrap';
-        }
+    for (const n of childNodes) {
+      if (n.className === 'trianglify-text' || n.className === 'trianglify-canvas') {
+        title.removeChild(n);
+      } else if (n.className === 'trianglify-ghost-text') {
+        n.className = 'text-wrap';
       }
-
-      title.setAttribute('style', '');
-
-      const { canvas, changeColorSet } = trianglify(title, colors[chosenTitleClr], true);
-
-      titleCanvas = canvas;
-      changeTitleColorSet = changeColorSet;
     }
 
-    // resize site header bar; put last so errors don't affect anything else
-    initHeaderBarTrianglify();
-  }, Math.abs(window.innerWidth - lastWindowWidth) > 100 ? 0 : 100);
-  lastWindowWidth = window.innerWidth;
+    title.setAttribute('style', '');
+
+    const { canvas, changeColorSet } = trianglify(title, colors[chosenTitleClr], true);
+
+    titleCanvas = canvas;
+    changeTitleColorSet = changeColorSet;
+  }
 });
