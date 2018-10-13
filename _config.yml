@@ -17,13 +17,14 @@ include:
   - assets/
 exclude:
   - app/
-  - assets/static
   - Gemfile
   - Gemfile.lock
   - Gulpfile.js
   - node_modules/
   - package.json
   - package.json.lock
+  - postcss.config.js
+  - webpack.config.js
   - README.md
 
 collections:

@@ -3,17 +3,16 @@
     {% for img in include.images %}
       {% assign base_img_url = "/assets/images" | append: include.images_subpath  | append: "/" | append: img %}
     <picture data-id="{{ img }}" class="{% if img == include.images[0] %}image-carousel-current{% endif %}">
-      <source srcset="{{ base_img_url }}.png 1x, {{ base_img_url }}-2x.png 2x">
+<!--       <source srcset="{{ base_img_url }}.png 1x, {{ base_img_url }}-2x.png 2x"> -->
+      <source srcset="{{ base_img_url }}-orig.png">
       <img src="{{ base_img_url }}-orig.png">
     </picture>
     {% endfor %}
   </div>
   <div class="image-carousel-lightbox hidden"><img></div>
-  {% if include.images.size > 1 %}
   <div class="image-carousel-controls">
     <a class="image-carousel-prev text-left" href="#">{% include icons/arrow-left.svg %} <span class="lt-mobile">Previous</span></a>
     <span class="image-carousel-pagination text-center"><span class="image-carousel-pagination-current">1</span> / {{ include.images | size }}</span>
     <a class="image-carousel-next text-right" href="#"><span class="lt-mobile">Next {% include icons/arrow-right.svg %}</span></a>
   </div>
-  {% endif %}
 </div>

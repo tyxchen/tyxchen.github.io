@@ -16,11 +16,7 @@ summary:
 Markville Secondary School's Computer Science Education Club (CSEC) is a student-run club for students interesting in competitive programming, and computer science in general. 
 Our main focus is preparing students for programming competitions through lessons provided by our two subclubs: Beginners', which aims to prepare students for the Junior Canadian Computing Competition (CCC); and Advanced, which aims to prepare students for the Senior CCC.
 
-As useful as Google Drive was, it suffered from several key drawbacks:
-
-- A lack of math equation support
-- Properly formatting code was extremely tedious
-- Principle of least priviledges was nonexistent --- all execs could edit any file, including those that were not their own
+As useful as Google Drive was, it suffered from two key drawbacks: it had extremely clumsy math equation support, and proper formatting and highlighting of code was very tedious. 
 
 These limitations pushed us to explore building a website to use as a new publishing platform.
 As the only exec with web development experience, the responsibility for planning, designing, building, and maintaining this website fell on my shoulders.

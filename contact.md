@@ -1,5 +1,5 @@
 ---
-title: Contact me
+title: Contact
 layout: page
 permalink: /contact
 clr: Gn
@@ -13,7 +13,3 @@ add_scripts: >
 <h2 id="view-email"><a href="mailto:{email}">{email}</a></h2>
 
 ## <a href="https://github.com/tyxchen"><span class="faded">github.com/</span>tyxchen</a>
-
-<!-- in the future, put medium, linkedin, resume, etc. -->
-
-## <a href="http://wcipeg.com/user/tyxchen"><span class="faded">wcipeg.com/user/</span>tyxchen</a>

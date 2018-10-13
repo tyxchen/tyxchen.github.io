@@ -56,8 +56,13 @@
   &__home {
     font-weight: 900;
     font-size: 1.5em;
+    line-height: 1;
     margin-top: -0.1em;
     z-index: 1;
+
+    rect {
+      transition: fill var(--tn-fcn);
+    }
   }
 
   &__about {
@@ -331,6 +336,11 @@
     transition: opacity var(--tn-fcn);
   }
 
+  &-content a {
+    color: currentColor;
+    text-decoration: underline;
+  }
+
   &-heading {
     position: relative;
     display: inline-block;
@@ -354,15 +364,17 @@
     transition: opacity var(--tn-fcn);
   }
 
-  &-footer {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-end;
+  @media (--gt-than-tablet) {
+    &-footer {
+      text-align: right;
+    }
   }
 
   .btn {
+    text-decoration: none;
     padding: .3em 1em;
-    margin-top: .3em;
+    margin-right: 1em;
+    margin-bottom: .3em;
     opacity: .9;
     transition: opacity var(--tn-fcn);
   }
@@ -371,7 +383,7 @@
     color: var(--bg-color);
     background-color: var(--fg-color);
     border-color: var(--fg-color);
-    margin-left: 1em;
+    margin-right: 0;
   }
 
   .btn .icon {
