@@ -25,9 +25,6 @@ import './js/trianglify.js';
 // general import for css
 import './app.css';
 
-// Basic router functionality
-
-//document.
 {
   let title = $('#title:not(.trianglify)');
   if (title) {

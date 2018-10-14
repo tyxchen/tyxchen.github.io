@@ -93,31 +93,47 @@ const trianglify = window.trianglify = (el, colorSet, animate = false, cell_size
 <span class="trianglify-ghost-text">${text}</span>`;
 
   const changeColorSet = (set) => {
+    let oldChosenColors = chosenColors;
+
     chosenColors = set;
     polys = polys.map((a) => [chooseRandomIndex(chosenColors), a[1]]);
     fading = new Array(polys.length);
 
     for (const [i, [clr, poly]] of polys.entries()) {
-      ctx.fillStyle = ctx.strokeStyle = chosenColors[clr];
-      ctx.beginPath();
-      ctx.moveTo(...poly[0]);
-      ctx.lineTo(...poly[1]);
-      ctx.lineTo(...poly[2]);
-      ctx.fill();
-      ctx.stroke();
-
-      if (animate && Math.random() < 0.1) {
-        const randClr = chooseRandomIndex(chosenColors);
-        fading[i] = [
+      if (animate && oldChosenColors) {
+        setTimeout(() => { fading[i] = [
           0,
           getGradient(
+            oldChosenColors[clr],
             chosenColors[clr],
-            chosenColors[randClr],
-            defaultNumStops
+            16
           ),
           poly
-        ];
-        polys[i][0] = randClr;
+        ]; }, Math.floor(690 * Math.exp(-4 * (Math.random() - 1) ** 2) / Math.PI));
+      } else {
+        ctx.fillStyle = ctx.strokeStyle = chosenColors[clr];
+        ctx.beginPath();
+        ctx.moveTo(...poly[0]);
+        ctx.lineTo(...poly[1]);
+        ctx.lineTo(...poly[2]);
+        ctx.fill();
+        ctx.stroke();
+      }
+
+      if (animate && Math.random() < 0.1) {
+        setTimeout(() => {
+          const randClr = chooseRandomIndex(chosenColors);
+          fading[i] = [
+            0,
+            getGradient(
+              chosenColors[clr],
+              chosenColors[randClr],
+              defaultNumStops
+            ),
+            poly
+          ];
+          polys[i][0] = randClr;
+        }, 500);
       }
     }
   };
@@ -218,10 +234,7 @@ window.addEventListener('load', () => {
     changeTitleColorSet = changeColorSet;
 
     for (const a of $$('#header .subtitle a')) {
-      a.style.color = chosenClr[2];
-      if (a.classList.contains('resume-link')) {
-        a.style.color = chosenClr[3];
-      }
+      a.style.color = chosenClr[2]; 
     }
 
     if (title.dataset.hasOwnProperty('changeable') && title.dataset.changeable !== 'false') {
@@ -234,14 +247,11 @@ window.addEventListener('load', () => {
         chosenTitleClr = chooseRandomFromArray(choosableClrs);
         chosenClr = choosableColors[chosenTitleClr];
 
-        changeTitleColorSet(chosenClr);
-
         for (const a of $$('#header .subtitle a')) {
           a.style.color = chosenClr[2];
-          if (a.classList.contains('resume-link')) {
-            a.style.color = chosenClr[3];
-          }
         }
+
+        changeTitleColorSet(chosenClr);
       };
     }
 

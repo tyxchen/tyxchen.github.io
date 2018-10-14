@@ -29,6 +29,7 @@
 
   > rect {
     fill: var(--bg-color);
+    transition: fill var(--tn-fcn);
   }
 
   mask rect,
