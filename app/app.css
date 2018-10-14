@@ -59,10 +59,6 @@
     line-height: 1;
     margin-top: -0.1em;
     z-index: 1;
-
-    rect {
-      transition: fill var(--tn-fcn);
-    }
   }
 
   &__about {
@@ -251,6 +247,7 @@
   font-weight: 900;
   line-height: 1;
   margin: 0;
+  transition: color var(--tn-fcn);
 
   @media (min-width: 768px) {
     font-size: 5rem;
