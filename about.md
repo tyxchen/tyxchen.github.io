@@ -9,7 +9,7 @@ clr: Or
 
 <picture>
   <source srcset="/assets/images/profile.jpg 1x">
-  <img class="block hor-center" src="/assets/images/profile.jpg" style="width:100%">
+  <img class="block hor-center" src="/assets/images/profile.jpg" style="width:100%" alt="Terry's profile photo">
   <figcaption class="text-right">Credit: <a href="https://www.instagram.com/p/BTz7oN3A31z/" rel="noopener noreferrer" target="_blank">@humansofmarkville</a></figcaption>
 </picture>
 

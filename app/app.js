@@ -71,15 +71,15 @@ if ($('.site-header__menu-toggler')) {
     if (bodyClsList.contains('menu-open')) {
       // close the menu
       bodyClsList.remove('menu-open');
+      $('html').classList.remove('menu-open');
       menu.setAttribute('aria-hidden', true);
-      console.log($$(menu, 'a'));
       $$(menu, 'a').forEach((a) => a.setAttribute('tabindex', '-1'));
       this.setAttribute('aria-label', 'Open menu');
     } else {
       // open the menu
       bodyClsList.add('menu-open');
+      $('html').classList.add('menu-open');
       menu.removeAttribute('aria-hidden');
-      console.log($$(menu, 'a'));
       $$(menu, 'a').forEach((a) => a.removeAttribute('tabindex'));
       this.setAttribute('aria-label', 'Close menu');
     }

@@ -29,8 +29,9 @@
     width: 100%;
     flex-flow: row wrap;
     justify-content: space-between;
+    padding-left: 0;
 
-    dt {
+    li {
       display: none;
     }
 
@@ -81,19 +82,19 @@
     color: var(--contact-color);
   }
 
-  &__wrapper:hover dt a {
+  &__wrapper:hover li a {
     opacity: .7;
   }
 
   &__wrapper:hover &__highlight a,
-  &__wrapper dt a:hover {
+  &__wrapper li a:hover {
     opacity: 1;
   }
 
   @media (--gt-than-tablet) {
     top: -4.7rem;
 
-    &__wrapper dt {
+    &__wrapper li {
       display: block;
     }
 
@@ -143,7 +144,12 @@
     width: 90%;
     height: calc(100vh - 10rem);
     text-align: center;
+    padding-left: 0;
     margin: 5rem auto;
+
+    li {
+      display: block;
+    }
   }
 
   .menu-open & {
