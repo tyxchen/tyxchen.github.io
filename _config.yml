@@ -1,5 +1,5 @@
 title: Terry Chen
-description: "@tyxchen"
+description: "Computer science student, language aficionado. I also do web dev and solve problems. Learning is a lifelong effort; don't ever stop."
 
 baseurl: ""
 url: "https://tyxchen.github.io"
@@ -18,6 +18,10 @@ permalink: /blog/:year/:month/:title
 kramdown:
   input: GFM
   hard_wrap: false
+
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
 
 include:
   - assets/
