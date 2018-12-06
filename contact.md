@@ -13,3 +13,5 @@ add_scripts: >
 <h2 id="view-email"><a href="mailto:{email}">{email}</a></h2>
 
 ## <a href="https://github.com/tyxchen"><span class="faded">github.com/</span>tyxchen</a>
+
+## <a href="https://www.linkedin.com/in/tyxchen"><span class="faded">linkedin.com/in/</span>tyxchen</a>

@@ -10,7 +10,7 @@ layout: default
   {% include img-carousel.html images=page.images images_subpath=page.id %}
 
   <div class="info-summary">
-    {% if page.link %}<h4><a href="{{ page.link }}" target="_blank">{{ page.link }} {% include icons/external-link-alt.svg %}</a></h4> {% endif %}
+    {% if page.link %}<h4><a href="{{ page.link }}" rel="noopener noreferrer" target="_blank">{{ page.link }} {% include icons/external-link-alt.svg %}</a></h4> {% endif %}
     <table class="responsive-table">
     {% for thing in page.summary %}
     <tr><th nowrap>{{ thing[0] | replace: '-', ' ' | capitalize }}:</th> <td>{{ thing[1] | markdownify | remove: '<p>' | remove: '</p>' }}<td></tr>

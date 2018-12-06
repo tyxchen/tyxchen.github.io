@@ -10,7 +10,7 @@ clr: Or
 <picture>
   <source srcset="/assets/images/profile.jpg 1x">
   <img class="block hor-center" src="/assets/images/profile.jpg" style="width:100%">
-  <figcaption class="text-right">Credit: <a href="https://www.instagram.com/p/BTz7oN3A31z/" target="_blank">@humansofmarkville</a></figcaption>
+  <figcaption class="text-right">Credit: <a href="https://www.instagram.com/p/BTz7oN3A31z/" rel="noopener noreferrer" target="_blank">@humansofmarkville</a></figcaption>
 </picture>
 
 Hi there! My name is Terry Chen, and I am studying Computer Science at the University of Waterloo, class of 2022.
