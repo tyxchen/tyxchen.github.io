@@ -6,6 +6,8 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizelegibility;
   transition: var(--tn-fcn);
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
 }
 
 body {
