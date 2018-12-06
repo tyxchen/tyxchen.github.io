@@ -238,7 +238,9 @@ window.addEventListener('load', () => {
     }
 
     if (title.dataset.hasOwnProperty('changeable') && title.dataset.changeable !== 'false') {
-      title.onclick = () => {
+      $(title, '.clicky').addEventListener('click', (e) => {
+        e.preventDefault();
+
         const choosableClrs = Object.keys(choosableColors);
         if (~choosableClrs.indexOf(chosenTitleClr)) {
           choosableClrs.splice(choosableClrs.indexOf(chosenTitleClr), 1);
@@ -252,7 +254,7 @@ window.addEventListener('load', () => {
         }
 
         changeTitleColorSet(chosenClr);
-      };
+      });
     }
 
     title.classList.remove('trianglify');
@@ -267,7 +269,7 @@ window.addEventListener('load', () => {
 
 Resizer.addListener(() => {
   if ($('#title.trianglify-rendered')) {
-    let title = $('#title.trianglify-rendered'),
+    let title = $('#title.trianglify-rendered .clicky') || $('#title.trianglify-rendered'),
         childNodes = Array.prototype.slice.call(title.childNodes);
 
     for (const n of childNodes) {
@@ -278,9 +280,9 @@ Resizer.addListener(() => {
       }
     }
 
-    title.setAttribute('style', '');
+    title.parentNode.setAttribute('style', '');
 
-    const { canvas, changeColorSet } = trianglify(title, colors[chosenTitleClr], true);
+    const { canvas, changeColorSet } = trianglify(title.parentNode, colors[chosenTitleClr], true);
 
     titleCanvas = canvas;
     changeTitleColorSet = changeColorSet;

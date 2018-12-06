@@ -2,7 +2,7 @@
   <div class="image-carousel-container">
     {% for img in include.images %}
       {% assign base_img_url = "/assets/images" | append: include.images_subpath  | append: "/" | append: img %}
-    <picture data-id="{{ img }}" class="{% if img == include.images[0] %}image-carousel-current{% endif %}">
+    <picture data-id="{{ img }}" class="{% if img == include.images[0] %}image-carousel-current{% endif %}" aria-hidden="true">
 <!--       <source srcset="{{ base_img_url }}.png 1x, {{ base_img_url }}-2x.png 2x"> -->
       <source srcset="{{ base_img_url }}-orig.png">
       <img src="{{ base_img_url }}-orig.png">

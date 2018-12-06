@@ -56,16 +56,33 @@ if (localStorage.getItem('theme') === 'dark') {
 }
 
 if ($('.site-header__menu-toggler')) {
-  $('.site-header__menu-toggler').addEventListener('click', (e) => {
+  let bodyClsList = $('body').classList,
+      menu = $('.site-header__menu');
+
+  $('.site-header__menu-toggler').addEventListener('click', function(e) {
     e.preventDefault();
 
-    $('.site-header__menu-background').style.transform = $('body').classList.contains('menu-open') ?
+    $('.site-header__menu-background').style.transform = bodyClsList.contains('menu-open') ?
       'scale(0)' :
       `scale(${
         2 * Math.sqrt(window.innerHeight * window.innerHeight + window.innerWidth * window.innerWidth) / 5
       })`;
 
-    $('body').classList.toggle('menu-open');
+    if (bodyClsList.contains('menu-open')) {
+      // close the menu
+      bodyClsList.remove('menu-open');
+      menu.setAttribute('aria-hidden', true);
+      console.log($$(menu, 'a'));
+      $$(menu, 'a').forEach((a) => a.setAttribute('tabindex', '-1'));
+      this.setAttribute('aria-label', 'Open menu');
+    } else {
+      // open the menu
+      bodyClsList.add('menu-open');
+      menu.removeAttribute('aria-hidden');
+      console.log($$(menu, 'a'));
+      $$(menu, 'a').forEach((a) => a.removeAttribute('tabindex'));
+      this.setAttribute('aria-label', 'Close menu');
+    }
   });
 }
 
@@ -174,8 +191,10 @@ if ($('.image-carousel')) {
       currentPic = pic
       carousel.dataset.start = pictures[pic];
 
+      $(carousel, '.image-carousel-current').setAttribute('aria-hidden', true);
       $(carousel, '.image-carousel-current').classList.remove('image-carousel-current');
       $(carousel, `[data-id="${pictures[pic]}"]`).classList.add('image-carousel-current');
+      $(carousel, '.image-carousel-current').removeAttribute('aria-hidden');
 
       $(carousel, '.image-carousel-container').style.transform = `translateX(-${pic * carousel.getBoundingClientRect().width}px)`;
       $(carousel, '.image-carousel-pagination-current').textContent = pic + 1;

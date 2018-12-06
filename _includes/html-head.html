@@ -1,17 +1,24 @@
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE-edge">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self';style-src 'self' 'unsafe-inline' brick.a.ssl.fastly.net cdnjs.cloudflare.com;script-src 'self' 'unsafe-inline' cdn.jsdelivr.net;font-src brick.freetls.fastly.net">
+<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no,user-scalable=no">
+<meta name="referrer" content="no-referrer-when-downgrade">
 
-<title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }} &bull; {{ site.description }}</title>
+<link rel="shortcut icon" href="/favicon.png?v20181206" type="image/png">
 
-<link href="https://brick.a.ssl.fastly.net/Aileron:400,400i,700,900" rel="stylesheet"> 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" rel="stylesheet">
-<link href="/assets/static/main.css" rel="stylesheet">
+<title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
 
-<style>html[data-theme="light"]{background-color:#fff}html[data-theme="dark"]{background-color:#050723}</style>
+{% seo title=false %}
+
+<style>html[data-theme="light"]{background-color:#fff}html[data-theme="dark"]{background-color:#050723}@media (prefers-color-scheme:dark){html{background-color:#050723}}</style>
 
 <script>document.documentElement.dataset.theme=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':localStorage.getItem('theme')||'light'</script>
 
-<style>.site-header,main { width: 90%; max-width: 800px; margin: 0 auto; }</style>
+<style>.site-header,main{width:90%;max-width:800px;margin:0 auto}</style>
+
+<link href="https://brick.a.ssl.fastly.net/Aileron:400,400i,700,900" rel="stylesheet"> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha384-9Z9AuAj0Xi0z7WFOSgjjow8EnNY9wPNp925TVLlAyWhvZPsf5Ks23Ex0mxIrWJzJ" crossorigin="anonymous">
+<link href="/assets/static/main.css" rel="stylesheet">
 
 {% if page.add_styles %}
 <style>{{ page.add_styles }}</style>

@@ -4,12 +4,12 @@
     <source srcset="/assets/images/projects/{{ include.id }}/{{ include.cover }}-orig.png">
     <img src="/assets/images/projects/{{ include.id }}/{{ include.cover }}-orig.png">
   </picture>
-  <div class="showcase-bg"><canvas class="showcase-canvas"></canvas></div>
+  <div class="showcase-bg" aria-hidden="true"><canvas class="showcase-canvas"></canvas></div>
   <div class="showcase-content">
     <h2 class="showcase-heading">{{ include.title }}</h2>
-    <p class="showcase-summary">{{ include.summary | markdownify }}</p>
-    <p class="showcase-footer">
-      {% if include.link %}<a class="btn pill small" href="{{ include.link }}" rel="noopener noreferrer" target="_blank">Visit {% include icons/external-link-alt.svg %}</a>{% endif %}
+    <p class="showcase-summary" role="description">{{ include.summary | markdownify | replace: '<p>', '' | replace: '</p>', '' }}</p>
+    <p class="showcase-footer" role="complementary">
+      {% if include.link %}<a class="btn pill small" href="{{ include.link }}" rel="noopener noreferrer" target="_blank" aria-label="Visit project site">Visit {% include icons/external-link-alt.svg %}</a>{% endif %}
       <a class="btn pill small inverted" href="/projects/{{ include.id }}">Learn more {% include icons/arrow-right.svg %}</a></p>
   </div>
 </div>

@@ -7,6 +7,7 @@
   #title { color: #03f; font-size: 6rem }
   section h1 { position: relative; margin: .5em 0 }
   section h1 a { color: #222; opacity: .999 !important }
+  .clicky:hover { opacity: 1 }
   .heading-subtitle { display: none }
   @media (max-height: 700px) { #header { --header-margin-top: 0 } }
   @media (min-height: 700px) { #header { --header-margin-top: 3.0rem } }
@@ -16,14 +17,14 @@
   @media (min-height: 1000px) { #header { --header-margin-top: 10rem } }
   @media (min-width: 768px) { #header { margin-top: var(--header-margin-top); margin-bottom: calc(var(--header-margin-top) / 2) }
   section h1 { margin: 1em 0 }
-  .heading-subtitle { position: absolute; top: 1.2em; width: 800px; color: #888; font-weight: 700; font-size: 20px; line-height: 54px; pointer-events: none }
-  section h1:hover .heading-subtitle { display: block; }}</style>
+  .heading-subtitle { position: absolute; top: 1.2em; color: #888; font-weight: 700; font-size: 20px; white-space: nowrap; line-height: 54px; pointer-events: none }
+  section h1:hover .heading-subtitle, section h1 a:focus + .heading-subtitle { display: block; }}</style>
 </head>
 <body>
   <a id="top"></a>
   <main>
     <header id="header">
-      <h1 id="title" class="trianglify" data-changeable><span class="text-wrap">Hi, I’m Terry.</span></h1>
+      <h1 id="title" class="trianglify" data-changeable><a class="clicky" href="#"><span class="text-wrap">Hi, I’m Terry.</span></a></h1>
       <h2 class="subtitle">Computer science student, language aficionado.</h2>
       <h2 class="subtitle">Find me on <a rel="noreferrer" href="https://github.com/tyxchen">GitHub</a>, <a rel="noreferrer" href="https://www.linkedin.com/in/tyxchen">LinkedIn</a>, or view my <a href="/assets/resume.pdf">resume</a>.</h2>
     </header>

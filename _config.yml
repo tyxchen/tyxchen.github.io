@@ -4,6 +4,12 @@ description: "@tyxchen"
 baseurl: ""
 url: "https://tyxchen.github.io"
 
+author: Terry Chen
+logo: /favicon.png?v20181206
+webmaster_verifications:
+  google: CLb9XzC8Rg43i0QoiVfwDKQ0LcAWs6bkkLWilZIVAUs
+lang: en_CA
+
 encoding: utf-8
 markdown: kramdown
 highlighter: rouge
