@@ -1,3 +1,5 @@
+@import "normalize.css";
+
 @import "css/variables.css";
 @import "css/elements.css";
 @import "css/buttons.css";
@@ -446,6 +448,50 @@
     font-family: var(--font-accent);
     font-weight: 700;
     text-align: center;
+  }
+}
+
+.showcase-mini {
+  border-bottom: 3px solid var(--fg-color);
+
+  &-heading {
+    display: flex;
+    margin-bottom: 0;
+    cursor: pointer;
+  }
+
+  &-toggle {
+    color: var(--fg-color);
+    margin-left: auto;
+
+    svg + svg {
+      display: none;
+    }
+  }
+
+  &.open &-toggle {
+    svg:first-child {
+      display: none;
+    }
+
+    svg + svg {
+      display: inline;
+    }
+  }
+
+  &-content {
+    display: none;
+  }
+
+  &.open &-content,
+  .no-js &-content {
+    display: block;
+  }
+
+  &-link {
+    display: inline-block;
+    font: bold 1em/1 var(--font-accent);
+    margin-bottom: 1.5em;
   }
 }
 

@@ -4,7 +4,7 @@ import {
   chooseRandomIndex,
   chooseRandomFromArray,
   letterOffsets
-} from './js/utils.js';
+} from '@js/utils.js';
 
 import {
   colors as allColors,
@@ -12,18 +12,20 @@ import {
   RGBToHex,
   luminance,
   mix
-} from './js/colors.js';
+} from '@js/colors.js';
 
 import {
   generate_triangles
-} from './js/generators.js';
+} from '@js/generators.js';
 
-import Resizer from './js/resizer.js';
+import Resizer from '@js/resizer.js';
 
-import './js/trianglify.js';
+import renderMath from '@js/katex.js';
+
+import '@js/trianglify.js';
 
 // general import for css
-import './app.css';
+import 'app.css';
 
 {
   let title = $('#title:not(.trianglify)');
@@ -47,7 +49,7 @@ $('#toggle-theme').addEventListener('click', function(e) {
 
   this.textContent = `Switch to ${prevTheme} mode`;
 
-  document.documentElement.dataset.theme = newTheme;
+  $('html').dataset.theme = newTheme;
   localStorage.setItem('theme', newTheme);
 });
 
@@ -90,7 +92,7 @@ if ($('.site-header__menu-toggler')) {
 
 // Portfolio showcases
 if ($('.showcase')) {
-  for (const [i, el] of $$('.showcase').entries()) {
+  for (const el of $$('.showcase')) {
     const clrs = allColors[el.dataset.clr || 'random'] || [el.dataset.clr],
           bgClr = clrs.length > 1 ? chooseRandomFromArray(clrs) : clrs[0],
           fgClr = luminance(hexToRGB(bgClr)) > 0.5 ? '#222' : '#fff';
@@ -180,6 +182,29 @@ if ($('.showcase')) {
   $('.showcase-more').classList.add('hidden');
 }
 
+// Mini showcase
+if ($('.showcase-mini')) {
+  for (const el of $$('.showcase-mini')) {
+    const toggle = $(el, '.showcase-mini-toggle');
+
+    $(el, '.showcase-mini-heading').addEventListener('click', (e) => {
+      e.preventDefault();
+
+      if (el.classList.contains('open')) {
+        el.classList.remove('open');
+        toggle.setAttribute('title', 'Expand');
+        toggle.setAttribute('aria-label', 'Expand');
+        $(el, '.showcase-mini-content').setAttribute('aria-hidden', true);
+      } else {
+        el.classList.add('open');
+        toggle.setAttribute('title', 'Collapse');
+        toggle.setAttribute('aria-label', 'Collapse');
+        $(el, '.showcase-mini-content').removeAttribute('aria-hidden');
+      }
+    }, true);
+  }
+}
+
 // Image carousel
 
 if ($('.image-carousel')) {
@@ -239,5 +264,7 @@ if ($('.image-carousel')) {
     })
   }
 }
+
+renderMath();
 
 Resizer.run();

@@ -1,5 +1,6 @@
 ---
 title: About me
+description: Hi there! My name is Terry Chen, and I am studying Computer Science at the University of Waterloo, class of 2022. Here on my little corner of the internet, you'll find my personal portfolio and various ramblings on software, sports, and life.
 subtitle: >
   Passion defines my life.
 layout: page

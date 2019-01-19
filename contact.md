@@ -1,5 +1,6 @@
 ---
 title: Contact
+description: I'd love to hear from you - drop me a line!
 layout: page
 permalink: /contact
 clr: Gn

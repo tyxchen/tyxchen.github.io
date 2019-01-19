@@ -1,5 +1,9 @@
 <script src="https://cdn.jsdelivr.net/npm/delaunator@2.0.0/delaunator.min.js" integrity="sha384-cPbE6l6uNyQzR7YgSRnV9LoIZ8hJplleRH6oMU1ql+SeyLUc7QrbxJh1tjSxrrN4" crossorigin="anonymous"></script>
 <script src="/assets/static/app.js"></script>
+
+{% for script in page.add_external_scripts %}
+<script src="{{ script.url }}"{% if script.integrity %} integrity="{{ script.integrity }}" crossorigin="anonymous"{% endif %}></script>
+{% endfor %}
 {% if page.add_scripts %}
 <script>{{ page.add_scripts }}</script>
 {% endif %}

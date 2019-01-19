@@ -1,4 +1,4 @@
-import { chooseRandomFromObject, leftPad } from './utils.js';
+import { chooseRandomFromObject, leftPad } from '@js/utils.js';
 
 // Colours from ColorBrewer
 // https://bl.ocks.org/mbostock/5577023

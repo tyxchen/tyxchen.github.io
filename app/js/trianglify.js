@@ -7,17 +7,17 @@ import {
   interpolate,
   getGradient,
   randBrightness
-} from './colors.js';
+} from '@js/colors.js';
 import {
   $,
   $$,
   chooseRandomIndex,
   chooseRandomFromArray,
   letterOffsets
-} from './utils.js';
-import { generate_triangles } from './generators.js';
+} from '@js/utils.js';
+import { generate_triangles } from '@js/generators.js';
 
-import Resizer from './resizer.js';
+import Resizer from '@js/resizer.js';
 
 const trianglify = window.trianglify = (el, colorSet, animate = false, cell_size = 32) => {
   // wrap text to constraints of el
@@ -269,20 +269,20 @@ window.addEventListener('load', () => {
 
 Resizer.addListener(() => {
   if ($('#title.trianglify-rendered')) {
-    let title = $('#title.trianglify-rendered .clicky') || $('#title.trianglify-rendered'),
-        childNodes = Array.prototype.slice.call(title.childNodes);
+    let title = $('#title.trianglify-rendered'),
+        childWrap = $(title, '.clicky') || title;
 
-    for (const n of childNodes) {
+    for (const n of Array.from(childWrap.childNodes)) {
       if (n.className === 'trianglify-text' || n.className === 'trianglify-canvas') {
-        title.removeChild(n);
+        childWrap.removeChild(n);
       } else if (n.className === 'trianglify-ghost-text') {
         n.className = 'text-wrap';
       }
     }
 
-    title.parentNode.setAttribute('style', '');
+    title.setAttribute('style', '');
 
-    const { canvas, changeColorSet } = trianglify(title.parentNode, colors[chosenTitleClr], true);
+    const { canvas, changeColorSet } = trianglify(title, colors[chosenTitleClr], true);
 
     titleCanvas = canvas;
     changeTitleColorSet = changeColorSet;

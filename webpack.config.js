@@ -1,4 +1,4 @@
-const { resolve } = require('path'),
+const { join, resolve } = require('path'),
       MiniCssExtractPlugin = require('mini-css-extract-plugin'),
       OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin'),
       UglifyJSPlugin = require('uglifyjs-webpack-plugin');
@@ -38,6 +38,9 @@ module.exports = {
     resolve: {
         modules: [
             resolve(__dirname, 'app')
-        ]
+        ],
+        alias: {
+            '@js': join(__dirname, 'app/js')
+        }
     }
 }
