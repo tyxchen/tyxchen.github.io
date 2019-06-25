@@ -261,7 +261,82 @@ if ($('.image-carousel')) {
         img.style.width = (carousel.getBoundingClientRect().width - 10) + 'px';
       }
       loadPic(currentPic);
-    })
+    });
+  }
+}
+
+// images
+
+if ($('figure')) {
+  for (const figure of $$('figure')) {
+    const img = $(figure, 'img');
+    const placeholder = $(figure, '.placeholder');
+    const wrapper = $(figure, '.img-wrapper');
+
+    img.addEventListener('load', () => {
+      const { naturalHeight, naturalWidth } = img;
+      const aspectRatio = naturalWidth / naturalHeight;
+
+      figure.addEventListener('click', (e) => {
+        let resizerListener;
+
+        function openExpandedImage() {
+          const { 
+            top: imgScrollTop, 
+            left: imgScrollLeft,
+            height: imgHeight, 
+            width: imgWidth
+          } = img.getBoundingClientRect();
+          const { innerHeight, innerWidth } = window;
+          const expandedHeight = Math.min(naturalHeight, innerHeight - 40);
+          const expandedWidth = Math.min(naturalWidth, innerWidth - 40);
+
+          img.style.height = placeholder.style.height = imgHeight + 'px';
+          img.style.width = placeholder.style.width = imgWidth + 'px';
+          img.style.top = imgScrollTop + 'px';
+          img.style.left = imgScrollLeft + 'px';
+
+          if (aspectRatio <= (innerWidth - 40) / (innerHeight - 40)) {
+            img.style.transform = `translateY(${(innerHeight - expandedHeight) / 2 - imgScrollTop}px) scale(${expandedHeight / imgHeight})`;
+          } else {
+            img.style.transform = `translateY(${(innerHeight - expandedWidth / aspectRatio) / 2 - imgScrollTop}px) scale(${expandedWidth / imgWidth})`;
+          }
+        }
+
+        function closeExpandedImage() {
+          figure.classList.remove('expanded');
+
+          placeholder.removeAttribute('style');
+          img.removeAttribute('style');
+
+          Resizer.removeListener(resizerListener);
+        }
+
+        if (figure.classList.contains('expanded')) {
+          closeExpandedImage();
+        } else if (e.target == img) {
+          const windowScrollTop = window.scrollY;
+
+          openExpandedImage();
+
+          figure.classList.add('expanded');
+
+          resizerListener = Resizer.addListener(() => {
+            openExpandedImage();
+          });
+
+          window.addEventListener('scroll', function closeExpandedImageScrollListener() {
+            closeExpandedImage();
+
+            window.removeEventListener('scroll', closeExpandedImageScrollListener);
+          });
+        }
+      });
+    });
+
+    if (img.complete) {
+      img.dispatchEvent(new Event('load'));
+    }
   }
 }
 

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en-ca" class="no-js no-katex layout-{{ page.layout }}">
+<head>
+  {% include html-head.html %}
+</head>
+<body>
+  {% include header.html %}
+
+  <header id="header">
+    <div class="cover-image" style="background-image:linear-gradient(to top,rgba(0,0,0,0.5),transparent 7rem),url({{ page.image }})"></div>
+    <div class="text-right image-attr"><em>{% include icons/camera.svg %}&emsp;{{ page.image-attr }}</em></div>
+    <div class="container">
+      <h1 id="title">{{ page.title }}</h1>
+      {% if page.subtitle %}
+        <h2 class="subtitle">{{ page.subtitle | markdownify | remove: '<p>' | remove: '</p>' }}</h2>
+      {% endif %}
+      {% assign word_count = content | number_of_words %}
+      <p><time>{{ page.date | date: '%d %b %Y' }}</time> &mdash; {% if word_count < 180 %}1{% else %}{{ word_count | divided_by:180 }}{% endif %} min read</p>
+    </div>
+  </header>
+  <script>setTimeout(()=>{let s=document.getElementById('header').getBoundingClientRect().top;0<s&&window.scrollTo({top:s+window.scrollY,behavior:'smooth'})},300)</script>
+  <main>
+    <article>
+      {{ content }}
+    </article>
+  </main>
+  {% include footer.html %}
+  {% include scripts.html %}
+</body>
+</html>

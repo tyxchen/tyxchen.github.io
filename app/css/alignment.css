@@ -14,3 +14,13 @@
 .text-right {
   text-align: right;
 }
+
+@media (--gt-than-tablet) {
+  .float-left {
+    float: left;
+  }
+
+  .float-right {
+    float: right;
+  }
+}

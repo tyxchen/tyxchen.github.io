@@ -14,6 +14,10 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+
+  @media print {
+    display: block;
+  }
 }
 
 body > main {
@@ -52,9 +56,61 @@ a {
   }
 }
 
-img.block {
-  display: block;
-  max-width: 100%;
+figure {
+  position: relative;
+  margin-left: 0;
+  margin-right: 0;
+
+  .img-wrapper {
+    position: relative;
+    z-index: 1;
+    transition-delay: 0.25s;
+  }
+
+  .img-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-color);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    transform: scale(1);
+    transform-origin: 50% 0;
+    transition: transform 0.4s ease;
+    cursor: zoom-in;
+  }
+
+  &.expanded {
+    cursor: zoom-out;
+  }
+
+  &.expanded .img-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    transition-delay: 0s;
+  }
+
+  &.expanded .img-background {
+    opacity: 0.8;
+    pointer-events: all;
+  }
+
+  &.expanded img {
+    position: absolute;
+    cursor: zoom-out;
+  }
 }
 
 figcaption {

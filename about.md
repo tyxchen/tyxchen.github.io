@@ -8,12 +8,9 @@ permalink: /about
 clr: Or
 ---
 
-<picture>
-  <source srcset="/assets/images/profile.jpg 1x">
-  <img class="block hor-center" src="/assets/images/profile.jpg" style="width:100%" alt="Terry's profile photo">
-</picture>
+{% include image.html src="/assets/images/profile.jpg" alt="Terry's profile photo" %}
 
-Hi there! My name is Terry Chen, and I am studying Computer Science at the University of Waterloo, class of 2022.
+Hi there! My name is Terry Chen, and I am studying Computer Science at the University of Waterloo, class of 2023.
 Here on my little corner of the internet, you'll find my personal portfolio and various ramblings on software, sports, and life.
 
 In the past, I've used my web development skills to build [a theme database](/projects/evdo), [club websites](/projects/mss-csec), and [chemistry visualizations](/projects/chem).

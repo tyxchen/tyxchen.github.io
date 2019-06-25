@@ -7,6 +7,8 @@ layout: default
   {% if page.subtitle %}
     <h2 class="subtitle">{{ page.subtitle | markdownify | remove: '<p>' | remove: '</p>' }}</h2>
   {% endif %}
+  {% assign word_count = content | number_of_words %}
+  <p><time>{{ page.date | date: '%d %b %Y' }}</time> &mdash; {% if word_count < 180 %}1{% else %}{{ word_count | divided_by:180 }}{% endif %} min read</p>
 </header>
 <div>
   {{ content }}

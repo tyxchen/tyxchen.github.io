@@ -2,12 +2,16 @@
 // That's why we have this function
 
 const Resizer = {
-  listeners: [],
+  listeners: {},
   addListener(listener) {
-  	this.listeners.push(listener);
+    const key = Symbol();
+  	this.listeners[key] = listener;
+    return key;
+  },
+  removeListener(key) {
+    delete this.listeners[key];
   },
   run() {
-  	const frozen = this.listeners.slice();
     let resizeTimeout, lastWindowWidth = window.innerWidth;
 
   	window.addEventListener("resize", (e) => {
@@ -15,15 +19,13 @@ const Resizer = {
 
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
-    		for (const l of frozen) {
-    			l(e);
+    		for (const l in this.listeners) {
+    			this.listeners[l](e);
     		}
       }, Math.abs(window.innerWidth - lastWindowWidth) > 100 ? 0 : 100);
       lastWindowWidth = window.innerWidth;
   	});
 
-    delete this.listeners;
-    delete this.addListener;
   	delete this.run;
   }
 };

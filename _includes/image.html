@@ -1,0 +1,8 @@
+<figure class="{{ include.class }}" style="{{ include.style }}">
+  <div class="placeholder"></div>
+  <div class="img-wrapper">
+    <div class="img-background"></div>
+    <img class="hor-center" alt="{{ include.alt | default: '' }}" src="{{ include.src }}">
+  </div>
+  {% if include.caption %}<figcaption>{{ include.caption }}</figcaption>{% endif %}
+</figure>
