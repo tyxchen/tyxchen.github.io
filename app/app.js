@@ -34,28 +34,7 @@ import 'app.css';
   }
 }
 
-// Toggle theme
-$('#toggle-theme').addEventListener('click', function(e) {
-  e.preventDefault();
-
-  let prevTheme = localStorage.getItem('theme') || 'light',
-      newTheme;
-
-  if (prevTheme === 'dark') {
-    newTheme = 'light';
-  } else {
-    newTheme = 'dark';
-  }
-
-  this.textContent = `Switch to ${prevTheme} mode`;
-
-  $('html').dataset.theme = newTheme;
-  localStorage.setItem('theme', newTheme);
-});
-
-if (localStorage.getItem('theme') === 'dark') {
-  $('#toggle-theme').textContent = 'Switch to light mode';
-}
+// Header menu
 
 if ($('.site-header__menu-toggler')) {
   let bodyClsList = $('body').classList,
@@ -267,8 +246,8 @@ if ($('.image-carousel')) {
 
 // images
 
-if ($('figure')) {
-  for (const figure of $$('figure')) {
+if ($('figure.expandable')) {
+  for (const figure of $$('figure.expandable')) {
     const img = $(figure, 'img');
     const placeholder = $(figure, '.placeholder');
     const wrapper = $(figure, '.img-wrapper');

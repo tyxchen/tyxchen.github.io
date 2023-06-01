@@ -1,0 +1,20 @@
+collaborators:
+  Christopher Batty: https://cs.uwaterloo.ca/~c2batty/
+  Toshiya Hachisuka: https://cs.uwaterloo.ca/~thachisu/
+  Yiti Jiang:
+  Ryusuke Sugimoto: https://rsugimoto.net/
+papers:
+  - id: WoB2023
+    title: A Practical Walk-on-Boundary Method for Boundary Value Problems
+    authors:
+      - Ryusuke Sugimoto
+      - Terry Chen
+      - Yiti Jiang
+      - Christopher Batty
+      - Toshiya Hachisuka
+    year: 2023
+    conference: SIGGRAPH North America 2023
+    journal: ACM Transactions on Graphics
+    paper: WoBforBVPs.pdf
+    project: https://rsugimoto.net/WoBforBVPsProject/
+    hero: WoB.png

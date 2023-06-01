@@ -42,6 +42,14 @@ h1 {
   font-weight: 900;
 }
 
+p:first-child {
+  margin-top: 0;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
 a {
   color: var(--link-color);
   text-decoration: none;

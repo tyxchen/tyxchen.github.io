@@ -49,19 +49,6 @@
 
   --tn-fcn: .25s ease;
 
-  &[data-theme="dark"] {
-    --title-color: #fff;
-    --link-color: #47f;
-
-    --color-bg1: #050723;
-    --color-bg2: #0b0d3e;
-    --color-bg3: #0e1058;
-
-    --color-fg1: #e7e7f1;
-    --color-fg2: #bbc;
-    --color-fg3: #889;
-  }
-
   @media (prefers-color-scheme: dark) {
     --title-color: #fff;
     --link-color: #47f;

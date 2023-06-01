@@ -10,12 +10,12 @@
 
 {% seo title=false %}
 
-<style>html[data-theme="light"]{background-color:#fff}html[data-theme="dark"]{background-color:#050723}@media (prefers-color-scheme:dark){html{background-color:#050723}}
-.site-header,main{width:90%;max-width:800px;margin:0 auto}
+<style>html{background-color:#fff}@media(prefers-color-scheme:dark){html{background-color:#050723}}
+.site-header,main{width:90%;max-width:960px;margin:0 auto}
 .no-katex [type*='math/tex']{display:inline-block!important;font-family:monospace;white-space:pre;}
 .no-katex [type*='math/tex'][type*='mode=display']{display:block!important;width:100%;text-align:center;}</style>
 
-<script>document.documentElement.classList.remove('no-js');document.documentElement.dataset.theme=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':localStorage.getItem('theme')||'light'</script>
+<script>document.documentElement.classList.remove('no-js')</script>
 
 <link href="https://rsms.me/inter/inter.css" rel="stylesheet"> 
 <link href="/assets/static/main.css" rel="stylesheet">
