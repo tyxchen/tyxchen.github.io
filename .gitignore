@@ -1,5 +1,6 @@
 .jekyll-metadata
 node_modules/
+vendor/bundle
 _site/
 assets/static/static
 
