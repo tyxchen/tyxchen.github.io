@@ -4,12 +4,11 @@ import { chooseRandomFromObject, leftPad } from '@js/utils.js';
 // https://bl.ocks.org/mbostock/5577023
 export const choosableColors = {
   //YlGn: ["#addd8e","#78c679","#41ab5d","#238443"],
-  YlGn: ["#addd8e","#89cc7d","#65bb6d","#41ab5d"],
-  GnBu: ["#7bccc4","#4eb3d3","#2b8cbe","#0868ac"],
-  BuPu: ["#8c96c6","#8c6bb1","#88419d","#810f7c"],
-  PuRd: ["#e7298a","#ce1256","#980043","#67001f"],
-  RdPu: ["#f768a1","#dd3497","#ae017e","#7a0177"],
-  YlOrRd: ["#feb24c","#fd8d3c","#fc4e2a","#e31a1c"]
+  YlGn: ["#abdc8e", "#92d183", "#77c577", "#5cb86a"],
+  GnBu: ["#64bfcb", "#4fb0cd", "#3c9ec7", "#2a8cbe"],
+  BuPu: ["#8c80bb", "#8c70b3", "#8b60ac", "#894fa3"],
+  RdPu: ["#f882ab", "#f368a2", "#e94d9c", "#d93394"],
+  YlOrRd: ["#fd9e44", "#fd883b", "#fc6c33", "#f84f2a"]
 };
 
 export const baseColors = {

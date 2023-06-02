@@ -1,8 +1,8 @@
 <div class="showcase" id="{{ include.id }}" data-clr="{{ include.color | default: 'random' }}" data-skills="{{ include.skills }}" aria-describedby="{{ include.id }}-heading {{ include.id }}-summary">
   <picture>
 <!--     <source srcset="/assets/images/projects/{{ include.id }}/{{ include.cover }}.png 1x, /assets/images/projects/{{ include.id }}/{{ include.cover }}-2x.png 2x"> -->
-    <source srcset="/assets/images/projects/{{ include.id }}/{{ include.cover }}-orig.png">
-    <img src="/assets/images/projects/{{ include.id }}/{{ include.cover }}-orig.png" alt="Screenshot of {{ include.title }}">
+    <source srcset="/assets/images/projects/{{ include.id }}/{{ include.cover }}.png">
+    <img src="/assets/images/projects/{{ include.id }}/{{ include.cover }}.png" alt="Screenshot of {{ include.title }}">
   </picture>
   <div class="showcase-bg" aria-hidden="true"><canvas class="showcase-canvas"></canvas></div>
   <div class="showcase-content">

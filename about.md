@@ -1,25 +1,21 @@
 ---
 title: About me
-description: Hi there! My name is Terry Chen, and I am studying Computer Science at the University of Waterloo, class of 2022. Here on my little corner of the internet, you'll find my personal portfolio and various ramblings on software, sports, and life.
+description: Hi there! My name is Terry Chen, and I'm a masters student in computer science at École de technologie supérieure.
 subtitle: >
-  Passion defines my life.
+  .
 layout: page
 permalink: /about
 clr: Or
 ---
 
-{% include image.html src="/assets/images/profile.jpg" alt="Terry's profile photo" %}
+{% include image.html src="/assets/images/IMG_2756.jpeg" alt="Terry's profile photo" %}
 
-Hi there! My name is Terry Chen, and I am studying Computer Science at the University of Waterloo, class of 2023.
-Here on my little corner of the internet, you'll find my personal portfolio and various ramblings on software, sports, and life.
+Hi there! My name is Terry Chen, and I'm a masters student in computer science at École de technologie supérieure, studying computer graphics under the supervision of [Adrien Gruson](https://profs.etsmtl.ca/agruson/). 
+Previously, I attended the University of Waterloo from 2018 to 2023, where I double majored in Computer Science and Statistics. 
 
-In the past, I've used my web development skills to build [a theme database](/projects/evdo), [club websites](/projects/mss-csec), and [chemistry visualizations](/projects/chem).
+This personal site is mostly focused on my past web development adventures and projects. At some point, I'll update this to reflect my current research, but for now enjoy this look into the past. 
 
-Right now, I'm focusing my efforts on statistics and systems programming.
-My current side project is a Lisp parser in Rust, through which I am learning language design and implementation.
-In the future, I plan to look into bioinformatics and sports analytics as bases for my side projects.
-
-When I'm not busy with work or school, you can find me watching hockey, playing softball, practicing piano and guitar, or writing for [_math_**NEWS**](http://mathnews.uwaterloo.ca).
+When I'm not busy with work or school, you can find me watching hockey, playing softball, or practicing piano and guitar. 
 
 <div class="text-center">
 <a class="btn fg-gn" href="/contact">Drop me a line!</a>

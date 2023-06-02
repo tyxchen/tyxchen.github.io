@@ -3,45 +3,129 @@
 <head>
   {% include html-head.html %}
 
-  <style>#header { line-height: 1.5; margin-top: 4rem; margin-bottom: 3rem }
-  #title { color: #03f; font-size: 6rem }
-  section h1 { position: relative; margin: .5em 0 }
-  section h1 a { color: #222; opacity: .999 !important }
-  .clicky:hover { opacity: 1 }
-  .heading-subtitle { display: none }
-  @media (max-height: 700px) { #header { --header-margin-top: 0 } }
-  @media (min-height: 700px) { #header { --header-margin-top: 3.0rem } }
-  @media (min-height: 750px) { #header { --header-margin-top: 3.8rem } }
-  @media (min-height: 800px) { #header { --header-margin-top: 6rem } }
-  @media (min-height: 900px) { #header { --header-margin-top: 8rem } }
-  @media (min-height: 1000px) { #header { --header-margin-top: 10rem } }
-  @media (min-width: 768px) { #header { margin-top: var(--header-margin-top); margin-bottom: calc(var(--header-margin-top) / 2) }
-  section h1 { margin: 1em 0 }
-  .heading-subtitle { position: absolute; top: 1.2em; color: #888; font-weight: 700; font-size: 20px; white-space: nowrap; line-height: 54px; pointer-events: none }
-  section h1:hover .heading-subtitle, section h1 a:focus + .heading-subtitle { display: block; }}</style>
+  <style>main { font-family: var(--font-accent) }
+  #header { line-height: 1.5; margin-top: 4rem; margin-bottom: 3rem }
+  #header { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 2em }
+  #header-portrait { width: 600px }
+  #header-portrait figure { margin: 0 }
+  #header-description { flex: 1; min-width: 320px }
+  #header-description h1 { margin: -0.35em 0 }
+  #qualifications { display: flex; flex-direction: row; flex-wrap: wrap; gap: 2em }
+  #qualifications section { flex: 1; min-width: 320px }
+  #qualifications ul { position: relative; list-style: none; padding-left: 1.5em }
+  #qualifications ul::before { content: ''; position: absolute; top: 1em; bottom: .3em; left: .5em; width: .2em; background: var(--color-fg3); opacity: .5 }
+  #qualifications li { position: relative; margin-bottom: 1em }
+  #qualifications li::before, #qualifications li::after { content: ''; position: absolute; top: .4em; left: -1.25em }
+  #qualifications li::after { height: .5em; width: .5em; background: var(--bg-color); border: 2px solid; border-radius: 100% }
+  #qualifications li:first-child::before { height: .3em; width: .3em; background: var(--fg-color); border-radius: 100%; margin: .2em; z-index: 10 }
+  #qualifications li:first-child::after { padding: .1em; margin: -.1em }
+  #qualifications li:last-child::before { top: 1em; bottom: 0; width: .5em; background: var(--bg-color) }
+  .publication { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 2em; font-size: .9em; margin: 1em 0 }
+  .publication h3 { font-weight: normal; margin: 0; margin-bottom: 0.2em }
+  .publication aside { width: 6em; height: 6em; border: 1px solid var(--color-fg3); overflow: hidden }
+  .publication img { height: 100% }
+  .publication > div { flex: 1; min-width: 320px }</style>
 </head>
 <body>
+  {% include header.html %}
   <a id="top"></a>
   <main>
     <header id="header">
-      <h1 id="title" class="trianglify" data-changeable><a class="clicky" href="#"><span class="text-wrap">Terry Chen</span></a></h1>
-      <h2 class="subtitle">Find me on <a rel="noreferrer" href="https://github.com/tyxchen">GitHub</a>, <a rel="noreferrer" href="https://www.linkedin.com/in/tyxchen">LinkedIn</a>, or view my <a href="/assets/resume.pdf">resume</a>.</h2>
+      <div id="header-portrait">
+        <figure><img src="/assets/images/IMG_2756.jpeg" alt="Terry's profile photo"></figure>
+      </div>
+      <div id="header-description">
+        <h1>Hi, I'm Terry.</h1>
+        <p class="large">
+            I'm an incoming master's student at École de technologie supérieure under the supervision of <a href="https://profs.etsmtl.ca/agruson/">Adrien Gruson</a>.
+            My research interests lie in computer graphics, specifically physically-based rendering.</p>
+        <p>
+          <a href="mailto:terry.chen@uwaterloo.ca">{% include icons/envelope.svg %} terry.chen@uwaterloo.ca</a><br>
+          <a rel="noreferrer" href="https://github.com/tyxchen">{% include icons/github.svg %} GitHub</a><br>
+          <a rel="noreferrer" href="https://www.linkedin.com/in/tyxchen">{% include icons/linkedin.svg %} LinkedIn</a>
+        </p>
+      </div>
     </header>
+
+    <div id="qualifications">
+      <section>
+        <h2>Education</h2>
+
+        <ul>
+          <li>
+            <strong>École de technologie supérieure</strong><br>
+            <span class="small">Montréal &bull; Incoming</span><br>
+            M. Sc. A. des technologies de l’information (equivalent to MASc in Computer Science)
+          </li>
+          <li>
+            <strong>University of Waterloo</strong><br>
+            <span class="small">Waterloo &bull; 2018 &ndash; 2023</span><br>
+            BMath Computer Science and Statistics
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Work Experience</h2>
+
+        <ul>
+          <li>
+            <strong>University of Waterloo</strong><br>
+            <span class="small">Waterloo &bull; May 2022 &ndash; August 2022</span><br>
+            Undergraduate Research Assistant
+          </li>
+
+          <li>
+            <strong>A.U.G. Signals</strong><br>
+            <span class="small">Toronto &bull; January 2021 &ndash; May 2021</span><br>
+            Software Developer Intern
+          </li>
+
+          <li>
+            <strong>University of Waterloo</strong><br>
+            <span class="small">Waterloo &bull; May 2020 &ndash; December 2020</span><br>
+            Undergraduate Research Assistant (part-time)
+          </li>
+        </ul>
+      </section>
+    </div>
+
     <section>
-      <h1 class="trianglify" id="about-heading" data-clr="Or"><a href="/about"><span class="text-wrap">About</span></a><span class="heading-subtitle">Who I am and what I do.</span></h1>
-    </section>
-    <section>
-      <h1 class="trianglify" id="portfolio-heading" data-clr="Rd"><a href="/portfolio"><span class="text-wrap">Portfolio</span></a><span class="heading-subtitle">Stuff I’ve built before.</span></h1>
-    </section>
-    <section>
-      <h1 class="trianglify" id="blog-heading" data-clr="Bu"><a href="/archive"><span class="text-wrap">Blog</span></a><span class="heading-subtitle">Sometimes I write about things.</span></h1>
-    </section>
-    <section>
-      <h1 class="trianglify" id="contact-heading" data-clr="Gn"><a href="/contact"><span class="text-wrap">Contact</span></a><span class="heading-subtitle">Let’s be friends.</span></h1>
+      <h2>Publications</h2>
+
+      {% for paper in site.data.publications.papers reversed %}
+        {% assign paper_dir = paper.id | prepend: '/assets/publications/' %}
+        <article class="publication">
+          <aside><img src="{{ paper_dir }}/{{paper.hero}}"></aside>
+          <div>
+            <h3>{{ paper.title }}</h3>
+            {% for author in paper.authors %}
+              {%- if author == 'Terry Chen' %}
+                <strong>T. Chen</strong>
+              {%- else %}
+              {%- assign author_names = author | split: ' ' %}
+              {%- if site.data.publications.collaborators[author] %}<a href="{{ site.data.publications.collaborators[author] }}">{% endif %}
+              {%- for name in author_names %}
+                {%- if forloop.last %}{{ name }}{% else %}{{ name | slice: 0 }}. {% endif %}
+              {%- endfor %}
+              {%- if site.data.publications.collaborators[author] %}</a>{% endif %}
+              {%- endif %}
+              {%- unless forloop.last %},{% endunless %}
+            {% endfor %}
+            <br>
+            <em>
+              {{ paper.conference }}{% if paper.journal %} ({{ paper.journal }}){% endif %}, {{ paper.year }}
+            </em>
+            <br>
+            {% if paper.project %}<a href="{{ paper.project }}">[project]</a>{% endif %}
+            {% if paper.paper %}<a href="{{ paper_dir }}/{{ paper.paper }}">[paper]</a>{% endif %}
+          </div>
+        </article>
+      {% endfor %}
     </section>
   </main>
-  
-  <footer><a class="small faded" id="toggle-theme" href="#">Switch to dark mode</a></footer>
+
+  {% include footer.html %}
 
   {% include scripts.html %}
 </body>

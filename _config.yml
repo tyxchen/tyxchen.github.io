@@ -35,6 +35,7 @@ exclude:
   - package.json
   - package-lock.json
   - postcss.config.js
+  - vendor
   - webpack.config.js
   - README.md
 

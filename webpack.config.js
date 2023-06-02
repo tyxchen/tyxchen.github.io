@@ -1,7 +1,7 @@
 const { join, resolve } = require('path'),
       MiniCssExtractPlugin = require('mini-css-extract-plugin'),
-      OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin'),
-      UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+      OptimizeCSSPlugin = require('css-minimizer-webpack-plugin'),
+      UglifyJSPlugin = require('terser-webpack-plugin');
 
 module.exports = {
     entry: './app/app.js',
@@ -23,9 +23,8 @@ module.exports = {
     optimization: {
         minimizer: [
             new UglifyJSPlugin({
-                cache: true,
                 parallel: true,
-                sourceMap: true
+                terserOptions: { sourceMap: true },
             }),
             new OptimizeCSSPlugin({})
         ]
