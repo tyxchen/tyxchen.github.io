@@ -4,22 +4,23 @@
   {% include html-head.html %}
 
   <style>main { font-family: var(--font-accent) }
-  #header { line-height: 1.5; margin-top: 4rem; margin-bottom: 3rem }
-  #header { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 2em }
-  #header-portrait { width: 600px }
-  #header-portrait figure { margin: 0 }
+  main > section { margin: 2.5em 0 }
+  ul, ol { padding-left: 1.5em }
+  #header { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 2em; line-height: 1.5; margin-top: 4rem; margin-bottom: 3rem }
+  #header-portrait { width: 600px; margin: 0 }
   #header-description { flex: 1; min-width: 320px }
   #header-description h1 { margin: -0.35em 0 }
-  #qualifications { display: flex; flex-direction: row; flex-wrap: wrap; gap: 2em }
+  #header-description p { font-size: 1.2em }
+  #qualifications { display: flex; flex-direction: row; flex-wrap: wrap; row-gap: .25em; column-gap: 2em; margin-bottom: -1em }
   #qualifications section { flex: 1; min-width: 320px }
-  #qualifications ul { position: relative; list-style: none; padding-left: 1.5em }
-  #qualifications ul::before { content: ''; position: absolute; top: 1em; bottom: .3em; left: .5em; width: .2em; background: var(--color-fg3); opacity: .5 }
-  #qualifications li { position: relative; margin-bottom: 1em }
-  #qualifications li::before, #qualifications li::after { content: ''; position: absolute; top: .4em; left: -1.25em }
-  #qualifications li::after { height: .5em; width: .5em; background: var(--bg-color); border: 2px solid; border-radius: 100% }
-  #qualifications li:first-child::before { height: .3em; width: .3em; background: var(--fg-color); border-radius: 100%; margin: .2em; z-index: 10 }
-  #qualifications li:first-child::after { padding: .1em; margin: -.1em }
-  #qualifications li:last-child::before { top: 1em; bottom: 0; width: .5em; background: var(--bg-color) }
+  .timeline { position: relative; list-style: none }
+  .timeline::before { content: ''; position: absolute; top: 1em; bottom: .3em; left: .5em; width: .2em; background: var(--color-fg3); opacity: .5 }
+  .timeline li { position: relative; margin-bottom: 1em }
+  .timeline li::before, .timeline li::after { content: ''; position: absolute; top: .4em; left: -1.25em }
+  .timeline li::after { height: .5em; width: .5em; background: var(--bg-color); border: 2px solid; border-radius: 100% }
+  .timeline li:first-child::before { height: .3em; width: .3em; background: var(--fg-color); border-radius: 100%; margin: .2em; z-index: 10 }
+  .timeline li:first-child::after { padding: .1em; margin: -.1em }
+  .timeline li:last-child::before { top: 1em; bottom: 0; width: .5em; background: var(--bg-color) }
   .publication { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 2em; font-size: .9em; margin: 1em 0 }
   .publication h3 { font-weight: normal; margin: 0; margin-bottom: 0.2em }
   .publication aside { width: 6em; height: 6em; border: 1px solid var(--color-fg3); overflow: hidden }
@@ -31,27 +32,24 @@
   <a id="top"></a>
   <main>
     <header id="header">
-      <div id="header-portrait">
-        <figure><img src="/assets/images/IMG_2756.jpeg" alt="Terry's profile photo"></figure>
-      </div>
-      <div id="header-description">
-        <h1>Hi, I'm Terry.</h1>
-        <p class="large">
-            I'm an incoming master's student at École de technologie supérieure under the supervision of <a href="https://profs.etsmtl.ca/agruson/">Adrien Gruson</a>.
-            My research interests lie in computer graphics, specifically physically-based rendering.</p>
-        <p>
+      <figure id="header-portrait">
+        <img src="/assets/images/IMG_2756.jpeg" alt="Terry's profile photo">
+      </figure>
+      <section id="header-description">
+        {{ content }}
+        <footer>
           <a href="mailto:terry.chen@uwaterloo.ca">{% include icons/envelope.svg %} terry.chen@uwaterloo.ca</a><br>
-          <a rel="noreferrer" href="https://github.com/tyxchen">{% include icons/github.svg %} GitHub</a><br>
-          <a rel="noreferrer" href="https://www.linkedin.com/in/tyxchen">{% include icons/linkedin.svg %} LinkedIn</a>
-        </p>
-      </div>
+          <a rel="noreferrer" href="https://github.com/tyxchen">{% include icons/github.svg %} tyxchen</a><br>
+          <a rel="noreferrer" href="https://www.linkedin.com/in/tyxchen">{% include icons/linkedin.svg %} tyxchen</a>
+        </footer>
+      </section>
     </header>
 
     <div id="qualifications">
       <section>
         <h2>Education</h2>
 
-        <ul>
+        <ul class="timeline">
           <li>
             <strong>École de technologie supérieure</strong><br>
             <span class="small">Montréal &bull; Incoming</span><br>
@@ -68,7 +66,7 @@
       <section>
         <h2>Work Experience</h2>
 
-        <ul>
+        <ul class="timeline">
           <li>
             <strong>University of Waterloo</strong><br>
             <span class="small">Waterloo &bull; May 2022 &ndash; August 2022</span><br>
@@ -106,7 +104,7 @@
               {%- assign author_names = author | split: ' ' %}
               {%- if site.data.publications.collaborators[author] %}<a href="{{ site.data.publications.collaborators[author] }}">{% endif %}
               {%- for name in author_names %}
-                {%- if forloop.last %}{{ name }}{% else %}{{ name | slice: 0 }}. {% endif %}
+                {%- if forloop.last %} {{ name }}{% else %}{{ name | slice: 0 }}.{% endif %}
               {%- endfor %}
               {%- if site.data.publications.collaborators[author] %}</a>{% endif %}
               {%- endif %}
@@ -122,6 +120,15 @@
           </div>
         </article>
       {% endfor %}
+    </section>
+
+    <section>
+      <h2>Awards</h2>
+
+      <ul>
+        <li>NSERC Undergraduate Student Research Award (2023)</li>
+        <li>University of Waterloo Undergraduate Research Fellowship (2023)</li>
+      </ul>
     </section>
   </main>
 

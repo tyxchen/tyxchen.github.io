@@ -41,5 +41,6 @@ module.exports = {
         alias: {
             '@js': join(__dirname, 'app/js')
         }
-    }
+    },
+    devtool: 'cheap-source-map',
 }

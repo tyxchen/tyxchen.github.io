@@ -28,10 +28,10 @@ const trianglify = window.trianglify = (el, colorSet, animate = false, cell_size
     let words = text.split(/\s/),
         line = [],
         lineHeight = 1,
-        width = Math.ceil(el.getBoundingClientRect().width), // give some wiggle room
+        width = Math.ceil(el.getBoundingClientRect().width * 1.0125), // give some wiggle room
         fontSizeGr72 = parseInt(window.getComputedStyle(el, null).fontSize) > 72,
         builder = [],
-        dy = 0.95,
+        dy = 1,
         word;
 
     let svg = document.createElementNS(SVG, 'svg'),
