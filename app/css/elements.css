@@ -119,11 +119,19 @@ figure {
     position: absolute;
     cursor: zoom-out;
   }
-}
 
-figcaption {
-  font-size: .9em;
-  font-style: italic;
+  iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin: 0 auto;
+  }
+
+  figcaption {
+    font-size: .8em;
+    font-style: italic;
+    text-align: center;
+  }
 }
 
 .icon {

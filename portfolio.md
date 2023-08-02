@@ -58,6 +58,4 @@ My side projects, in reverse chronological order.
 
 {% include showcase-mini.html title="Racket lists" link="/racket-lists" summary="An interactive visualization of linked lists using box-and-pointer representation, and how it relates to the syntax of lists in Racket. Built with Inferno." %}
 
-{% include showcase-mini.html title="Statboard" link="https://github.com/tyxchen/statboard" summary="A dashboard to track various softball-related statistics. Built with Foundation and Dexie.js." %}
-
 {% include showcase-mini.html title="Turing Autoformatter" link="/turing-autoformat" summary="A website to format Turing code to meet my grade 11 CS teacher's style guidelines, similar to `go fmt`." %}

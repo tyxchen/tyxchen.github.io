@@ -4,5 +4,5 @@
     <div class="img-background"></div>
     <img class="hor-center" alt="{{ include.alt | default: '' }}" src="{{ include.src }}">
   </div>
-  {% if include.caption %}<figcaption>{{ include.caption }}</figcaption>{% endif %}
+  {% if include.caption %}<figcaption>{{ include.caption | markdownify }}</figcaption>{% endif %}
 </figure>

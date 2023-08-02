@@ -1,19 +1,17 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE-edge">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self';style-src 'self' 'unsafe-inline' rsms.me cdnjs.jsdelivr.net;script-src 'self' 'unsafe-inline' {% if jekyll.environment == 'development' %} 'unsafe-eval' {% endif %}cdn.jsdelivr.net;font-src rsms.me cdn.jsdelivr.net">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self';frame-src 'self' youtube-nocookie.com www.youtube-nocookie.com;style-src 'self' 'unsafe-inline' rsms.me cdnjs.jsdelivr.net;script-src 'self' 'unsafe-inline' cdn.jsdelivr.net;font-src rsms.me cdn.jsdelivr.net">
 <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
 <meta name="referrer" content="no-referrer-when-downgrade">
 
 <link rel="shortcut icon" href="/favicon.png?v20181206" type="image/png">
 
-<title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
-
-{% seo title=false %}
+{% seo %}
 
 <style>html{background-color:#fff}@media(prefers-color-scheme:dark){html{background-color:#050723}}
 .site-header,main{width:90%;max-width:960px;margin:0 auto}
-.no-katex [type*='math/tex']{display:inline-block!important;font-family:monospace;white-space:pre;}
-.no-katex [type*='math/tex'][type*='mode=display']{display:block!important;width:100%;text-align:center;}</style>
+.no-katex [type*='math/tex']{display:inline-block!important;font-family:monospace;white-space:pre}
+.no-katex [type*='math/tex'][type*='mode=display']{display:block!important;width:100%;text-align:center}</style>
 
 <script>document.documentElement.classList.remove('no-js')</script>
 

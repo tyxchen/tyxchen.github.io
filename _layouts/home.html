@@ -8,9 +8,12 @@
   ul, ol { padding-left: 1.5em }
   #header { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 2em; line-height: 1.5; margin-top: 4rem; margin-bottom: 3rem }
   #header-portrait { width: 600px; margin: 0 }
-  #header-description { flex: 1; min-width: 320px }
+  #header-description { display: flex; flex-direction: column; flex: 1; min-width: 320px }
   #header-description h1 { margin: -0.35em 0 }
   #header-description p { font-size: 1.2em }
+  #header-links { display: flex; gap: 1em; flex: 1; justify-content: space-evenly; align-items: end }
+  #header-links a { width: 1.4em; height: 1.4em; text-align: center }
+  #header-links svg { height: 1.4em }
   #qualifications { display: flex; flex-direction: row; flex-wrap: wrap; row-gap: .25em; column-gap: 2em; margin-bottom: -1em }
   #qualifications section { flex: 1; min-width: 320px }
   .timeline { position: relative; list-style: none }
@@ -37,10 +40,11 @@
       </figure>
       <section id="header-description">
         {{ content }}
-        <footer>
-          <a href="mailto:terry.chen@uwaterloo.ca">{% include icons/envelope.svg %} terry.chen@uwaterloo.ca</a><br>
-          <a rel="noreferrer" href="https://github.com/tyxchen">{% include icons/github.svg %} tyxchen</a><br>
-          <a rel="noreferrer" href="https://www.linkedin.com/in/tyxchen">{% include icons/linkedin.svg %} tyxchen</a>
+        <footer id="header-links">
+          <a href="mailto:tyxchen@outlook.com">{% include icons/envelope.svg %}</a>
+          <a href="/assets/resume.pdf">{% include icons/file-alt.svg %}</a>
+          <a rel="noreferrer" href="https://github.com/tyxchen">{% include icons/github.svg %}</a>
+          <a rel="noreferrer" href="https://www.linkedin.com/in/tyxchen">{% include icons/linkedin.svg %}</a>
         </footer>
       </section>
     </header>

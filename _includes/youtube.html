@@ -1,0 +1,4 @@
+<figure class="video {{ include.class }}" style="{{ include.style }}">
+  <iframe src="https://www.youtube-nocookie.com/embed/{{ include.ID }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  {% if include.caption %}<figcaption>{{ include.caption | markdownify }}</figcaption>{% endif %}
+</figure>
