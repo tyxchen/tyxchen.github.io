@@ -27,6 +27,7 @@
   &__wrapper {
     display: flex;
     width: 100%;
+    height: 3rem;
     justify-content: space-between;
     align-items: center;
     gap: 2em;
@@ -91,19 +92,6 @@
   &__wrapper:hover &__highlight a,
   &__wrapper li a:hover {
     opacity: 1;
-  }
-
-  #header-home {
-    display: block;
-    /*height: 100%;*/
-  }
-
-  #header-home canvas {
-    filter: brightness(0.8) contrast(1.25);
-
-    @media (prefers-color-scheme: dark) {
-      filter: none;
-    }
   }
 
   @media (--gt-than-tablet) {

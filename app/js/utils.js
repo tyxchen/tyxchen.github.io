@@ -21,6 +21,12 @@ export const chooseRandomFromArray  = (arr) =>
 export const chooseRandomFromObject = (obj) =>
   obj[chooseRandomFromArray(Object.keys(obj))];
 
+export const escapeText = (str) =>
+  str.replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+
 // leftPad(string: String, pad: Char, length: Int) - pad a string to its left to `length` with `pad`
 export const leftPad = (str, pad, len) =>
   str.length < len ? (new Array(len - str.length + 1).join(pad) + str) : str;

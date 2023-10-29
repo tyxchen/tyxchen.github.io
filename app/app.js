@@ -8,6 +8,7 @@ import {
 
 import {
   colors as allColors,
+  choosableColors,
   hexToRGB,
   RGBToHex,
   luminance,
@@ -22,7 +23,10 @@ import Resizer from '@js/resizer.js';
 
 import renderMath from '@js/katex.js';
 
-import '@js/trianglify.js';
+import {
+  trianglify,
+  initTrianglify
+} from '@js/trianglify.js';
 
 // general import for css
 import 'app.css';
@@ -319,6 +323,64 @@ if ($('figure.expandable')) {
   }
 }
 
-renderMath();
+// Trianglify
+if ($('.layout-home')) {
+  let choosableClrs = Object.keys(choosableColors);
+  let chosenClr = 0,
+      changeColorSets = [];
 
-Resizer.run();
+  // Fisher-Yates shuffle
+  const shuffle = () => {
+    const curClr = choosableClrs[chosenClr];
+    for (let i = choosableClrs.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let tmp = choosableClrs[j];
+      choosableClrs[j] = choosableClrs[i];
+      choosableClrs[i] = tmp;
+    }
+    // don't repeat between shuffles
+    if (curClr === choosableClrs[0]) {
+      choosableClrs[0] = choosableClrs[choosableClrs.length >> 1];
+      choosableClrs[choosableClrs.length >> 1] = curClr;
+    }
+  };
+  shuffle();
+
+  for (const t of $$('.trianglify')) {
+    t.style.color = choosableColors[choosableClrs[0]][3];
+  }
+
+  window.addEventListener('load', () => {
+    for (const trianglifyEl of $$('.trianglify')) {
+      const { canvas, changeColorSet } = trianglify(trianglifyEl, choosableColors[choosableClrs[chosenClr]],
+        !window.matchMedia('(prefers-reduced-motion)').matches, parseInt(trianglifyEl.dataset.cellSize) || undefined);
+
+      changeColorSets.push(changeColorSet);
+
+      if (trianglifyEl.closest('.clicky')) {
+        trianglifyEl.closest('.clicky').addEventListener('click', (e) => {
+          e.preventDefault();
+
+          chosenClr++;
+
+          for (const changeColor of changeColorSets) {
+            changeColor(choosableColors[choosableClrs[chosenClr]]);
+          }
+
+          if (chosenClr + 1 >= choosableClrs.length) {
+            shuffle();
+            chosenClr = -1;
+          }
+        });
+      }
+
+      trianglifyEl.classList.remove('trianglify');
+    }
+  });
+}
+
+window.addEventListener('load', () => {
+  initTrianglify();
+});
+
+renderMath();
