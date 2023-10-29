@@ -15,6 +15,6 @@ papers:
     year: 2023
     conference: SIGGRAPH North America 2023
     journal: ACM Transactions on Graphics
-    paper: WoBforBVPs.pdf
+    paper: $PubDir/WoBforBVPs.pdf
     project: https://rsugimoto.net/WoBforBVPsProject/
-    hero: WoB.png
+    thumb: $PubDir/WoB-thumbnail.png

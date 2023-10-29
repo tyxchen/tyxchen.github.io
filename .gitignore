@@ -3,6 +3,7 @@ node_modules/
 vendor/bundle
 _site/
 assets/static/static
+assets/static/*.map
 
 *.sublime-project
 *.sublime-workspace

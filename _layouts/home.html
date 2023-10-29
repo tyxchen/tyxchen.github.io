@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en-ca" class="no-js">
+<html lang="en-ca" class="no-js no-katex layout-home">
 <head>
   {% include html-head.html %}
 
   <style>main { font-family: var(--font-accent) }
   main > section { margin: 2.5em 0 }
   ul, ol { padding-left: 1.5em }
-  #header { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 2em; line-height: 1.5; margin-top: 4rem; margin-bottom: 3rem }
-  #header-portrait { width: 600px; margin: 0 }
-  #header-description { display: flex; flex-direction: column; flex: 1; min-width: 320px }
+  #header { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 4em; line-height: 1.5; margin-top: 4rem; margin-bottom: 3rem }
+  #header-portrait { width: 480px; display: flex; flex-direction: column; justify-content: center; margin: 0 }
+  #header-description { display: flex; flex-direction: column; flex: 1; min-width: 320px; gap: 1em }
   #header-description h1 { margin: -0.35em 0 }
-  #header-description p { font-size: 1.2em }
+  #header-description p { font-size: 1.08em; margin: 0 }
   #header-links { display: flex; gap: 1em; flex: 1; justify-content: space-evenly; align-items: end }
   #header-links a { width: 1.4em; height: 1.4em; text-align: center }
   #header-links svg { height: 1.4em }
@@ -24,6 +24,8 @@
   .timeline li:first-child::before { height: .3em; width: .3em; background: var(--fg-color); border-radius: 100%; margin: .2em; z-index: 10 }
   .timeline li:first-child::after { padding: .1em; margin: -.1em }
   .timeline li:last-child::before { top: 1em; bottom: 0; width: .5em; background: var(--bg-color) }
+  .timeline-location { white-space: nowrap }
+  .timeline-date { margin: 0.1em 0 0.4em }
   .publication { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 2em; font-size: .9em; margin: 1em 0 }
   .publication h3 { font-weight: normal; margin: 0; margin-bottom: 0.2em }
   .publication aside { width: 6em; height: 6em; border: 1px solid var(--color-fg3); overflow: hidden }
@@ -36,7 +38,7 @@
   <main>
     <header id="header">
       <figure id="header-portrait">
-        <img src="/assets/images/IMG_2756.jpeg" alt="Terry's profile photo">
+        <img src="/assets/images/IMG_2756-compressed.jpeg" alt="Terry's profile photo">
       </figure>
       <section id="header-description">
         {{ content }}
@@ -54,40 +56,26 @@
         <h2>Education</h2>
 
         <ul class="timeline">
-          <li>
-            <strong>École de technologie supérieure</strong><br>
-            <span class="small">Montréal &bull; Incoming</span><br>
-            M. Sc. A. des technologies de l’information (equivalent to MASc in Computer Science)
-          </li>
-          <li>
-            <strong>University of Waterloo</strong><br>
-            <span class="small">Waterloo &bull; 2018 &ndash; 2023</span><br>
-            BMath Computer Science and Statistics
-          </li>
-        </ul>
+          {% for item in page.education %}
+            <li>
+              <strong>{{ item.institution }}</strong>&nbsp; <span class="timeline-location small">{{ item.location }}</span>
+              <div class="timeline-date small">{{ item.date | replace: "-", "&ndash;" }}</div>
+              {{ item.description }}
+            </li>
+          {% endfor %}
       </section>
 
       <section>
         <h2>Work Experience</h2>
 
         <ul class="timeline">
-          <li>
-            <strong>University of Waterloo</strong><br>
-            <span class="small">Waterloo &bull; May 2022 &ndash; August 2022</span><br>
-            Undergraduate Research Assistant
-          </li>
-
-          <li>
-            <strong>A.U.G. Signals</strong><br>
-            <span class="small">Toronto &bull; January 2021 &ndash; May 2021</span><br>
-            Software Developer Intern
-          </li>
-
-          <li>
-            <strong>University of Waterloo</strong><br>
-            <span class="small">Waterloo &bull; May 2020 &ndash; December 2020</span><br>
-            Undergraduate Research Assistant (part-time)
-          </li>
+          {% for item in page.employment %}
+            <li>
+              <strong>{{ item.organization }}</strong>&nbsp; <span class="timeline-location small">{{ item.location }}</span>
+              <div class="timeline-date small">{{ item.date | replace: "-", "&ndash;" }}</div>
+              {{ item.description }}
+            </li>
+          {% endfor %}
         </ul>
       </section>
     </div>
@@ -98,7 +86,7 @@
       {% for paper in site.data.publications.papers reversed %}
         {% assign paper_dir = paper.id | prepend: '/assets/publications/' %}
         <article class="publication">
-          <aside><img src="{{ paper_dir }}/{{paper.hero}}"></aside>
+          <aside><img src="{{ paper.thumb | replace: '$PubDir', paper_dir | replace: '$ProjDir', paper.id }}"></aside>
           <div>
             <h3>{{ paper.title }}</h3>
             {% for author in paper.authors %}
@@ -120,7 +108,7 @@
             </em>
             <br>
             {% if paper.project %}<a href="{{ paper.project }}">[project]</a>{% endif %}
-            {% if paper.paper %}<a href="{{ paper_dir }}/{{ paper.paper }}">[paper]</a>{% endif %}
+            {% if paper.paper %}<a href="{{ paper.paper | replace: '$PubDir', paper_dir }}">[paper]</a>{% endif %}
           </div>
         </article>
       {% endfor %}
