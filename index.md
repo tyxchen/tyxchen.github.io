@@ -11,6 +11,10 @@ education:
     date: 2018 - 2023
     description: BMath Computer Science and Statistics
 employment:
+  - organization: Ubisoft La Forge
+    location: Montréal, Canada
+    date: May 2024 - present
+    description: Research Intern
   - organization: University of Waterloo
     location: Waterloo, Canada
     date: September 2022 - December 2022 (part-time)<br>May 2022 - August 2022 (full-time)
