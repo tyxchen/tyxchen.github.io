@@ -13,7 +13,7 @@ education:
 employment:
   - organization: Ubisoft La Forge
     location: Montréal, Canada
-    date: May 2024 - present
+    date: May 2024 - January 2025
     description: Research Intern
   - organization: University of Waterloo
     location: Waterloo, Canada
