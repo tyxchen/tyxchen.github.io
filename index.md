@@ -11,6 +11,10 @@ education:
     date: 2018 - 2023
     description: BMath Computer Science and Statistics
 employment:
+  - organization: AMD
+    location: Markham, Canada
+    date: November 2025 - present
+    description: GPU Dev Tech Engineer
   - organization: Ubisoft La Forge
     location: Montréal, Canada
     date: May 2024 - January 2025
