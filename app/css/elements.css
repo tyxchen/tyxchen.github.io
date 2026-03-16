@@ -137,4 +137,13 @@ figure {
 .icon {
   stroke: currentColor;
   fill: currentColor;
+  height: 0.8em;
+}
+
+.show-more,
+.show-less {
+  display: block;
+  font-family: var(--font-accent);
+  font-weight: 700;
+  text-align: center;
 }

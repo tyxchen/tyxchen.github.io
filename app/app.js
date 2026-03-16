@@ -71,6 +71,28 @@ if ($('.site-header__menu-toggler')) {
   });
 }
 
+// Show more/less
+
+for (const el of $$('.show-more')) {
+  const targets = $$('#' + el.getAttribute('aria-controls').split(' ').join(', #'));
+
+  el.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    targets?.forEach((target) => target.classList.remove('hidden'));
+    el.classList.add('hidden');
+  });
+
+  $(`.show-less[aria-controls="${el.getAttribute('aria-controls')}"]`)?.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    targets?.forEach((target) => target.classList.add('hidden'));
+    el.classList.remove('hidden');
+  });
+
+  targets?.forEach((target) => target.classList.add('hidden'));
+}
+
 // Page-specific
 
 // Portfolio showcases
@@ -128,10 +150,10 @@ if ($('.showcase')) {
     }
 
     Resizer.addListener(() => {
-      const wasHidden = $('.showcase-more').classList.contains('hidden');
+      const wasHidden = $('#showcase-more').classList.contains('hidden');
 
       if (wasHidden) {
-        $('.showcase-more').classList.remove('hidden');
+        $('#showcase-more').classList.remove('hidden');
       }
       el.style.height = 'auto';
       el.classList.remove('loaded');
@@ -141,28 +163,15 @@ if ($('.showcase')) {
       el.classList.add('loaded');
       el.style.height = dims.height + 'px';
       if (wasHidden) {
-        $('.showcase-more').classList.add('hidden');
+        $('#showcase-more').classList.add('hidden');
       }
 
       drawBg();
     });
   }
 
-  $('.showcase-show-more').addEventListener('click', (e) => {
-    e.preventDefault();
-
-    $('.showcase-more').classList.remove('hidden');
-    $('.showcase-show-more').classList.add('hidden');
-  });
-
-  $('.showcase-show-less').addEventListener('click', (e) => {
-    e.preventDefault();
-
-    $('.showcase-more').classList.add('hidden');
-    $('.showcase-show-more').classList.remove('hidden');
-  });
-
-  $('.showcase-more').classList.add('hidden');
+  // need to remove display override to actually hide the extra content
+  $('#showcase-more').removeAttribute('style');
 }
 
 // Mini showcase

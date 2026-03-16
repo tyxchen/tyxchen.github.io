@@ -5,7 +5,7 @@ education:
   - institution: École de technologie supérieure
     location: Montréal, Canada
     date: 2023 - present
-    description: M. Sc. A. des technologies de l’information (equivalent to MASc in Computer Science)
+    description: MASc Computer Science
   - institution: University of Waterloo
     location: Waterloo, Canada
     date: 2018 - 2023
@@ -21,7 +21,7 @@ employment:
     description: Research Intern
   - organization: University of Waterloo
     location: Waterloo, Canada
-    date: September 2022 - December 2022 (part-time)<br>May 2022 - August 2022 (full-time)
+    date: May 2022 - December 2022
     description: Undergraduate Research Assistant
   - organization: A.U.G. Signals
     location: Toronto, Canada (remote)

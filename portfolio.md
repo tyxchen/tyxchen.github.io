@@ -33,8 +33,8 @@ clr: Rd
   color="#3e7af9"
   cover="equilibrium" %}
 
-<a href="#" class="showcase-show-more">Show more {% include icons/chevron-down.svg %}</a>
-<div class="showcase-more">
+<a href="#" class="show-more" aria-controls="showcase-more">Show more {% include icons/chevron-down.svg %}</a>
+<div id="showcase-more" style="display:block !important">
   {% include showcase.html
     id="ics4ufp"
     title="Calculation Solitaire"
@@ -49,7 +49,7 @@ clr: Rd
     color="#bea19e"
     cover="city" %}
   
-  <a href="#" class="showcase-show-less">Show less {% include icons/chevron-up.svg %}</a>
+  <a href="#" class="show-less" aria-controls="showcase-more">Show less {% include icons/chevron-up.svg %}</a>
 </div>
 
 # Side projects

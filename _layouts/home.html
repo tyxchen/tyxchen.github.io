@@ -17,15 +17,16 @@
   #qualifications { display: flex; flex-direction: row; flex-wrap: wrap; row-gap: .25em; column-gap: 2em; margin-bottom: -1em }
   #qualifications section { flex: 1; min-width: 320px }
   .timeline { position: relative; list-style: none }
-  .timeline::before { content: ''; position: absolute; top: 1em; bottom: .3em; left: .5em; width: .2em; background: var(--color-fg3); opacity: .5 }
+  .timeline::before { content: ''; position: absolute; top: 1em; bottom: .3em; left: .5em; width: .2em; background: var(--color-fg3); opacity: .5; border-radius: .2em }
   .timeline li { position: relative; margin-bottom: 1em }
-  .timeline li::before, .timeline li::after { content: ''; position: absolute; top: .4em; left: -1.25em }
+  .timeline li::before, .timeline li::after { content: ''; position: absolute; top: .4em; left: -1.25em; transition: var(--tn-fcn) }
   .timeline li::after { height: .5em; width: .5em; background: var(--bg-color); border: 2px solid; border-radius: 100% }
   .timeline li:first-child::before { height: .3em; width: .3em; background: var(--fg-color); border-radius: 100%; margin: .2em; z-index: 10 }
   .timeline li:first-child::after { padding: .1em; margin: -.1em }
   .timeline li:last-child::before { top: 1em; bottom: 0; width: .5em; background: var(--bg-color) }
   .timeline-location { white-space: nowrap }
   .timeline-date { margin: 0.1em 0 0.4em }
+  .show-more, .show-less { margin-top: .5em }
   .publication { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 2em; font-size: .9em; margin: 1em 0 }
   .publication h3 { font-weight: normal; margin: 0; margin-bottom: 0.2em }
   .publication aside { width: 6em; height: 6em; border: 1px solid var(--color-fg3); overflow: hidden }
@@ -69,11 +70,25 @@
         <h2>Work Experience</h2>
 
         <ul class="timeline">
-          {% for item in page.employment %}
+          {% assign extra_employment = (3..page.employment.size) | join: " employment-" | prepend: "employment-" %}
+          {% for item in page.employment limit: 2 %}
             <li>
               <strong>{{ item.organization }}</strong>&nbsp; <span class="timeline-location small">{{ item.location }}</span>
               <div class="timeline-date small">{{ item.date | replace: "-", "&ndash;" }}</div>
               {{ item.description }}
+              {% if forloop.last and page.employment.size > 2 %}
+                <a href="#" class="show-more small text-left" aria-controls="{{ extra_employment }}">Show more {% include icons/chevron-down.svg %}</a>
+              {% endif %}
+            </li>
+          {% endfor %}
+          {% for item in page.employment offset: continue %}
+            <li id="employment-{{ forloop.index | plus: 2 }}">
+              <strong>{{ item.organization }}</strong>&nbsp; <span class="timeline-location small">{{ item.location }}</span>
+              <div class="timeline-date small">{{ item.date | replace: "-", "&ndash;" }}</div>
+              {{ item.description }}
+              {% if forloop.last %}
+                <a href="#" class="show-less small text-left" aria-controls="{{ extra_employment }}">Show less {% include icons/chevron-up.svg %}</a>
+              {% endif %}
             </li>
           {% endfor %}
         </ul>
