@@ -7,3 +7,5 @@ assets/static/*.map
 
 *.sublime-project
 *.sublime-workspace
+
+.astro

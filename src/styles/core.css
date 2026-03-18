@@ -1,0 +1,158 @@
+@import "$styles/variables.css";
+
+/**
+ * Element styles
+ */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+.heading-text {
+  font-family: var(--font-accent);
+}
+
+h1 {
+  font-size: 2em;
+  font-weight: 900;
+}
+
+p:first-child {
+  margin-top: 0;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color var(--tn-fcn);
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  .faded {
+    color: #78a;
+  }
+}
+
+[data-icon] {
+  stroke: currentColor;
+  fill: currentColor;
+  height: 1em;
+  width: auto;
+  vertical-align: middle;
+}
+
+/**
+ * Alignment classes
+ */
+
+.hor-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+@media (--gt-than-tablet) {
+  .float-left {
+    float: left;
+  }
+
+  .float-right {
+    float: right;
+  }
+}
+
+/**
+ * Colour classes
+ */
+
+.fg-or {
+  color: var(--color-or2);
+}
+
+.fg-rd {
+  color: var(--color-rd2);
+}
+
+.fg-pu {
+  color: var(--color-pu2);
+}
+
+.fg-bu {
+  color: var(--color-bu2);
+}
+
+.fg-gn {
+  color: var(--color-gn2);
+}
+
+.bg-or {
+  background-color: var(--color-or2);
+}
+
+.bg-rd {
+  background-color: var(--color-rd2);
+}
+
+.bg-pu {
+  background-color: var(--color-pu2);
+}
+
+.bg-bu {
+  background-color: var(--color-bu2);
+}
+
+.bg-gn {
+  background-color: var(--color-gn2);
+}
+
+/**
+ * Sizing classes
+ */
+
+.x-small {
+  font-size: .5em;
+}
+
+.small {
+  font-size: .8em;
+}
+
+.large {
+  font-size: 1.2em;
+}
+
+.x-large {
+  font-size: 1.5em;
+}
+
+/**
+ * Utility classes
+ */
+
+.hidden {
+  display: none !important;
+}
+
+.invisible {
+  visibility: hidden !important;
+}

@@ -4,7 +4,8 @@
   "description": "Personal web page",
   "main": "index.html",
   "scripts": {
-    "test": "mocha"
+    "dev": "astro dev",
+    "build": "NODE_ENV=production astro build"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,13 @@
     "webpack-cli": "^5.1.1"
   },
   "dependencies": {
+    "@csstools/postcss-global-data": "^4.0.0",
+    "@iconify-json/academicons": "^1.2.4",
+    "@iconify-json/fa7-brands": "^1.2.2",
+    "@iconify-json/ph": "^1.2.2",
+    "astro": "^6.0.4",
+    "astro-icon": "^1.1.5",
+    "delaunator": "^5.0.1",
     "normalize.css": "^8.0.1"
   }
 }

@@ -1,0 +1,48 @@
+{
+  "education": [
+    {
+      "institution": "École de technologie supérieure",
+      "location": "Montréal, Canada",
+      "date": "2023 - present",
+      "description": "MASc Computer Science"
+    },
+    {
+      "institution": "University of Waterloo",
+      "location": "Waterloo, Canada",
+      "date": "2018 - 2023",
+      "description": "BMath Computer Science and Statistics"
+    }
+  ],
+  "employment": [
+    {
+      "organization": "AMD",
+      "location": "Markham, Canada",
+      "date": "November 2025 - present",
+      "description": "GPU Dev Tech Engineer"
+    },
+    {
+      "organization": "Ubisoft La Forge",
+      "location": "Montréal, Canada",
+      "date": "May 2024 - January 2025",
+      "description": "Research Intern"
+    },
+    {
+      "organization": "University of Waterloo",
+      "location": "Waterloo, Canada",
+      "date": "May 2022 - December 2022",
+      "description": "Undergraduate Research Assistant"
+    },
+    {
+      "organization": "A.U.G. Signals",
+      "location": "Toronto, Canada (remote)",
+      "date": "January 2021 - May 2021",
+      "description": "Software Developer Intern"
+    },
+    {
+      "organization": "University of Waterloo",
+      "location": "Waterloo, Canada",
+      "date": "May 2020 - December 2020 (part-time)",
+      "description": "Undergraduate Research Assistant"
+    }
+  ]
+}

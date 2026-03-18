@@ -1,0 +1,110 @@
+---
+import type { colors } from "$lib/colours";
+
+type Props = {
+  animate?: boolean;
+  cellSize?: number;
+  colour?: keyof typeof colors | "shuffle";
+  controlKey: string;
+  interactive?: boolean;
+};
+
+const {
+  animate = false,
+  cellSize = 16,
+  colour = "shuffle",
+  controlKey,
+  interactive = false,
+} = Astro.props as Props;
+---
+
+<>
+  <span
+    class="trianglify"
+    data-animate={animate ? "" : undefined}
+    data-cell-size={cellSize}
+    data-colour={colour}
+    data-control-key={controlKey}
+    data-interactive={interactive}
+  >
+    <slot />
+  </span>
+
+  <style>
+    .trianglify[data-interactive="true"] {
+      cursor: pointer;
+      user-select: none;
+
+      :global(.trianglify-svg) {
+        user-select: text !important;
+      }
+    }
+
+    .trianglify :global(.trianglify-canvas) {
+      filter: brightness(0.8) contrast(1.25);
+
+      @media (prefers-color-scheme: dark) {
+        filter: none;
+      }
+    }
+  </style>
+</>
+
+<script>
+  import { choosableColors, colors } from "$lib/colours";
+  import {
+    trianglify,
+    type TrianglifyChangeColourSet,
+  } from "$lib/trianglify.ts";
+  import { $$, shuffle } from "$lib/utils.ts";
+
+  class Trianglify {
+    static changeColourSets: Record<string, TrianglifyChangeColourSet[]> = {};
+    static shuffledColourInds: Record<string, number> = {};
+    static shuffledColours = shuffle(
+      Object.keys(choosableColors) as (keyof typeof choosableColors)[],
+    );
+  }
+
+  const init = (el: HTMLElement) => {
+    const colourSetInd =
+      el.dataset.colour === "shuffle"
+        ? Trianglify.shuffledColours[0]
+        : ((el.dataset.colour as keyof typeof colors) ?? "random");
+    const { changeColorSet } = trianglify(
+      el,
+      colors[colourSetInd],
+      el.dataset.hasOwnProperty("animate") &&
+        !window.matchMedia("(prefers-reduced-motion)").matches,
+      el.dataset.cellSize ? parseInt(el.dataset.cellSize) : undefined,
+    );
+    const controlKey = el.dataset.controlKey!;
+    if (!Trianglify.changeColourSets[controlKey]) {
+      Trianglify.changeColourSets[controlKey] = [];
+      Trianglify.shuffledColourInds[controlKey] = 0;
+    }
+    Trianglify.changeColourSets[controlKey].push(changeColorSet);
+
+    if (el.dataset.interactive === "true") {
+      el.setAttribute("tabindex", "0");
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const chosenClr = ++Trianglify.shuffledColourInds[controlKey];
+
+        for (const changeColor of Trianglify.changeColourSets[controlKey]) {
+          changeColor(choosableColors[Trianglify.shuffledColours[chosenClr]]);
+        }
+
+        if (chosenClr + 1 >= Trianglify.shuffledColours.length) {
+          Trianglify.shuffledColours = shuffle(Trianglify.shuffledColours);
+          Trianglify.shuffledColourInds[controlKey] = -1;
+        }
+      });
+    }
+  };
+
+  globalThis.addEventListener("load", () => {
+    $$(".trianglify").forEach((el) => init(el as HTMLElement));
+  });
+</script>
