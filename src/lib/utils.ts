@@ -40,6 +40,7 @@ export const shuffle = <T>(arr: T[], curVal?: T) => {
     return arr;
 };
 
+// Escape text for HTML insertion
 export const escapeText = (str: string) =>
   str.replaceAll('&', '&amp;')
     .replaceAll('<', '&lt')
@@ -50,6 +51,7 @@ export const escapeText = (str: string) =>
 export const leftPad = (str: string, pad: string, len: number) =>
   str.length < len ? (new Array(len - str.length + 1).join(pad) + str) : str;
 
+// Horizontal offsets of capital letters, in em, for optical left-alignment 
 export const letterOffsets = {
   A: 0.0078,
   B: -0.0625,
@@ -75,3 +77,6 @@ export const letterOffsets = {
   W: -0.0078,
   Z: -0.0625
 };
+
+// lerp function
+export const lerp = (a: number, b: number, s: number) => a + (b - a) * s;

@@ -86,7 +86,6 @@ const {
     Trianglify.changeColourSets[controlKey].push(changeColorSet);
 
     if (el.dataset.interactive === "true") {
-      el.setAttribute("tabindex", "0");
       el.addEventListener("click", (e) => {
         e.preventDefault();
 
@@ -97,7 +96,7 @@ const {
         }
 
         if (chosenClr + 1 >= Trianglify.shuffledColours.length) {
-          Trianglify.shuffledColours = shuffle(Trianglify.shuffledColours);
+          Trianglify.shuffledColours = shuffle(Trianglify.shuffledColours, Trianglify.shuffledColours[chosenClr]);
           Trianglify.shuffledColourInds[controlKey] = -1;
         }
       });

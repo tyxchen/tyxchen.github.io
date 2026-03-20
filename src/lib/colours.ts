@@ -1,6 +1,8 @@
-import { chooseRandomFromObject, leftPad } from '$lib/utils.ts';
+import { chooseRandomFromObject, leftPad, lerp } from '$lib/utils.ts';
 
-export type Colour = [number, number, number];
+export type ColourRGB = [number, number, number];
+export type ColourLAB = [number, number, number];
+export type Colour = ColourRGB | ColourLAB;
 
 // Colours from ColorBrewer
 // https://bl.ocks.org/mbostock/5577023
@@ -44,7 +46,7 @@ export const colors = {
 // Color functions
 
 export const hexToRGB = (hexClr: string) => {
-  const rgbClrs = new Uint8ClampedArray(3);
+  const rgbClrs = new Array(3);
 
   if (hexClr[0] === '#') {
     hexClr = hexClr.slice(1);
@@ -60,13 +62,22 @@ export const hexToRGB = (hexClr: string) => {
     rgbClrs[2] = 17 * parseInt(hexClr[2], 16);
   }
 
-  return Array.from(rgbClrs) as Colour;
+  rgbClrs[0] /= 255;
+  rgbClrs[1] /= 255;
+  rgbClrs[2] /= 255;
+
+  return Array.from(rgbClrs) as ColourRGB;
 };
 
-export const RGBToHex = (rgbClr: Colour) => {
-  return '#' + Array.from(rgbClr).map((x) => leftPad((x).toString(16), '0', 2)).join('');
+export const RGBToHex = (rgbClr: ColourRGB) => {
+  return '#' + Array.from(rgbClr).map((x) => leftPad((255 * x).toString(16).split('.')[0], '0', 2)).join('');
 };
 
+export const lerpColour = (from: Colour, to: Colour, factor: number) => {
+  return [lerp(from[0], to[0], factor), lerp(from[1], to[1], factor), lerp(from[2], to[2], factor)] as Colour;
+};
+
+// Gaussian interpolation of colors
 export const interpolate = (colors: Array<Colour>, sigma_2 = 0.035, x = 0.5) => {
   const step = 1.0 / (colors.length - 1);
   let r = 0.0, g = 0.0, b = 0.0;
@@ -88,7 +99,7 @@ export const interpolate = (colors: Array<Colour>, sigma_2 = 0.035, x = 0.5) => 
     b += color[2] * percent / total;
   }
 
-  return Array.from(new Uint8ClampedArray([r, g, b])) as Colour;
+  return [r, g, b] as Colour;
 };
 
 export const getGradient = (fromClr: Colour, toClr: Colour, numStops: number) => {
@@ -101,24 +112,24 @@ export const getGradient = (fromClr: Colour, toClr: Colour, numStops: number) =>
   ];
 
   for (let i=0; i<stops.length; i++) {
-    stops[i] = fromClr.map((f: number, k: number) => Math.floor(f + (i + 1) * steps[k] / numStops));
+    stops[i] = fromClr.map((f: number, k: number) => f + (i + 1) * steps[k] / numStops);
   }
 
   return stops as Colour[];
 };
 
-export const luminance = (clr: Colour) => {
-  return (Math.max(...clr) + Math.min(...clr)) / 510; // 510 = 2 * 255
+export const luminance = (clr: ColourRGB) => {
+  return (Math.max(...clr) + Math.min(...clr)) / 2;
 };
 
-export const mix = (clrA: Colour, clrB: Colour, factor = 0.5) => {
-  return clrA.map((c, i) => c + (clrB[i] - c) * factor);
+export const mix = <Clr extends Colour,>(clrA: Clr, clrB: Clr, factor = 0.5) => {
+  return clrA.map((c, i) => c + (clrB[i] - c) * factor) as Clr;
 };
 
-export const shade = (clr: Colour, factor: number) => mix(clr, [0, 0, 0], factor);
+export const shade = (clr: ColourRGB, factor: number) => mix(clr, [0, 0, 0], factor);
 
-export const tint = (clr: Colour, factor: number) => mix(clr, [255, 255, 255], factor);
+export const tint = (clr: ColourRGB, factor: number) => mix(clr, [1, 1, 1], factor);
 
-export const randBrightness = (clr: Colour, variance = 40) => {
+export const randBrightness = (clr: ColourRGB, variance = 40) => {
   return clr.map((x) => x + variance * (Math.random() - 0.5));
 };
