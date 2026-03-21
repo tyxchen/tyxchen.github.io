@@ -1,6 +1,18 @@
 import { defineConfig } from 'astro/config';
 import icon from 'astro-icon';
-// https://astro.build/config
+
+const SITE = Deno.env.get('SITE');
+
 export default defineConfig({
-  integrations: [icon()]
+  base: '/',
+  site: SITE,
+  server: {
+    host: true,
+  },
+  output: 'static',
+  integrations: [icon()],
+  //prefetch: true,
+  redirects: {
+    '/archive': '/posts',
+  }
 });
