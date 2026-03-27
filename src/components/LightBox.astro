@@ -1,0 +1,157 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = {
+  class?: string;
+  style?: string;
+} & HTMLAttributes<"figure">;
+
+const { class: className, ...attrs } = Astro.props as Props;
+---
+
+<figure class:list={["lightbox", className]} {...attrs}>
+  <div class="placeholder"></div>
+  <div class="img-wrapper">
+    <div class="img-background"></div>
+    <slot />
+  </div>
+  <slot name="caption">
+    <figcaption></figcaption>
+  </slot>
+</figure>
+
+<style>
+  .lightbox {
+    .img-wrapper {
+      position: relative;
+      z-index: 1;
+      transition-delay: 0.25s;
+    }
+
+    .img-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--bg-color);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    :global(img),
+    :global(picture) {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+      transform: scale(1);
+      transform-origin: 50% 0;
+      transition: transform 0.4s ease;
+      cursor: zoom-in;
+    }
+
+    &.expanded {
+      cursor: zoom-out;
+    }
+
+    &.expanded .img-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10;
+      transition-delay: 0s;
+    }
+
+    &.expanded .img-background {
+      opacity: 0.8;
+      pointer-events: all;
+    }
+
+    &.expanded :global(img),
+    &.expanded :global(picture) {
+      position: absolute;
+      cursor: zoom-out;
+    }
+  }
+</style>
+
+<script>
+  import { $$, $ } from "$lib/utils";
+  import Resizer from "$lib/resizer";
+
+  for (const figure of $$("figure.lightbox")) {
+    const placeholder = $(figure, ".placeholder")! as HTMLElement;
+    const wrapper = $(figure, ".img-wrapper")!;
+
+    figure.addEventListener("click", (e) => {
+      let resizerListener: symbol | undefined;
+
+      const img = wrapper.lastElementChild! as HTMLElement; // can be <picture> or <img>
+      const actualImg = $(figure, "img")! as HTMLImageElement;
+      const { naturalHeight, naturalWidth } = actualImg;
+      const aspectRatio = naturalWidth / naturalHeight;
+
+      function openExpandedImage() {
+        const {
+          top: imgScrollTop,
+          left: imgScrollLeft,
+          height: imgHeight,
+          width: imgWidth,
+        } = img.getBoundingClientRect();
+        const { innerHeight, innerWidth } = window;
+        const expandedHeight = Math.min(naturalHeight, innerHeight - 40);
+        const expandedWidth = Math.min(naturalWidth, innerWidth - 40);
+
+        img.style.height = placeholder.style.height = imgHeight + "px";
+        img.style.width = placeholder.style.width = imgWidth + "px";
+        img.style.top = imgScrollTop + "px";
+        img.style.left = imgScrollLeft + "px";
+
+        if (aspectRatio <= (innerWidth - 40) / (innerHeight - 40)) {
+          img.style.transform = `translateY(${(innerHeight - expandedHeight) / 2 - imgScrollTop}px) scale(${expandedHeight / imgHeight})`;
+        } else {
+          img.style.transform = `translateY(${(innerHeight - expandedWidth / aspectRatio) / 2 - imgScrollTop}px) scale(${expandedWidth / imgWidth})`;
+        }
+      }
+
+      function closeExpandedImage() {
+        figure.classList.remove("expanded");
+
+        placeholder.removeAttribute("style");
+        img.removeAttribute("style");
+
+        if (resizerListener) Resizer.removeListener(resizerListener);
+      }
+
+      if (figure.classList.contains("expanded")) {
+        closeExpandedImage();
+      } else if (wrapper.contains(e.target as Node)) {
+        const windowScrollTop = window.scrollY;
+
+        openExpandedImage();
+
+        figure.classList.add("expanded");
+
+        resizerListener = Resizer.addListener(() => {
+          openExpandedImage();
+        });
+
+        window.addEventListener(
+          "scroll",
+          function closeExpandedImageScrollListener() {
+            closeExpandedImage();
+
+            window.removeEventListener(
+              "scroll",
+              closeExpandedImageScrollListener,
+            );
+          },
+        );
+      }
+    });
+  }
+</script>

@@ -42,6 +42,25 @@ a {
   }
 }
 
+figure {
+  position: relative;
+  margin-left: 0;
+  margin-right: 0;
+  
+  iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin: 0 auto;
+  }
+
+  figcaption {
+    font-size: 0.8em;
+    font-style: italic;
+    text-align: center;
+  }
+}
+
 [data-icon] {
   stroke: currentColor;
   fill: currentColor;
