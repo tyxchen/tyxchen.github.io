@@ -15,6 +15,7 @@ const posts = defineCollection({
       updatedDate: z.coerce.date().optional(),
       heroImage: z.string().optional(),
       heroAttr: z.string().optional(),
+      heroInvertColours: z.boolean().optional(),
     }),
 });
 const portfolio = defineCollection({

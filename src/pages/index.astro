@@ -1,7 +1,8 @@
 ---
+import MetaLayout from "$layouts/MetaLayout.astro";
+import Header from "$components/Header.astro";
 import ShowMoreLessBtn from "$components/ShowMoreLessBtn.astro";
 import Trianglify from "$components/Trianglify.astro";
-import Layout from "$layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 
 import * as cv from "src/data/cv.json";
@@ -13,194 +14,207 @@ const extra_employment = cv.employment
   .join(" ");
 ---
 
-<Layout layout="home" title="Terry Chen">
-  <header id="header">
-    <figure id="header-portrait">
-      <img
-        src="/assets/images/IMG_2756-compressed.jpeg"
-        alt="Terry's profile photo"
-      />
-    </figure>
-    <section id="header-description">
-      <h1>
-        Hi, I&CloseCurlyQuote;m <Trianglify
-          animate
-          interactive
-          cellSize={16}
-          controlKey="header">Terry</Trianglify
-        >.
-      </h1>
+<MetaLayout layout="home" title="Terry Chen">
+  <Header />
 
-      <p>
-        I&CloseCurlyQuote;m a GPU Dev Tech engineer at AMD, helping developers
-        optimize their games for AMD hardware.
-      </p>
+  <main>
+    <header id="header">
+      <figure id="header-portrait">
+        <img
+          src="/assets/images/IMG_2756-compressed.jpeg"
+          alt="Terry's profile photo"
+        />
+      </figure>
+      <section id="header-description">
+        <h1>
+          Hi, I&CloseCurlyQuote;m <Trianglify
+            animate
+            interactive
+            cellSize={16}
+            controlKey="header">Terry</Trianglify
+          >.
+        </h1>
 
-      <p>
-        I&CloseCurlyQuote;m also a master&CloseCurlyQuote;s student under the
-        supervision of <a href="https://profs.etsmtl.ca/agruson/"
-          >Prof. Adrien Gruson</a
-        > and
-        <a href="https://cim.mcgill.ca/~derek/">Prof. Derek Nowrouzezahrai</a>,
-        researching improvements to real-time rendering algorithms.
-      </p>
+        <p>
+          I&CloseCurlyQuote;m a GPU Dev Tech engineer at AMD, helping developers
+          optimize their games for AMD hardware.
+        </p>
 
-      <footer id="header-links">
-        <a href="mailto:tyxchen@outlook.com"><Icon name="ph:envelope" /></a>
-        <a href="/assets/resume.pdf"><Icon name="ph:read-cv-logo" /></a>
-        <a rel="noreferrer" href="https://github.com/tyxchen"
-          ><Icon name="fa7-brands:github" /></a
-        >
-        <a rel="noreferrer" href="https://www.linkedin.com/in/tyxchen"
-          ><Icon name="fa7-brands:linkedin" /></a
-        >
-      </footer>
-    </section>
-  </header>
+        <p>
+          I&CloseCurlyQuote;m also a master&CloseCurlyQuote;s student under the
+          supervision of <a href="https://profs.etsmtl.ca/agruson/"
+            >Prof. Adrien Gruson</a
+          > and
+          <a href="https://cim.mcgill.ca/~derek/">Prof. Derek Nowrouzezahrai</a>,
+          researching improvements to real-time rendering algorithms.
+        </p>
 
-  <div id="qualifications">
-    <section>
-      <h2>Education</h2>
+        <footer id="header-links">
+          <a href="mailto:tyxchen@outlook.com"><Icon name="ph:envelope" /></a>
+          <a href="/assets/resume.pdf"><Icon name="ph:read-cv-logo" /></a>
+          <a rel="noreferrer" href="https://github.com/tyxchen"
+            ><Icon name="fa7-brands:github" /></a
+          >
+          <a rel="noreferrer" href="https://www.linkedin.com/in/tyxchen"
+            ><Icon name="fa7-brands:linkedin" /></a
+          >
+        </footer>
+      </section>
+    </header>
 
-      <ul class="timeline">
-        {
-          cv.education.map((item) => (
-            <li>
-              <strong>{item.institution}</strong>&nbsp;{" "}
-              <span class="timeline-location small">{item.location}</span>
-              <div class="timeline-date small">
-                {item.date.replace("-", "–")}
-              </div>
-              {item.description}
-            </li>
-          ))
-        }
-      </ul>
-    </section>
+    <div id="qualifications">
+      <section>
+        <h2>Education</h2>
 
-    <section>
-      <h2>Work Experience</h2>
+        <ul class="timeline">
+          {
+            cv.education.map((item) => (
+              <li>
+                <strong>{item.institution}</strong>&nbsp;{" "}
+                <span class="timeline-location small">{item.location}</span>
+                <div class="timeline-date small">
+                  {item.date.replace("-", "–")}
+                </div>
+                {item.description}
+              </li>
+            ))
+          }
+        </ul>
+      </section>
 
-      <ul class="timeline">
-        {
-          cv.employment.slice(0, 2).map((item, i) => (
-            <li>
-              <strong>{item.organization}</strong>&nbsp;{" "}
-              <span class="timeline-location small">{item.location}</span>
-              <div class="timeline-date small">
-                {item.date.replace("-", "–")}
-              </div>
-              {item.description}
-              {i === 1 && cv.employment.length > 2 && (
-                <ShowMoreLessBtn
-                  type="more"
-                  class="small"
-                  ariaControls={extra_employment}
-                />
-              )}
-            </li>
-          ))
-        }
-        {
-          cv.employment.slice(2).map((item, i) => (
-            <li id={`employment-${i + 2}`}>
-              <strong>{item.organization}</strong>&nbsp;{" "}
-              <span class="timeline-location small">{item.location}</span>
-              <div class="timeline-date small">
-                {item.date.replace("-", "–")}
-              </div>
-              {item.description}
-              {i === cv.employment.length - 3 && (
-                <ShowMoreLessBtn
-                  type="less"
-                  class="small"
-                  ariaControls={extra_employment}
-                />
-              )}
-            </li>
-          ))
-        }
-      </ul>
-    </section>
-  </div>
+      <section>
+        <h2>Work Experience</h2>
 
-  <section>
-    <h2>Publications</h2>
-
-    {
-      publications.papers.toReversed().map((paper) => (
-        <article class="publication">
-          <aside>
-            <img
-              src={paper.thumb
-                .replace("$PubDir", `/assets/publications/${paper.id}`)
-                .replace("$ProjDir", paper.id)}
-              alt={`Thumbnail for ${paper.title}`}
-            />
-          </aside>
-          <div>
-            <h3>{paper.title}</h3>
-            {paper.authors
-              .map((author, i) => {
-                if (author === "Terry Chen") {
-                  return <strong>T. Chen</strong>;
-                } else {
-                  const authorNames = author.split(" ");
-                  const collaboratorLink =
-                    publications.collaborators[
-                      author as keyof typeof publications.collaborators
-                    ] ?? null;
-                  const authorInitialsName = authorNames
-                    .map((name, j) =>
-                      j === authorNames.length - 1 ? ` ${name}` : `${name[0]}.`,
-                    )
-                    .join("");
-                  return collaboratorLink ? (
-                    <a href={collaboratorLink}>{authorInitialsName}</a>
-                  ) : (
-                    authorInitialsName
-                  );
-                }
-              })
-              .reduce((prev, curr) => [prev, ", ", curr])}
-            <br />
-            <em>
-              {paper.conference}
-              {paper.journal && ` (${paper.journal})`}, {paper.year}
-            </em>
-            <br />
-            {paper.project && <a href={paper.project}>[project]</a>}
-            {paper.paper && (
-              <a
-                href={paper.paper.replace(
-                  "$PubDir",
-                  `/assets/publications/${paper.id}`,
+        <ul class="timeline">
+          {
+            cv.employment.slice(0, 2).map((item, i) => (
+              <li>
+                <strong>{item.organization}</strong>&nbsp;{" "}
+                <span class="timeline-location small">{item.location}</span>
+                <div class="timeline-date small">
+                  {item.date.replace("-", "–")}
+                </div>
+                {item.description}
+                {i === 1 && cv.employment.length > 2 && (
+                  <ShowMoreLessBtn
+                    type="more"
+                    class="small"
+                    ariaControls={extra_employment}
+                  />
                 )}
-              >
-                [paper]
-              </a>
-            )}
-          </div>
-        </article>
-      ))
-    }
-  </section>
+              </li>
+            ))
+          }
+          {
+            cv.employment.slice(2).map((item, i) => (
+              <li id={`employment-${i + 2}`}>
+                <strong>{item.organization}</strong>&nbsp;{" "}
+                <span class="timeline-location small">{item.location}</span>
+                <div class="timeline-date small">
+                  {item.date.replace("-", "–")}
+                </div>
+                {item.description}
+                {i === cv.employment.length - 3 && (
+                  <ShowMoreLessBtn
+                    type="less"
+                    class="small"
+                    ariaControls={extra_employment}
+                  />
+                )}
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </div>
 
-  <section>
-    <h2>Awards</h2>
+    <section>
+      <h2>Publications</h2>
 
-    <ul>
-      <li>NSERC Undergraduate Student Research Award (2023)</li>
-      <li>University of Waterloo Undergraduate Research Fellowship (2023)</li>
-    </ul>
-  </section>
-</Layout>
+      {
+        publications.papers.toReversed().map((paper) => (
+          <article class="publication">
+            <aside>
+              <img
+                src={paper.thumb
+                  .replace("$PubDir", `/assets/publications/${paper.id}`)
+                  .replace("$ProjDir", paper.id)}
+                alt={`Thumbnail for ${paper.title}`}
+              />
+            </aside>
+            <div>
+              <h3>{paper.title}</h3>
+              {paper.authors
+                .map((author, i) => {
+                  if (author === "Terry Chen") {
+                    return <strong>T. Chen</strong>;
+                  } else {
+                    const authorNames = author.split(" ");
+                    const collaboratorLink =
+                      publications.collaborators[
+                        author as keyof typeof publications.collaborators
+                      ] ?? null;
+                    const authorInitialsName = authorNames
+                      .map((name, j) =>
+                        j === authorNames.length - 1
+                          ? ` ${name}`
+                          : `${name[0]}.`,
+                      )
+                      .join("");
+                    return collaboratorLink ? (
+                      <a href={collaboratorLink}>{authorInitialsName}</a>
+                    ) : (
+                      authorInitialsName
+                    );
+                  }
+                })
+                .reduce((prev, curr) => [prev, ", ", curr])}
+              <br />
+              <em>
+                {paper.conference}
+                {paper.journal && ` (${paper.journal})`}, {paper.year}
+              </em>
+              <br />
+              {paper.project && <a href={paper.project}>[project]</a>}
+              {paper.paper && (
+                <a
+                  href={paper.paper.replace(
+                    "$PubDir",
+                    `/assets/publications/${paper.id}`,
+                  )}
+                >
+                  [paper]
+                </a>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </section>
+
+    <!--
+    <section>
+      <h2>Awards</h2>
+
+      <ul>
+        <li>NSERC Undergraduate Student Research Award (2023)</li>
+        <li>University of Waterloo Undergraduate Research Fellowship (2023)</li>
+      </ul>
+    </section>
+    -->
+
+  </main>
+</MetaLayout>
 
 <style>
   * {
     font-family: var(--font-accent);
   }
-  :global(main) > section {
+  main {
+    flex: 1;
+    font-size: 20px;
+  }
+  main > section {
     margin: 2.5em 0;
   }
   ul,

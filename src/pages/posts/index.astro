@@ -10,13 +10,22 @@ const posts = (await getCollection("posts")).sort(
 
 <Page title="Post archive">
   {posts.map((post) => ( 
-    <h2><a href={`/posts/${post.id}`}><span class="faded">{formatDate(post.data.date)} &mdash;</span> {post.data.title}</a></h2>
+    <h2><a href={`/posts/${post.id}`}><span class="date faded">{formatDate(post.data.date)}</span> <span class="title">{post.data.title}</span></a></h2>
   ))}
   {posts.length === 0 && <em>No posts available.</em>}
 </Page>
 
 <style>
-  .faded {
-    font-variant-numeric: tabular-nums;
+  h2 a {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+  .date {
+    width: 9.5ch;
+    font-size: 0.9em;
+  }
+  .title {
+    flex: 1;
   }
 </style>

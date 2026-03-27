@@ -1,0 +1,92 @@
+---
+import "normalize.css";
+import "$styles/core.css";
+
+type Props = { layout: string; title: string };
+
+const { layout, title } = Astro.props as Props;
+---
+
+<!doctype html>
+<html lang="en-ca" class={`no-js no-katex layout-${layout}`}>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE-edge" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self';frame-src 'self' youtube-nocookie.com www.youtube-nocookie.com;style-src 'self' 'unsafe-inline' rsms.me cdnjs.jsdelivr.net;script-src 'self' 'unsafe-inline' cdn.jsdelivr.net;font-src rsms.me cdn.jsdelivr.net;img-src 'self' https:"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,minimum-scale=1,shrink-to-fit=no"
+    />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+    <link rel="shortcut icon" href="/favicon.png?v20181206" type="image/png" />
+
+    <!-- TODO: add seo -->
+    <title>{title}</title>
+
+    <style is:inline>
+      html {
+        background-color: #fff;
+      }
+      @media (prefers-color-scheme: dark) {
+        html {
+          background-color: #050723;
+        }
+      }
+      .site-header,
+      main {
+        width: 90%;
+        max-width: 1136px;
+        margin: 0 auto;
+      }
+      .no-katex [type*="math/tex"] {
+        display: inline-block !important;
+        font-family: monospace;
+        white-space: pre;
+      }
+      .no-katex [type*="math/tex"][type*="mode=display"] {
+        display: block !important;
+        width: 100%;
+        text-align: center;
+      }
+    </style>
+
+    <script is:inline>
+      document.documentElement.classList.remove("no-js");
+    </script>
+
+    <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
+
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+  </body>
+
+  <style>
+    html {
+      background-color: var(--bg-color);
+      color: var(--fg-color);
+      font: 16px/1.5 var(--font-copy);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizelegibility;
+      transition: var(--tn-fcn);
+      -ms-touch-action: manipulation;
+      touch-action: manipulation;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+
+      @media print {
+        display: block;
+      }
+    }
+  </style>
+</html>

@@ -8,9 +8,10 @@ type Props = {
   subtitle?: string;
   heroImage: string;
   heroAttr?: string;
+  heroInvertColours?: boolean;
 };
 
-const { layout = "page", title, subtitle, heroImage, heroAttr } = Astro.props;
+const { layout = "page", title, subtitle, heroImage, heroAttr, heroInvertColours = false } = Astro.props;
 ---
 
 <Layout layout={layout} title={title}>
@@ -41,7 +42,7 @@ const { layout = "page", title, subtitle, heroImage, heroAttr } = Astro.props;
   </div>
 </Layout>
 
-<style>
+<style define:vars={{ "hero-fg": heroInvertColours ? "black" : "white" }}>
   @import "$styles/variables.css";
 
   #header {
@@ -70,7 +71,7 @@ const { layout = "page", title, subtitle, heroImage, heroAttr } = Astro.props;
     }
 
     .image-attr {
-      color: white;
+      color: var(--hero-fg);
       margin-top: -2em;
       overflow: hidden;
 
@@ -99,12 +100,13 @@ const { layout = "page", title, subtitle, heroImage, heroAttr } = Astro.props;
     font-size: 4rem;
     font-weight: 900;
     line-height: 1;
-    margin-top: -0.85em;
+    margin-top: -1.2em;
     margin-bottom: 0;
     transition: color var(--tn-fcn);
 
     &::first-line {
-      color: white;
+      color: var(--hero-fg);
+      line-height: 1.2;
     }
 
     @media (--gt-than-tablet) {
