@@ -23,7 +23,7 @@
     "mini-css-extract-plugin": "^2.7.6",
     "css-minimizer-webpack-plugin": "^5.0.0",
     "postcss-atroot": "^0.2.3",
-    "postcss-custom-media": "^9.1.4",
+    "postcss-custom-media": "^12.0.1",
     "postcss-import": "^15.1.0",
     "postcss-loader": "^7.3.2",
     "postcss-nested": "^6.0.1",
@@ -31,6 +31,8 @@
     "webpack-cli": "^5.1.1"
   },
   "dependencies": {
+    "@astrojs/mdx": "^5.0.2",
+    "@astrojs/svelte": "^8.0.3",
     "@csstools/postcss-global-data": "^4.0.0",
     "@iconify-json/academicons": "^1.2.4",
     "@iconify-json/fa7-brands": "^1.2.2",
@@ -38,6 +40,10 @@
     "astro": "^6.0.4",
     "astro-icon": "^1.1.5",
     "delaunator": "^5.0.1",
-    "normalize.css": "^8.0.1"
+    "normalize.css": "^8.0.1",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
+    "svelte": "^5.54.0",
+    "typescript": "^5.9.3"
   }
 }
