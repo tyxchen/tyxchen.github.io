@@ -1,3 +1,0 @@
-User-agent: *
-Sitemap: https://tyxchen.github.io/sitemap.xml
-Disallow: /assets/
