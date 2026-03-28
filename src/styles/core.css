@@ -175,3 +175,38 @@ figure {
 .invisible {
   visibility: hidden !important;
 }
+
+/**
+ * Syntax highlighting
+ */
+
+pre.astro-code {
+  font-size: 1rem;
+  padding: 1rem;
+  border: 1px solid hsl(from currentColor h s l / 0.1);
+  border-radius: 0.5rem;
+
+  counter-reset: code-line-counter;
+  counter-increment: code-line-counter 0;
+
+  .line::before {
+    content: counter(code-line-counter);
+    counter-increment: code-line-counter;
+    display: inline-block;
+    width: 2.5ch;
+    text-align: right;
+    margin-right: 1.5rem;
+    color: hsl(from currentColor h s l / 0.6);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .astro-code,
+  .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
+}

@@ -21,6 +21,12 @@ export default defineConfig({
       [remarkMath, { singleDollarTextMath: false }],
     ],
     rehypePlugins: [rehypeKatex],
+    shikiConfig: {
+      themes: {
+        light: 'one-light',
+        dark: 'one-dark-pro',
+      },
+    },
   },
   //prefetch: true,
   redirects: {
