@@ -24,8 +24,40 @@ const { layout, title } = Astro.props as Props;
 
     <link rel="shortcut icon" href="/favicon.png?v20181206" type="image/png" />
 
-    <!-- TODO: add seo -->
     <title>{title}</title>
+
+    <meta property="og:title" content={title} />
+    <meta name="author" content="Terry Chen" />
+    <meta property="og:locale" content="en_CA" />
+    <link rel="canonical" href={Astro.url} />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:site_name" content="Terry Chen" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <meta property="twitter:title" content={title} />
+    <meta
+      name="google-site-verification"
+      content="CLb9XzC8Rg43i0QoiVfwDKQ0LcAWs6bkkLWilZIVAUs"
+    />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "author": { "@type": "Person", "name": "Terry Chen" },
+        "headline": "Home",
+        "name": "Terry Chen",
+        "publisher": {
+          "@type": "Organization",
+          "logo": {
+            "@type": "ImageObject",
+            "url": `${Astro.site}/favicon.png?v20181206`,
+          },
+          "name": "Terry Chen"
+        },
+        "url": Astro.url,
+      })}
+    />
 
     <style is:inline>
       html {
