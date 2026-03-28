@@ -1,0 +1,9 @@
+---
+import Page from "$layouts/Page.astro";
+
+const { frontmatter } = Astro.props;
+---
+
+<Page title={frontmatter.title} subtitle={frontmatter.subtitle}>
+  <slot />
+</Page>

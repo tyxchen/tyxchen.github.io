@@ -1,0 +1,30 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = {
+  videoID: string;
+  caption?: string;
+  class?: string;
+} & Omit<HTMLAttributes<"figure">, "class">;
+
+const { videoID, caption, class: className, ...attrs } = Astro.props as Props;
+---
+
+<figure class:list={["video", className]} {...attrs}>
+  <iframe
+    src={`https://www.youtube-nocookie.com/embed/${videoID}`}
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen></iframe>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .video iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin: 0 auto;
+  }
+</style>
