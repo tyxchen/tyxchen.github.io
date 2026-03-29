@@ -99,10 +99,15 @@ const { layout, title } = Astro.props as Props;
   </body>
 
   <style>
+    @import "$styles/variables.css";
+
     html {
+      @apply --font-copy;
+
       background-color: var(--bg-color);
       color: var(--fg-color);
-      font: 16px/1.5 var(--font-copy);
+      font-size: 16px;
+      line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       text-rendering: optimizelegibility;

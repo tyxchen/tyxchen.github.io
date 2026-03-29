@@ -112,7 +112,7 @@ const { currentPage } = Astro.props as Props;
     }
 
     &__home {
-      font-weight: 900;
+      font-weight: var(--font-weight-black);
       font-size: 1.4em;
       line-height: 1;
       z-index: 1;
@@ -124,7 +124,7 @@ const { currentPage } = Astro.props as Props;
     &__resume,
     &__blog,
     &__contact {
-      font-weight: 700;
+      font-weight: var(--font-weight-bold);
     }
 
     &__about {

@@ -96,58 +96,62 @@ export const generate_triangles = (opts: TriangleOptions) => {
   return new Mesh(points, polys);
 }
 
+// wrap text to constraints of el
+// returns a SVG string
+// inspired by https://bl.ocks.org/mbostock/7555321
+const wrapText = (text: string, el: HTMLElement) => {
+  const SVG = "http://www.w3.org/2000/svg";
+  const words = escapeText(text).split(/\s/);
+  const lineHeight = 1;
+  const width = Math.ceil(el.getBoundingClientRect().width * 1.0125); // give some wiggle room
+  const fontSizeGr72 = parseInt(getComputedStyle(el, null).fontSize) > 72;
+  const builder: string[] = [];
+  let line: string[] = [];
+  let dy = 1;
+  let word: string | undefined;
+
+  const svg = document.createElementNS(SVG, "svg");
+  const textNode = document.createElementNS(SVG, "text");
+  const tspan = document.createElementNS(SVG, "tspan");
+
+  svg.setAttribute("width", "0");
+  svg.setAttribute("height", "0");
+  tspan.setAttributeNS(SVG, "x", "0");
+  tspan.setAttributeNS(SVG, "y", "0");
+  tspan.style.display = "inline-block";
+
+  textNode.appendChild(tspan);
+  svg.appendChild(textNode);
+  el.appendChild(svg);
+
+  while ((word = words.shift())) {
+    if (word.trim().length === 0) continue;
+    line.push(word);
+    tspan.textContent = line.join(" ");
+    if (Math.floor(tspan.getComputedTextLength()) > width && line.length > 1) {
+      line.pop();
+      builder.push(
+        `<tspan x="0" y="0" dx="${fontSizeGr72 ? (letterOffsets[line[0][0] as keyof typeof letterOffsets] || 0) : 0}em" dy="${dy}em">${line.join(" ")}</tspan>`,
+      );
+      line = [word];
+      dy += lineHeight;
+    }
+  }
+  builder.push(
+    `<tspan x="0" y="0" dx="${fontSizeGr72 ? (letterOffsets[line[0][0] as keyof typeof letterOffsets] || 0) : 0}em" dy="${dy}em">${line.join(" ")}</tspan>`,
+  );
+
+  el.removeChild(svg);
+
+  return builder.join("");
+};
+
 export const trianglify = (
   el: HTMLElement,
   colorSet: string[],
   animate = false,
   cell_size = 32,
 ) => {
-  // wrap text to constraints of el
-  // returns a SVG string
-  // inspired by https://bl.ocks.org/mbostock/7555321
-  const wrapText = (text: string, el: HTMLElement) => {
-    const SVG = "http://www.w3.org/2000/svg";
-    const words = escapeText(text).split(/\s/);
-    const lineHeight = 1;
-    const width = Math.ceil(el.getBoundingClientRect().width * 1.0125); // give some wiggle room
-    const fontSizeGr72 = parseInt(getComputedStyle(el, null).fontSize) > 72;
-    const builder: string[] = [];
-    let line: string[] = [];
-    let dy = 1;
-    let word: string | undefined;
-
-    const svg = document.createElementNS(SVG, "svg");
-    const textNode = document.createElementNS(SVG, "text");
-    const tspan = document.createElementNS(SVG, "tspan");
-
-    tspan.setAttributeNS(SVG, "x", "0");
-    tspan.setAttributeNS(SVG, "y", "0");
-    textNode.appendChild(tspan);
-    svg.appendChild(textNode);
-    el.appendChild(svg);
-
-    while ((word = words.shift())) {
-      if (word.length === 0) continue;
-      line.push(word);
-      tspan.textContent = line.join(" ");
-      if (Math.floor(tspan.getComputedTextLength()) > width) {
-        line.pop();
-        builder.push(
-          `<tspan x="0" y="0" dx="${fontSizeGr72 ? (letterOffsets[line[0][0] as keyof typeof letterOffsets] || 0) : 0}em" dy="${dy}em">${line.join(" ")}</tspan>`,
-        );
-        line = [word];
-        dy += lineHeight;
-      }
-    }
-    builder.push(
-      `<tspan x="0" y="0" dx="${fontSizeGr72 ? (letterOffsets[line[0][0] as keyof typeof letterOffsets] || 0) : 0}em" dy="${dy}em">${line.join(" ")}</tspan>`,
-    );
-
-    el.removeChild(svg);
-
-    return builder.join("");
-  };
-
   const textIterator = document.createNodeIterator(el, NodeFilter.SHOW_TEXT);
   const textRange = document.createRange();
   let textNode: Node | undefined;
@@ -165,12 +169,22 @@ export const trianglify = (
   const textParent = textNode!.parentNode! as HTMLElement; // no guarantee textNode.parentNode === el
   const text = textNode!.textContent!;
   const maskId = "mask-" + Math.random().toString(36).slice(2);
-  const { width, height } = textRange.getBoundingClientRect();
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d")!;
   const defaultNumStops = 75; // 4500 / 60; each change takes 4.5 seconds
   let lastTimestamp = 0; // for animation
   let chosenColors: string[] = [];
+
+  const { width, height } = (() => {
+    // Get correct text bounding box dimensions
+    const curDisplayStyle = textParent.style.display;
+    textParent.style.display = "inline-block";
+    const width = textParent.getBoundingClientRect().width;
+    textParent.style.display = "inline";
+    const height = textParent.getBoundingClientRect().height + 1;
+    textParent.style.display = curDisplayStyle;
+    return { width, height};
+  })();
   
   const mesh = generate_triangles({
     width,

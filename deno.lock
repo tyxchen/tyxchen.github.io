@@ -3,7 +3,7 @@
   "specifiers": {
     "npm:@astrojs/mdx@^5.0.2": "5.0.2_astro@6.0.4__typescript@5.9.3_typescript@5.9.3",
     "npm:@astrojs/svelte@^8.0.3": "8.0.3_astro@6.0.4__typescript@5.9.3_svelte@5.54.0_typescript@5.9.3",
-    "npm:@csstools/postcss-global-data@4": "4.0.0_postcss@8.5.8",
+    "npm:@csstools/postcss-mixins@1": "1.0.0_postcss@8.5.8",
     "npm:@iconify-json/academicons@^1.2.4": "1.2.4",
     "npm:@iconify-json/fa7-brands@^1.2.2": "1.2.2",
     "npm:@iconify-json/ph@^1.2.2": "1.2.2",
@@ -207,9 +207,11 @@
         "@csstools/css-tokenizer"
       ]
     },
-    "@csstools/postcss-global-data@4.0.0_postcss@8.5.8": {
-      "integrity": "sha512-mPKrL3Tzt8k1V+hTkU8XTH6JKRekB97oKHv/MekC9nfmRa+gMf1swlHRt8YK722sYN4xOipl17FZst99jsScLA==",
+    "@csstools/postcss-mixins@1.0.0_postcss@8.5.8": {
+      "integrity": "sha512-rz6qjT2w9L3k65jGc2dX+3oGiSrYQ70EZPDrINSmSVoVys7lLBFH0tvEa8DW2sr9cbRVD/W+1sy8+7bfu0JUfg==",
       "dependencies": [
+        "@csstools/css-parser-algorithms",
+        "@csstools/css-tokenizer",
         "postcss"
       ]
     },
@@ -3287,7 +3289,7 @@
       "dependencies": [
         "npm:@astrojs/mdx@^5.0.2",
         "npm:@astrojs/svelte@^8.0.3",
-        "npm:@csstools/postcss-global-data@4",
+        "npm:@csstools/postcss-mixins@1",
         "npm:@iconify-json/academicons@^1.2.4",
         "npm:@iconify-json/fa7-brands@^1.2.2",
         "npm:@iconify-json/ph@^1.2.2",

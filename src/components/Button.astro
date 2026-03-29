@@ -85,10 +85,13 @@ const {
   }
 
   <style>
+    @import "$styles/variables.css";
+    
     .btn {
+      @apply --font-accent;
+
       display: inline-block;
-      font-family: var(--font-accent);
-      font-weight: 700;
+      font-weight: var(--font-weight-bold);
       padding: 0.5em;
       border: 2px solid;
       border-radius: 0.3em;

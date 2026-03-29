@@ -20,6 +20,8 @@ const posts = (await getCollection("posts")).sort(
     display: flex;
     align-items: baseline;
     flex-wrap: wrap;
+    font-weight: var(--font-weight-regular);
+    text-decoration: none;
   }
   .date {
     width: 9.5ch;
@@ -27,5 +29,6 @@ const posts = (await getCollection("posts")).sort(
   }
   .title {
     flex: 1;
+    font-weight: 600;
   }
 </style>

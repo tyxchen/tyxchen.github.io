@@ -20,12 +20,16 @@ const { type, ariaControls, class: className } = Astro.props as Props;
 </a>
 
 <style>
+  @import "$styles/variables.css";
+
   .show-more,
   .show-less {
+    @apply --font-accent;
+    
     display: block;
-    font-family: var(--font-accent);
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     text-align: center;
+    text-decoration: none;
   }
 </style>
 

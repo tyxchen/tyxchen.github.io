@@ -207,8 +207,10 @@ const extra_employment = cv.employment
 </MetaLayout>
 
 <style>
+  @import "$styles/variables.css";
+
   * {
-    font-family: var(--font-accent);
+    @apply --font-accent;
   }
   main {
     flex: 1;
@@ -353,7 +355,7 @@ const extra_employment = cv.employment
     margin: 1em 0;
   }
   .publication h3 {
-    font-weight: normal;
+    font-weight: 450;
     margin: 0;
     margin-bottom: 0.2em;
   }

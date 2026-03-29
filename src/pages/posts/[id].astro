@@ -47,24 +47,9 @@ const props = {
       max-width: 800px;
     }
 
-    :global(.layout-post #header) {
-      margin-top: 1rem;
-      
-      @media (--gt-than-tablet) {
-        margin-bottom: 2rem;
-      }
-    }
-
-    :global(.layout-post #title) {
-      font-size: 2.5rem;
-
-      @media (--gt-than-tablet) {
-        font-size: 3.5rem;
-      }
-    }
-
     .post-time {
       font-size: 1rem;
+      font-variant-numeric: slashed-zero;
     }
   </style>
 </Layout>

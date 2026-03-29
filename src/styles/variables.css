@@ -44,8 +44,14 @@
   --blog-color: var(--color-bu2);
   --contact-color: var(--color-gn2);
 
-  --font-copy: Georgia, serif;
-  --font-accent: Inter, sans-serif;
+  --font-family-accent: Inter, sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
+  --font-weight-title: 800;
+  --font-weight-black: 900;
+
+  --max-content-width: 1136px;
+  --max-text-width: 64ch;
 
   --tn-fcn: 0.25s ease;
 
@@ -61,8 +67,22 @@
     --color-fg2: #bbc;
     --color-fg3: #889;
   }
+
+  @supports (font-variation-settings: normal) {
+    --font-family-accent: InterVariable, sans-serif;
+  }
 }
 
 @custom-media --gt-than-mobile (min-width: 540px);
 @custom-media --gt-than-tablet (min-width: 768px);
 @custom-media --gt-than-desktop (min-width: 1280px);
+
+@mixin --font-copy() {
+  font-family: Georgia, serif;
+  font-feature-settings: "dlig";
+}
+
+@mixin --font-accent() {
+  font-family: var(--font-family-accent);
+  font-feature-settings: "cv01", "cv05", "cv10", "dlig" off;
+}
