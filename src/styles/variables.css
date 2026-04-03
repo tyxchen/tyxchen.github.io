@@ -5,8 +5,8 @@
   --subtitle-color: var(--color-fg3);
   --link-color: #13f;
 
-  --color-bg1: #fff;
-  --color-bg2: #eee;
+  --color-bg1: #fefdfa;
+  --color-bg2: #eaeae8;
   --color-bg3: #ddd;
 
   --color-fg1: #222;
@@ -56,7 +56,7 @@
   --tn-fcn: 0.25s ease;
 
   @media (prefers-color-scheme: dark) {
-    --title-color: #fff;
+    --title-color: #eef;
     --link-color: #47f;
 
     --color-bg1: #050723;
