@@ -197,12 +197,13 @@ export const trianglify = (
   let polys: { clrInd: number, triInd: number }[] = [];
 
   const templ =
-    `<svg class="trianglify-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="0" height="0" style="position:absolute;-webkit-user-select:none;user-select:none">
-  <defs>
-    <clipPath id="${maskId}" x="0" y="0" width="100%" height="100%">
-      <text x="0" y="0">${wrapText(text, textParent)}</text>
-    </clipPath>
-  </defs>`.replace(/>\s+</g, "><");
+    `<svg class="trianglify-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="0" height="0" style="-webkit-user-select:none;user-select:none">
+      <defs>
+        <clipPath id="${maskId}" x="0" y="0" width="100%" height="100%">
+          <text x="0" y="0">${wrapText(text, textParent)}</text>
+        </clipPath>
+      </defs>
+    </svg>`.replace(/>\s+</g, "><");
 
   const changeColorSet: TrianglifyChangeColourSet = (set: string[]) => {
     const oldChosenColors = chosenColors;
@@ -264,16 +265,24 @@ export const trianglify = (
   canvas.height = Math.ceil(height);
   canvas.className = "trianglify-canvas";
   canvas.style = `position:absolute;top:-1px;left:0;z-index:-1;pointer-events:none;clip-path:url(#${maskId})`;
+  canvas.ariaHidden = "true";
 
   changeColorSet(colorSet);
 
-  const textWrapper = document.createElement("span");
-  textWrapper.classList.add("trianglify-text");
-  textWrapper.append(...textParent.childNodes);
+  const placeholder = document.createElement("span");
+  placeholder.classList.add("trianglify-placeholder-text");
+  placeholder.append(...textParent.childNodes);
   
-  textParent.appendChild(canvas);
-  textParent.insertAdjacentHTML("beforeend", templ);
-  textParent.appendChild(textWrapper);
+  let inlineWrapper = document.createElement("span");
+  inlineWrapper.classList.add("trianglify-inline-wrapper");
+  inlineWrapper.appendChild(canvas);
+  textParent.appendChild(inlineWrapper);
+
+  inlineWrapper = inlineWrapper.cloneNode() as HTMLSpanElement;
+  inlineWrapper.insertAdjacentHTML("beforeend", templ);
+  textParent.appendChild(inlineWrapper);
+
+  textParent.appendChild(placeholder);
 
   if (animate) {
     const animFrame = (timestamp: number) => {
@@ -297,7 +306,7 @@ export const trianglify = (
       // every 1/2 second, fade a few more
       if (timestamp - lastTimestamp > 500) {
         for (const [i, { clrInd, triInd }] of polys.entries()) {
-          if (!!fading[i]) {
+          if (fading[i]) {
             continue;
           }
 
