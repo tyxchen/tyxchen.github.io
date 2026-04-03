@@ -4,29 +4,21 @@ import {
   RGBToHex,
   getGradient,
   type Colour,
+  choosableColors,
 } from "$lib/colours.ts";
 import {
   chooseRandomIndex,
-  escapeText,
-  letterOffsets,
+  shuffle,
+  wrapText,
 } from "$lib/utils.ts";
 
 export type Point = [number, number];
-
-export type TriangleOptions = {
-  width?: number,
-  height?: number,
-  cell_size?: number,
-  variance?: number,
-};
 
 export type Triangle = {
   a: number,
   b: number,
   c: number,
 };
-
-export type TrianglifyChangeColourSet = (colourSet: string[]) => void;
 
 export class Mesh {
   points: Point[];
@@ -69,16 +61,14 @@ export const generate_grid = (width: number, height: number, bleed_x: number, bl
 };
 
 // generate triangles
-export const generate_triangles = (opts: TriangleOptions) => {
-  const { width = 600, height = 400, cell_size = 75, variance = 0.75 } = opts;
-
+export const generate_triangles = (width = 600, height = 400, cellSize = 75, variance = 0.75) => {
   const points = generate_grid(
     width,
     height,
-    ((Math.floor((width + 4 * cell_size) / cell_size) * cell_size) - width) / 2,
-    ((Math.floor((height + 4 * cell_size) / cell_size) * cell_size) - height) / 2,
-    cell_size,
-    cell_size * variance / 2,
+    ((Math.floor((width + 4 * cellSize) / cellSize) * cellSize) - width) / 2,
+    ((Math.floor((height + 4 * cellSize) / cellSize) * cellSize) - height) / 2,
+    cellSize,
+    cellSize * variance / 2,
     Math.random
   );
 
@@ -94,136 +84,179 @@ export const generate_triangles = (opts: TriangleOptions) => {
   }
 
   return new Mesh(points, polys);
-}
-
-// wrap text to constraints of el
-// returns a SVG string
-// inspired by https://bl.ocks.org/mbostock/7555321
-const wrapText = (text: string, el: HTMLElement) => {
-  const SVG = "http://www.w3.org/2000/svg";
-  const words = escapeText(text).split(/\s/);
-  const lineHeight = 1;
-  const width = Math.ceil(el.getBoundingClientRect().width * 1.0125); // give some wiggle room
-  const fontSizeGr72 = parseInt(getComputedStyle(el, null).fontSize) > 72;
-  const builder: string[] = [];
-  let line: string[] = [];
-  let dy = 1;
-  let word: string | undefined;
-
-  const svg = document.createElementNS(SVG, "svg");
-  const textNode = document.createElementNS(SVG, "text");
-  const tspan = document.createElementNS(SVG, "tspan");
-
-  svg.setAttribute("width", "0");
-  svg.setAttribute("height", "0");
-  tspan.setAttributeNS(SVG, "x", "0");
-  tspan.setAttributeNS(SVG, "y", "0");
-  tspan.style.display = "inline-block";
-
-  textNode.appendChild(tspan);
-  svg.appendChild(textNode);
-  el.appendChild(svg);
-
-  while ((word = words.shift())) {
-    if (word.trim().length === 0) continue;
-    line.push(word);
-    tspan.textContent = line.join(" ");
-    if (Math.floor(tspan.getComputedTextLength()) > width && line.length > 1) {
-      line.pop();
-      builder.push(
-        `<tspan x="0" y="0" dx="${fontSizeGr72 ? (letterOffsets[line[0][0] as keyof typeof letterOffsets] || 0) : 0}em" dy="${dy}em">${line.join(" ")}</tspan>`,
-      );
-      line = [word];
-      dy += lineHeight;
-    }
-  }
-  builder.push(
-    `<tspan x="0" y="0" dx="${fontSizeGr72 ? (letterOffsets[line[0][0] as keyof typeof letterOffsets] || 0) : 0}em" dy="${dy}em">${line.join(" ")}</tspan>`,
-  );
-
-  el.removeChild(svg);
-
-  return builder.join("");
 };
 
-export const trianglify = (
-  el: HTMLElement,
-  colorSet: string[],
-  animate = false,
-  cell_size = 32,
-) => {
-  const textIterator = document.createNodeIterator(el, NodeFilter.SHOW_TEXT);
-  const textRange = document.createRange();
-  let textNode: Node | undefined;
-  let tmpNode: Node | null = null;
+export class Trianglify {
+  static readonly #defaultNumStops = 75; // 4500 / 60; each change takes 4.5 seconds
 
-  // get first text node only
-  while ((tmpNode = textIterator.nextNode())) {
-    if (!tmpNode.textContent?.match(/^\s*$/)) {
-      textNode = tmpNode;
+  static changeColourSets: Record<string, Trianglify[]> = {};
+  static shuffledColourInds: Record<string, number> = {};
+  static shuffledColours = shuffle(
+    Object.keys(choosableColors) as (keyof typeof choosableColors)[],
+  );
+
+  readonly controlKey: string;
+  readonly animate: boolean;
+  readonly canvas: HTMLCanvasElement;
+  #ctx: CanvasRenderingContext2D;
+  #lastTimestamp: number;
+  #chosenColors: string[];
+  #fading: { stop: number; colours: Colour[]; triInd: number }[];
+  #polys: { clrInd: number; triInd: number }[];
+  #mesh: Mesh;
+
+  static changeAllColours(controlKey: string, colourSet: string[]) {
+    for (const tri of Trianglify.changeColourSets[controlKey]) {
+      tri.changeColorSet(colourSet);
     }
   }
 
-  textRange.selectNode(textNode!);
+  static changeAllToNextShuffledColour(controlKey: string) {
+    const chosenClr = ++Trianglify.shuffledColourInds[controlKey];
 
-  const textParent = textNode!.parentNode! as HTMLElement; // no guarantee textNode.parentNode === el
-  const text = textNode!.textContent!;
-  const maskId = "mask-" + Math.random().toString(36).slice(2);
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d")!;
-  const defaultNumStops = 75; // 4500 / 60; each change takes 4.5 seconds
-  let lastTimestamp = 0; // for animation
-  let chosenColors: string[] = [];
+    Trianglify.changeAllColours(
+      controlKey,
+      choosableColors[Trianglify.shuffledColours[chosenClr]],
+    );
 
-  const { width, height } = (() => {
-    // Get correct text bounding box dimensions
-    const curDisplayStyle = textParent.style.display;
-    textParent.style.display = "inline-block";
-    const width = textParent.getBoundingClientRect().width;
-    textParent.style.display = "inline";
-    const height = textParent.getBoundingClientRect().height + 1;
-    textParent.style.display = curDisplayStyle;
-    return { width, height};
-  })();
-  
-  const mesh = generate_triangles({
-    width,
-    height,
-    cell_size, //Math.floor(parseInt(window.getComputedStyle(el, null).fontSize) / 4),
-    variance: 0.69,
-  });
-  
-  let fading: { stop: number, colours: Colour[], triInd: number }[] = [];
-  let polys: { clrInd: number, triInd: number }[] = [];
+    if (chosenClr + 1 >= Trianglify.shuffledColours.length) {
+      Trianglify.shuffledColours = shuffle(
+        Trianglify.shuffledColours,
+        Trianglify.shuffledColours[chosenClr],
+      );
+      Trianglify.shuffledColourInds[controlKey] = -1;
+    }
+  }
 
-  const templ =
-    `<svg class="trianglify-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="0" height="0" style="-webkit-user-select:none;user-select:none">
-      <defs>
-        <clipPath id="${maskId}" x="0" y="0" width="100%" height="100%">
-          <text x="0" y="0">${wrapText(text, textParent)}</text>
-        </clipPath>
-      </defs>
-    </svg>`.replace(/>\s+</g, "><");
+  constructor(
+    el: HTMLElement,
+    controlKey: string,
+    colorSet: string[],
+    animate = false,
+    cellSize = 32,
+  ) {
+    this.controlKey = controlKey;
+    this.animate = animate;
+    this.canvas = document.createElement("canvas");
+    this.#ctx = this.canvas.getContext("2d")!;
+    this.#lastTimestamp = 0; // for animation
+    this.#chosenColors = [];
+    this.#fading = [];
+    this.#polys = [];
 
-  const changeColorSet: TrianglifyChangeColourSet = (set: string[]) => {
-    const oldChosenColors = chosenColors;
+    if (!Trianglify.changeColourSets[controlKey]) {
+      Trianglify.changeColourSets[controlKey] = [];
+      Trianglify.shuffledColourInds[controlKey] = 0;
+    }
+    Trianglify.changeColourSets[controlKey].push(this);
 
-    chosenColors = set;
-    polys = mesh.triangles.map((_, i) => ({
-      clrInd: chooseRandomIndex(chosenColors),
+    const textIterator = document.createNodeIterator(
+      el,
+      NodeFilter.SHOW_TEXT,
+    );
+    const textRange = document.createRange();
+    let textNode: Node | undefined;
+    let tmpNode: Node | null = null;
+
+    // get first text node only
+    while ((tmpNode = textIterator.nextNode())) {
+      if (!tmpNode.textContent?.match(/^\s*$/)) {
+        textNode = tmpNode;
+      }
+    }
+
+    textRange.selectNode(textNode!);
+
+    const textParent = textNode!.parentNode! as HTMLElement; // no guarantee textNode.parentNode === el
+    const text = textNode!.textContent!;
+
+    const { width, height } = (() => {
+      // Get correct text bounding box dimensions
+      const curDisplayStyle = textParent.style.display;
+      textParent.style.display = "inline-block";
+      const width = textParent.getBoundingClientRect().width;
+      textParent.style.display = "inline";
+      const height = textParent.getBoundingClientRect().height + 1;
+      textParent.style.display = curDisplayStyle;
+      return { width, height };
+    })();
+
+    this.#mesh = generate_triangles(
+      width,
+      height,
+      cellSize, //Math.floor(parseInt(window.getComputedStyle(el, null).fontSize) / 4),
+      0.69,
+    );
+
+    const maskId = "mask-" + Math.random().toString(36).slice(2);
+    const templ =
+      `<svg class="trianglify-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="0" height="0" style="-webkit-user-select:none;user-select:none">
+          <defs>
+            <clipPath id="${maskId}" x="0" y="0" width="100%" height="100%">
+              <text x="0" y="0">${wrapText(text, textParent)}</text>
+            </clipPath>
+          </defs>
+        </svg>`.replace(/>\s+</g, "><");
+
+    this.#ctx.lineWidth = 0.001;
+
+    el.style.position = "relative";
+    el.style.color = "transparent";
+    el.classList.add("trianglify-rendered");
+
+    this.canvas.width = Math.ceil(width);
+    this.canvas.height = Math.ceil(height);
+    this.canvas.className = "trianglify-canvas";
+    this.canvas.style = `position:absolute;top:-1px;left:0;z-index:-1;pointer-events:none;clip-path:url(#${maskId})`;
+    this.canvas.ariaHidden = "true";
+
+    this.changeColorSet(colorSet);
+
+    const placeholder = document.createElement("span");
+    placeholder.classList.add("trianglify-placeholder-text");
+    placeholder.append(...textParent.childNodes);
+
+    let inlineWrapper = document.createElement("span");
+    inlineWrapper.classList.add("trianglify-inline-wrapper");
+    inlineWrapper.appendChild(this.canvas);
+    textParent.appendChild(inlineWrapper);
+
+    inlineWrapper = inlineWrapper.cloneNode() as HTMLSpanElement;
+    inlineWrapper.insertAdjacentHTML("beforeend", templ);
+    textParent.appendChild(inlineWrapper);
+
+    textParent.appendChild(placeholder);
+
+    if (animate) {
+      const animFrame = (timestamp: number) => {
+        this.#animFrame(timestamp);
+        return requestAnimationFrame(animFrame);
+      };
+      animFrame(0);
+    }
+
+    textRange.detach();
+  }
+
+  changeColorSet(set: string[]) {
+    const oldChosenColors = this.#chosenColors;
+
+    this.#chosenColors = set;
+    this.#polys = this.#mesh.triangles.map((_, i) => ({
+      clrInd: chooseRandomIndex(this.#chosenColors),
       triInd: i,
     }));
-    fading = new Array(polys.length);
+    this.#fading = new Array(this.#polys.length);
 
-    for (const [i, { clrInd, triInd }] of polys.entries()) {
-      if (animate && oldChosenColors.length > 1) {
+    for (const [i, { clrInd, triInd }] of this.#polys.entries()) {
+      if (this.animate && oldChosenColors.length > 1) {
         setTimeout(
           () => {
-            fading[i] = {
+            this.#fading[i] = {
               stop: 0,
               colours: getGradient(
                 hexToRGB(oldChosenColors[clrInd]),
-                hexToRGB(chosenColors[clrInd]),
+                hexToRGB(this.#chosenColors[clrInd]),
                 16,
               ),
               triInd,
@@ -234,110 +267,68 @@ export const trianglify = (
           ),
         );
       } else {
-        mesh.draw(ctx, triInd, chosenColors[clrInd]);
+        this.#mesh.draw(this.#ctx, triInd, this.#chosenColors[clrInd]);
       }
 
-      if (animate && Math.random() < 0.1) {
+      if (this.animate && Math.random() < 0.1) {
         setTimeout(() => {
-          const randClrInd = chooseRandomIndex(chosenColors);
-          fading[i] = {
+          const randClrInd = chooseRandomIndex(this.#chosenColors);
+          this.#fading[i] = {
             stop: 0,
             colours: getGradient(
-              hexToRGB(chosenColors[clrInd]),
-              hexToRGB(chosenColors[randClrInd]),
-              defaultNumStops,
+              hexToRGB(this.#chosenColors[clrInd]),
+              hexToRGB(this.#chosenColors[randClrInd]),
+              Trianglify.#defaultNumStops,
             ),
             triInd,
           };
-          polys[i].clrInd = randClrInd;
+          this.#polys[i].clrInd = randClrInd;
         }, 500);
       }
     }
-  };
+  }
 
-  ctx.lineWidth = 0.001;
+  #animFrame(timestamp: number) {
+    // randomly fade a few polygons
+    for (const [i, entry] of this.#fading.entries()) {
+      if (!entry) {
+        continue;
+      }
 
-  el.style.position = "relative";
-  el.style.color = "transparent";
-  el.classList.add("trianglify-rendered");
+      const { stop, colours, triInd } = entry;
 
-  canvas.width = Math.ceil(width);
-  canvas.height = Math.ceil(height);
-  canvas.className = "trianglify-canvas";
-  canvas.style = `position:absolute;top:-1px;left:0;z-index:-1;pointer-events:none;clip-path:url(#${maskId})`;
-  canvas.ariaHidden = "true";
+      this.#mesh.draw(this.#ctx, triInd, RGBToHex(colours[stop]));
 
-  changeColorSet(colorSet);
+      if (stop + 1 < colours.length) {
+        this.#fading[i].stop = stop + 1;
+      } else {
+        delete this.#fading[i];
+      }
+    }
 
-  const placeholder = document.createElement("span");
-  placeholder.classList.add("trianglify-placeholder-text");
-  placeholder.append(...textParent.childNodes);
-  
-  let inlineWrapper = document.createElement("span");
-  inlineWrapper.classList.add("trianglify-inline-wrapper");
-  inlineWrapper.appendChild(canvas);
-  textParent.appendChild(inlineWrapper);
-
-  inlineWrapper = inlineWrapper.cloneNode() as HTMLSpanElement;
-  inlineWrapper.insertAdjacentHTML("beforeend", templ);
-  textParent.appendChild(inlineWrapper);
-
-  textParent.appendChild(placeholder);
-
-  if (animate) {
-    const animFrame = (timestamp: number) => {
-      // randomly fade a few polygons
-      for (const [i, entry] of fading.entries()) {
-        if (!entry) {
+    // every 1/2 second, fade a few more
+    if (timestamp - this.#lastTimestamp > 500) {
+      for (const [i, { clrInd, triInd }] of this.#polys.entries()) {
+        if (this.#fading[i]) {
           continue;
         }
 
-        const { stop, colours, triInd } = entry;
-
-        mesh.draw(ctx, triInd, RGBToHex(colours[stop]));
-
-        if (stop + 1 < colours.length) {
-          fading[i].stop = stop + 1;
-        } else {
-          delete fading[i];
+        if (Math.random() < 0.03) {
+          const randClrInd = chooseRandomIndex(this.#chosenColors);
+          this.#fading[i] = {
+            stop: 0,
+            colours: getGradient(
+              hexToRGB(this.#chosenColors[clrInd]),
+              hexToRGB(this.#chosenColors[randClrInd]),
+              Trianglify.#defaultNumStops,
+            ),
+            triInd,
+          };
+          this.#polys[i].clrInd = randClrInd;
         }
       }
 
-      // every 1/2 second, fade a few more
-      if (timestamp - lastTimestamp > 500) {
-        for (const [i, { clrInd, triInd }] of polys.entries()) {
-          if (fading[i]) {
-            continue;
-          }
-
-          if (Math.random() < 0.03) {
-            const randClrInd = chooseRandomIndex(chosenColors);
-            fading[i] = {
-              stop: 0,
-              colours: getGradient(
-                hexToRGB(chosenColors[clrInd]),
-                hexToRGB(chosenColors[randClrInd]),
-                defaultNumStops,
-              ),
-              triInd,
-            };
-            polys[i].clrInd = randClrInd;
-          }
-        }
-
-        lastTimestamp = timestamp;
-      }
-
-      return requestAnimationFrame(animFrame);
-    };
-
-    animFrame(0);
+      this.#lastTimestamp = timestamp;
+    }
   }
-
-  textRange.detach();
-
-  return {
-    canvas,
-    changeColorSet,
-  };
-};
+}

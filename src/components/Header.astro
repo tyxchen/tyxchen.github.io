@@ -215,7 +215,7 @@ const { currentPage } = Astro.props as Props;
       pointer-events: all;
     }
 
-    @media (--gt-than-tablet) {
+    @media print, (--gt-than-tablet) {
       display: none;
     }
   }

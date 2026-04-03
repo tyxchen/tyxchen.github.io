@@ -1,5 +1,6 @@
 ---
 import type { colors } from "$lib/colours";
+import { toConditionalValue } from "$lib/utils";
 
 type Props = {
   animate?: boolean;
@@ -7,6 +8,7 @@ type Props = {
   colour?: keyof typeof colors | "shuffle";
   controlKey: string;
   interactive?: boolean;
+  overrideContrastPreference?: boolean;
 };
 
 const {
@@ -15,23 +17,27 @@ const {
   colour = "shuffle",
   controlKey,
   interactive = false,
+  overrideContrastPreference = false,
 } = Astro.props as Props;
 ---
 
 <>
   <span
     class="trianglify"
-    data-animate={animate ? "" : undefined}
+    data-animate={toConditionalValue(animate)}
     data-cell-size={cellSize}
     data-colour={colour}
     data-control-key={controlKey}
-    data-interactive={interactive}
+    data-interactive={toConditionalValue(interactive)}
+    data-override-contrast-preference={toConditionalValue(
+      overrideContrastPreference,
+    )}
   >
     <slot />
   </span>
 
   <style>
-    .trianglify[data-interactive="true"] {
+    .trianglify[data-interactive] {
       cursor: pointer;
       user-select: none;
 
@@ -47,63 +53,55 @@ const {
         filter: none;
       }
     }
+
+    @media print {
+      .trianglify {
+        color: currentColor !important;
+
+        :global(.trianglify-canvas),
+        :global(.trianglify-svg) {
+          display: none;
+        }
+      }
+    }
   </style>
 </>
 
 <script>
-  import { choosableColors, colors } from "$lib/colours";
-  import {
-    trianglify,
-    type TrianglifyChangeColourSet,
-  } from "$lib/trianglify.ts";
-  import { $$, shuffle } from "$lib/utils.ts";
-
-  class Trianglify {
-    static changeColourSets: Record<string, TrianglifyChangeColourSet[]> = {};
-    static shuffledColourInds: Record<string, number> = {};
-    static shuffledColours = shuffle(
-      Object.keys(choosableColors) as (keyof typeof choosableColors)[],
-    );
-  }
+  import { colors } from "$lib/colours";
+  import { Trianglify } from "$lib/trianglify.ts";
+  import { $$ } from "$lib/utils.ts";
 
   const init = (el: HTMLElement) => {
+    if (
+      window.matchMedia("(prefers-contrast: more)").matches &&
+      !("overrideContrastPreference" in el.dataset)
+    ) {
+      return;
+    }
+
     const colourSetInd =
       el.dataset.colour === "shuffle"
         ? Trianglify.shuffledColours[0]
         : ((el.dataset.colour as keyof typeof colors) ?? "random");
-    const { changeColorSet } = trianglify(
+    const trianglify = new Trianglify(
       el,
+      el.dataset.controlKey!,
       colors[colourSetInd],
-      el.dataset.hasOwnProperty("animate") &&
+      "animate" in el.dataset &&
         !window.matchMedia("(prefers-reduced-motion)").matches,
       el.dataset.cellSize ? parseInt(el.dataset.cellSize) : undefined,
     );
-    const controlKey = el.dataset.controlKey!;
-    if (!Trianglify.changeColourSets[controlKey]) {
-      Trianglify.changeColourSets[controlKey] = [];
-      Trianglify.shuffledColourInds[controlKey] = 0;
-    }
-    Trianglify.changeColourSets[controlKey].push(changeColorSet);
 
-    if (el.dataset.interactive === "true") {
+    if ("interactive" in el.dataset) {
       el.addEventListener("click", (e) => {
         e.preventDefault();
-
-        const chosenClr = ++Trianglify.shuffledColourInds[controlKey];
-
-        for (const changeColor of Trianglify.changeColourSets[controlKey]) {
-          changeColor(choosableColors[Trianglify.shuffledColours[chosenClr]]);
-        }
-
-        if (chosenClr + 1 >= Trianglify.shuffledColours.length) {
-          Trianglify.shuffledColours = shuffle(Trianglify.shuffledColours, Trianglify.shuffledColours[chosenClr]);
-          Trianglify.shuffledColourInds[controlKey] = -1;
-        }
+        Trianglify.changeAllToNextShuffledColour(trianglify.controlKey);
       });
     }
   };
 
-  globalThis.addEventListener("load", () => {
+  window.addEventListener("load", () => {
     $$(".trianglify").forEach((el) => init(el as HTMLElement));
   });
 </script>
