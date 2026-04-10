@@ -28,12 +28,9 @@ const extra_employment = cv.employment
       <section id="header-description">
         <h1>
           Hi, I&CloseCurlyQuote;m{" "}
-          <Trianglify
-            animate
-            interactive
-            cellSize={16}
-            controlKey="header"
-          >Terry</Trianglify>.
+          <Trianglify animate interactive cellSize={16} controlKey="header"
+            >Terry</Trianglify
+          >.
         </h1>
 
         <p>
@@ -46,19 +43,28 @@ const extra_employment = cv.employment
           supervision of <a href="https://profs.etsmtl.ca/agruson/"
             >Prof. Adrien Gruson</a
           > and
-          <a href="https://cim.mcgill.ca/~derek/">Prof. Derek Nowrouzezahrai</a>,
-          researching improvements to real-time rendering algorithms.
+          <a href="https://cim.mcgill.ca/~derek/">Prof. Derek Nowrouzezahrai</a
+          >, researching improvements to real-time rendering algorithms.
         </p>
 
         <footer id="header-links">
-          <a href="mailto:tyxchen@outlook.com"><Icon name="ph:envelope" /></a>
-          <a href="/assets/resume.pdf"><Icon name="ph:read-cv-logo" /></a>
-          <a rel="noreferrer" href="https://github.com/tyxchen"
-            ><Icon name="fa7-brands:github" /></a
+          <!-- <a href="mailto:tyxchen@outlook.com"><Icon name="ph:envelope" /></a> -->
+          <!-- <a href="/assets/resume.pdf"><Icon name="ph:read-cv-logo" /></a> -->
+          <a rel="noreferrer" href="https://github.com/tyxchen">
+            <Icon name="fa7-brands:github" />
+            <span>tyxchen</span>
+          </a>
+          <a
+            rel="noreferrer"
+            href="https://bsky.app/profile/tyxchen.bsky.social"
           >
-          <a rel="noreferrer" href="https://www.linkedin.com/in/tyxchen"
-            ><Icon name="fa7-brands:linkedin" /></a
-          >
+            <Icon name="fa7-brands:bluesky" />
+            <span>@tyxchen.bsky.social</span>
+          </a>
+          <a rel="noreferrer" href="https://www.linkedin.com/in/tyxchen">
+            <Icon name="fa7-brands:linkedin" />
+            <span>Terry Chen</span>
+          </a>
         </footer>
       </section>
     </header>
@@ -145,48 +151,50 @@ const extra_employment = cv.employment
             </aside>
             <div>
               <h3>{paper.title}</h3>
-              {paper.authors
-                .map((author, i) => {
-                  if (author === "Terry Chen") {
-                    return <strong>T. Chen</strong>;
-                  } else {
-                    const authorNames = author.split(" ");
-                    const collaboratorLink =
-                      publications.collaborators[
-                        author as keyof typeof publications.collaborators
-                      ] ?? null;
-                    const authorInitialsName = authorNames
-                      .map((name, j) =>
-                        j === authorNames.length - 1
-                          ? ` ${name}`
-                          : `${name[0]}.`,
-                      )
-                      .join("");
-                    return collaboratorLink ? (
-                      <a href={collaboratorLink}>{authorInitialsName}</a>
-                    ) : (
-                      authorInitialsName
-                    );
-                  }
-                })
-                .reduce((prev, curr) => [prev, ", ", curr])}
-              <br />
-              <em>
+              <p>
+                {paper.authors
+                  .map((author, i) => {
+                    if (author === "Terry Chen") {
+                      return <strong>T. Chen</strong>;
+                    } else {
+                      const authorNames = author.split(" ");
+                      const collaboratorLink =
+                        publications.collaborators[
+                          author as keyof typeof publications.collaborators
+                        ] ?? null;
+                      const authorInitialsName = authorNames
+                        .map((name, j) =>
+                          j === authorNames.length - 1
+                            ? ` ${name}`
+                            : `${name[0]}.`,
+                        )
+                        .join("");
+                      return collaboratorLink ? (
+                        <a href={collaboratorLink}>{authorInitialsName}</a>
+                      ) : (
+                        authorInitialsName
+                      );
+                    }
+                  })
+                  .reduce((prev, curr) => [prev, ", ", curr])}
+              </p>
+              <p>
                 {paper.conference}
                 {paper.journal && ` (${paper.journal})`}, {paper.year}
-              </em>
-              <br />
-              {paper.project && <a href={paper.project}>[project]</a>}
-              {paper.paper && (
-                <a
-                  href={paper.paper.replace(
-                    "$PubDir",
-                    `/assets/publications/${paper.id}`,
-                  )}
-                >
-                  [paper]
-                </a>
-              )}
+              </p>
+              <p>
+                {paper.project && <a href={paper.project}>[project]</a>}
+                {paper.paper && (
+                  <a
+                    href={paper.paper.replace(
+                      "$PubDir",
+                      `/assets/publications/${paper.id}`,
+                    )}
+                  >
+                    [paper]
+                  </a>
+                )}
+              </p>
             </div>
           </article>
         ))
@@ -203,15 +211,25 @@ const extra_employment = cv.employment
       </ul>
     </section>
     -->
-
   </main>
 </MetaLayout>
 
 <style>
   @import "$styles/variables.css";
 
-  * {
+  :root {
+    --trianglify-color: var(--title-color);
+    --trianglify-color: color-mix(in hsl, var(--trianglify-color-pre-mix), black 25%);
+
+    @media (prefers-color-scheme: dark) {
+      --trianglify-color: color-mix(in hsl, var(--trianglify-color-pre-mix), white 10%);
+    }
+  }
+  html {
     @apply --font-accent;
+  }
+  :global(a) {
+    color: var(--trianglify-color);
   }
   main {
     flex: 1;
@@ -258,18 +276,15 @@ const extra_employment = cv.employment
   }
   #header-links {
     display: flex;
-    gap: 1em;
+    flex-direction: column;
     flex: 1;
-    justify-content: space-evenly;
-    align-items: end;
+    /* gap: 0.25em; */
+    justify-content: end;
+    align-items: start;
+    font-size: 0.9em;
   }
-  #header-links a {
-    width: 1.4em;
-    height: 1.4em;
-    text-align: center;
-  }
-  #header-links [data-icon] {
-    height: 1.5em;
+  #header-links span {
+    text-decoration: underline;
   }
   #qualifications {
     display: flex;
@@ -373,4 +388,22 @@ const extra_employment = cv.employment
     flex: 1;
     min-width: 320px;
   }
+  .publication p {
+    margin: 0;
+  }
 </style>
+
+<script>
+  import { $ } from "$lib/utils";
+
+  $(".trianglify[data-interactive]")?.addEventListener(
+    "trianglify-change-colors",
+    (e) => {
+      const { colourSet } = (e as CustomEvent).detail;
+      document.documentElement.style.setProperty(
+        `--trianglify-color-pre-mix`,
+        colourSet[2],
+      );
+    },
+  );
+</script>

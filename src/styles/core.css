@@ -70,7 +70,8 @@ figure {
   fill: currentColor;
   height: 1em;
   width: auto;
-  vertical-align: middle;
+  vertical-align: -0.12em;
+  vertical-align: center;
 }
 
 /**

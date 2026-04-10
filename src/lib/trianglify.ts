@@ -98,6 +98,7 @@ export class Trianglify {
   readonly controlKey: string;
   readonly animate: boolean;
   readonly canvas: HTMLCanvasElement;
+  readonly el: HTMLElement;
   #ctx: CanvasRenderingContext2D;
   #lastTimestamp: number;
   #chosenColors: string[];
@@ -112,20 +113,22 @@ export class Trianglify {
   }
 
   static changeAllToNextShuffledColour(controlKey: string) {
-    const chosenClr = ++Trianglify.shuffledColourInds[controlKey];
+    let chosenClr = Trianglify.shuffledColourInds[controlKey] + 1;
+
+    if (chosenClr >= Trianglify.shuffledColours.length) {
+      chosenClr = 0;
+      Trianglify.shuffledColours = shuffle(
+        Trianglify.shuffledColours,
+        Trianglify.shuffledColours.at(-1),
+      );
+    }
 
     Trianglify.changeAllColours(
       controlKey,
       choosableColors[Trianglify.shuffledColours[chosenClr]],
     );
 
-    if (chosenClr + 1 >= Trianglify.shuffledColours.length) {
-      Trianglify.shuffledColours = shuffle(
-        Trianglify.shuffledColours,
-        Trianglify.shuffledColours[chosenClr],
-      );
-      Trianglify.shuffledColourInds[controlKey] = -1;
-    }
+    Trianglify.shuffledColourInds[controlKey] = chosenClr;
   }
 
   constructor(
@@ -138,6 +141,7 @@ export class Trianglify {
     this.controlKey = controlKey;
     this.animate = animate;
     this.canvas = document.createElement("canvas");
+    this.el = el;
     this.#ctx = this.canvas.getContext("2d")!;
     this.#lastTimestamp = 0; // for animation
     this.#chosenColors = [];
@@ -286,6 +290,13 @@ export class Trianglify {
         }, 500);
       }
     }
+
+    this.el.dispatchEvent(new CustomEvent("trianglify-change-colors", {
+      detail: {
+        controlKey: this.controlKey,
+        colourSet: this.#chosenColors,
+      },
+    }));
   }
 
   #animFrame(timestamp: number) {

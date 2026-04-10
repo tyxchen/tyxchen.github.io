@@ -8,11 +8,11 @@ export type Colour = ColourRGB | ColourLAB;
 // https://bl.ocks.org/mbostock/5577023
 export const choosableColors = {
   //YlGn: ["#addd8e","#78c679","#41ab5d","#238443"],
-  YlGn: ["#abdc8e", "#92d183", "#77c577", "#5cb86a"],
+  YlGn: ["#8ec070", "#75b466", "#5faf5f", "#4ba056"],
   GnBu: ["#64bfcb", "#4fb0cd", "#3c9ec7", "#2a8cbe"],
   BuPu: ["#8c80bb", "#8c70b3", "#8b60ac", "#894fa3"],
   RdPu: ["#f882ab", "#f368a2", "#e94d9c", "#d93394"],
-  YlOrRd: ["#fd9e44", "#fd883b", "#fc6c33", "#f84f2a"]
+  YlOrRd: ["#f09540", "#ee7f36", "#ee652f", "#e74b28"]
 };
 
 export const baseColors = {
