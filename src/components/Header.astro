@@ -76,6 +76,24 @@ const { currentPage } = Astro.props as Props;
 <style>
   @import "$styles/variables.css";
 
+  :root {
+    --trianglify-color-light: color-mix(
+      in hsl,
+      var(--trianglify-color-pre-mix),
+      black 25%
+    );
+    --trianglify-color-dark: color-mix(
+      in hsl,
+      var(--trianglify-color-pre-mix),
+      white 10%
+    );
+
+    --trianglify-color: light-dark(
+      var(--trianglify-color-light),
+      var(--trianglify-color-dark)
+    );
+  }
+
   :global(.menu-open) {
     overflow: hidden;
   }
@@ -306,6 +324,7 @@ const { currentPage } = Astro.props as Props;
 </style>
 
 <script>
+  // Menu toggle logic
   import { $, $$ } from "$lib/utils.ts";
 
   const bodyClsList = $("body")!.classList;
@@ -360,4 +379,20 @@ const { currentPage } = Astro.props as Props;
   });
 
   closeMenu();
+</script>
+
+<script>
+  // Other header-related scripts
+  import { $ } from "$lib/utils.ts";
+
+  $("#header-home .trianglify")?.addEventListener(
+    "trianglify-change-colors",
+    (e) => {
+      const { colourSet } = (e as CustomEvent).detail;
+      document.documentElement.style.setProperty(
+        `--trianglify-color-pre-mix`,
+        colourSet[2],
+      );
+    },
+  );
 </script>

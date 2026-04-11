@@ -4,19 +4,10 @@ import "$styles/core.css";
 
 type Props = { layout: string; title: string };
 
-import variablesCSS from "../styles/variables.css?raw";
-const bgColours = variablesCSS
-  .matchAll(/--color-bg1:\s*(#[0-9a-fA-F]+)/g)
-  .map((match) => match[1])
-  .toArray();
-const fgColours = variablesCSS
-  .matchAll(/--color-fg1:\s*(#[0-9a-fA-F]+)/g)
-  .map((match) => match[1])
-  .toArray();
-const maxContentWidth = variablesCSS
-  .match(/--max-content-width:\s*([^\s;]+)/)![1];
-
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site || Astro.url.origin);
+const canonicalUrl = new URL(
+  Astro.url.pathname,
+  Astro.site || Astro.url.origin,
+);
 
 const { layout, title } = Astro.props as Props;
 ---
@@ -25,7 +16,7 @@ const { layout, title } = Astro.props as Props;
 <html lang="en-ca" class={`no-js no-katex layout-${layout}`}>
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE-edge" />
+    <meta name="color-scheme" content="light dark" />
     <meta
       http-equiv="Content-Security-Policy"
       content={[
@@ -80,33 +71,6 @@ const { layout, title } = Astro.props as Props;
       })}
     />
 
-    <style
-      set:html={`
-        html {
-          background-color: ${bgColours[0]};
-          color: ${fgColours[0]};
-        }
-        @media (prefers-color-scheme: dark) {
-          html {
-            background-color: ${bgColours[1]};
-            color: ${fgColours[1]};
-          }
-        }
-        .site-header,
-        main {
-          width: 90%;
-          max-width: ${maxContentWidth};
-          margin: 0 auto;
-        }
-        .no-katex .katex-html {
-          display: none;
-        }
-      `
-        .replace(/\s*([,:;()\{\}])\s*/g, "$1")
-        .replaceAll(";}", "}")
-      }
-    ></style>
-
     <script is:inline>
       document.documentElement.classList.remove("no-js");
     </script>
@@ -130,8 +94,80 @@ const { layout, title } = Astro.props as Props;
     <slot />
   </body>
 
-  <style>
+  <style is:global>
     @import "$styles/variables.css";
+
+    :root {
+      --color-bg1: light-dark(#fefdfa, #050723);
+      --color-bg2: light-dark(#eaeae8, #0b0d3e);
+      --color-bg3: light-dark(#ddd, #0e1058);
+
+      --color-fg1: light-dark(#222, #e7e7f1);
+      --color-fg2: light-dark(#333, #bbc);
+      --color-fg3: light-dark(#767676, #889);
+
+      --color-or1: #f16913;
+      --color-or2: #d8580d;
+      --color-or3: #bf4708;
+      --color-or4: #a63603;
+
+      --color-rd1: #fb6a4a;
+      --color-rd2: #ef3b2c;
+      --color-rd3: #cb181d;
+      --color-rd4: #a50f15;
+
+      --color-pu1: #807dba;
+      --color-pu2: #7160ab;
+      --color-pu3: #62439d;
+      --color-pu4: #54278f;
+
+      --color-bu1: #4292c6;
+      --color-bu2: #2e7cb8;
+      --color-bu3: #1b66aa;
+      --color-bu4: #08519c;
+
+      --color-gn1: #41ab5d;
+      --color-gn2: #2b964c;
+      --color-gn3: #15813c;
+      --color-gn4: #006d2c;
+
+      --bg-color: var(--color-bg1);
+      --fg-color: var(--color-fg1);
+      --title-color: light-dark(#111, #eef);
+      --subtitle-color: var(--color-fg3);
+      --link-color: light-dark(#13f, #47f);
+
+      --about-color: var(--color-or2);
+      --portfolio-color: var(--color-rd2);
+      --home-color: var(--color-pu2);
+      --blog-color: var(--color-bu2);
+      --contact-color: var(--color-gn2);
+
+      --font-family-accent: Inter, sans-serif;
+      --font-family-mono: Inconsolata, monospace;
+      --font-weight-regular: 400;
+      --font-weight-bold: 700;
+      --font-weight-title: 800;
+      --font-weight-black: 900;
+
+      --max-content-width: 1136px;
+      --max-text-width: 64ch;
+
+      --tn-fcn: 0.25s ease;
+
+      @supports (font-variation-settings: normal) {
+        --font-family-accent: InterVariable, sans-serif;
+      }
+
+      color-scheme: light dark;
+
+      &:is(.light) {
+        color-scheme: light;
+      }
+      &:is(.dark) {
+        color-scheme: dark;
+      }
+    }
 
     html {
       @apply --font-copy;
@@ -143,7 +179,9 @@ const { layout, title } = Astro.props as Props;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       text-rendering: optimizelegibility;
-      transition: background-color var(--tn-fcn), color var(--tn-fcn);
+      transition:
+        background-color var(--tn-fcn),
+        color var(--tn-fcn);
       touch-action: manipulation;
     }
 
@@ -161,6 +199,17 @@ const { layout, title } = Astro.props as Props;
       body {
         display: block;
       }
+    }
+
+    .site-header,
+    main {
+      width: 90%;
+      max-width: var(--max-content-width);
+      margin: 0 auto;
+    }
+
+    .no-katex .katex-html {
+      display: none;
     }
   </style>
 

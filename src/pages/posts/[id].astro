@@ -3,7 +3,6 @@ import { getCollection, render } from "astro:content";
 import Page from "$layouts/Page.astro";
 import PageWithHero from "$layouts/PageWithHero.astro";
 import { formatDate } from "$lib/utils";
-import { Icon } from "astro-icon/components";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -41,8 +40,6 @@ const props = {
   </article>
 
   <style>
-    @import "$styles/variables.css";
-
     :global(main) {
       max-width: 800px;
     }
