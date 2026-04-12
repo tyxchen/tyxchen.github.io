@@ -22,9 +22,9 @@ const { layout, title } = Astro.props as Props;
       content={[
         "default-src 'self'",
         "frame-src 'self' youtube-nocookie.com www.youtube-nocookie.com",
-        "style-src 'self' 'unsafe-inline' rsms.me cdn.jsdelivr.net",
+        "style-src 'self' 'unsafe-inline' rsms.me fonts.googleapis.com cdn.jsdelivr.net",
         "script-src 'self' 'unsafe-inline' cdn.jsdelivr.net",
-        "font-src rsms.me cdn.jsdelivr.net",
+        "font-src rsms.me fonts.gstatic.com cdn.jsdelivr.net",
         "img-src 'self' https:",
       ].join(";")}
     />
@@ -76,6 +76,10 @@ const { layout, title } = Astro.props as Props;
     </script>
 
     <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inconsolata:wdth@100..112.5&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- KaTeX fallback when JS is disabled -->
     <noscript class="katex-fallback">

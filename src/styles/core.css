@@ -31,6 +31,7 @@ p:last-child {
 a {
   color: var(--link-color);
   text-decoration: none;
+  text-underline-position: from-font;
   transition: color var(--tn-fcn);
 
   &:hover {
@@ -186,13 +187,23 @@ figure {
  */
 
 pre.astro-code {
-  font-size: 1rem;
-  padding: 1rem;
-  border: 1px solid hsl(from currentColor h s l / 0.1);
+  --shiki-default-fg: light-dark(var(--shiki-light), var(--shiki-dark));
+  --shiki-default-bg: light-dark(var(--shiki-light-bg), var(--shiki-dark-bg));
+
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  padding: 1rem 0;
+  border: 1px solid hsl(from var(--shiki-default-fg) h s l / 0.1);
   border-radius: 0.5rem;
 
   counter-reset: code-line-counter;
   counter-increment: code-line-counter 0;
+
+  .line {
+    display: inline-block;
+    min-width: calc(100% - 2rem);
+    padding: 0 1rem;
+  }
 
   .line::before {
     content: counter(code-line-counter);
@@ -201,17 +212,29 @@ pre.astro-code {
     width: 2.5ch;
     text-align: right;
     margin-right: 2ch;
-    color: hsl(from currentColor h s l / 0.6);
+    color: hsl(from var(--shiki-default-fg) h s l / 0.6);
+  }
+
+  @media (--gt-than-tablet) {
+    font-size: 1rem;
+
+    .line:hover {
+      --shiki-light-bg: color-mix(in hsl, var(--shiki-default-bg), var(--shiki-light) 5%);
+      --shiki-dark-bg: color-mix(in hsl, var(--shiki-default-bg), var(--shiki-dark) 10%);
+    }
   }
 }
 
 .astro-code,
 .astro-code span {
-  @media (prefers-color-scheme: dark) {
-    color: var(--shiki-dark) !important;
-    background-color: var(--shiki-dark-bg) !important;
-    font-style: var(--shiki-dark-font-style) !important;
-    font-weight: var(--shiki-dark-font-weight) !important;
-    text-decoration: var(--shiki-dark-text-decoration) !important;
-  }
+  color: light-dark(var(--shiki-light), var(--shiki-dark));
+  background-color: light-dark(var(--shiki-light-bg), var(--shiki-dark-bg));
+  font-style: light-dark(var(--shiki-light-font-style), var(--shiki-dark-font-style));
+  font-weight: light-dark(var(--shiki-light-font-weight), var(--shiki-dark-font-weight));
+  text-decoration: light-dark(var(--shiki-light-text-decoration), var(--shiki-dark-text-decoration));
+}
+
+pre, code, kbd, samp {
+  font-family: var(--font-family-mono);
+  font-stretch: 105%;
 }
