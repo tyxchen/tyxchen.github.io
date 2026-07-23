@@ -1,0 +1,149 @@
+---
+import { Icon } from "astro-icon/components";
+
+type Props = {
+  aspectRatio?: string;
+};
+
+const { aspectRatio = "16 / 9" } = Astro.props as Props;
+---
+
+<div class="image-carousel">
+  <div
+    class="image-carousel-container"
+    style={{ "--aspect-ratio": aspectRatio }}
+  >
+    <slot />
+  </div>
+  <div class="image-carousel-controls">
+    <a class="image-carousel-prev text-left" href="#"
+      ><Icon name="ph:arrow-left-bold" />
+      <span class="lt-mobile">Previous</span></a
+    >
+    <span class="image-carousel-pagination text-center"
+      ><span class="image-carousel-pagination-current">1</span> / <span
+        class="image-carousel-pagination-total">1</span
+      ></span
+    >
+    <a class="image-carousel-next text-right" href="#"
+      ><span class="lt-mobile">Next <Icon name="ph:arrow-right-bold" /></span
+      ></a
+    >
+  </div>
+</div>
+
+<style>
+  @import "$styles/variables.css";
+
+  .image-carousel {
+    background-color: var(--color-bg2);
+    border: 5px solid var(--color-bg2);
+    overflow: hidden;
+
+    &-container {
+      width: 100%;
+      aspect-ratio: var(--aspect-ratio);
+      display: flex;
+      flex-flow: row nowrap;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      > :global(*) {
+        aspect-ratio: var(--aspect-ratio);
+        flex: 0 0 100%;
+        max-width: 100%;
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+        margin: 0 !important;
+      }
+
+      :global(.lightbox .img-wrapper),
+      :global(.lightbox .img-wrapper picture) {
+        height: 100%;
+      }
+
+      :global(:not(.expanded) img) {
+        height: 100%;
+        width: auto;
+      }
+    }
+
+    &-controls {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    &-controls > * {
+      flex: 1;
+      min-width: 50%;
+    }
+
+    &-pagination {
+      order: 1;
+      font-feature-settings: "tnum";
+    }
+
+    &-prev,
+    &-next {
+      @apply --font-accent;
+      font-weight: 700;
+    }
+
+    @media (--gt-than-tablet) {
+      &-controls > * {
+        min-width: 0;
+      }
+
+      &-pagination {
+        order: 0;
+      }
+    }
+  }
+</style>
+
+<script>
+  import { $, $$ } from "$lib/utils";
+
+  for (const carousel of $$(".image-carousel")) {
+    const container = $(carousel, ".image-carousel-container") as HTMLElement;
+    const prevBtn = $(carousel, ".image-carousel-prev") as HTMLElement;
+    const nextBtn = $(carousel, ".image-carousel-next") as HTMLElement;
+    const currentPageEl = $(
+      carousel,
+      ".image-carousel-pagination-current",
+    ) as HTMLElement;
+    const totalPagesEl = $(
+      carousel,
+      ".image-carousel-pagination-total",
+    ) as HTMLElement;
+
+    const updatePagination = () => {
+      const totalPages = container.children.length;
+      const currentPage =
+        Math.round(container.scrollLeft / container.clientWidth) + 1;
+
+      currentPageEl.textContent = currentPage.toString();
+      totalPagesEl.textContent = totalPages.toString();
+    };
+
+    prevBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      container.scrollBy({ left: -1, behavior: "smooth" });
+    });
+
+    nextBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      container.scrollBy({ left: 1, behavior: "smooth" });
+    });
+
+    container.addEventListener("scroll", updatePagination);
+    updatePagination();
+  }
+</script>

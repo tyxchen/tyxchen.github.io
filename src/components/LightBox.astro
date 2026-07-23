@@ -23,7 +23,7 @@ const { class: className, ...attrs } = Astro.props as Props;
 <style>
   .lightbox {
     margin: 2rem auto;
-    
+
     .img-wrapper {
       position: relative;
       z-index: 1;
@@ -75,7 +75,6 @@ const { class: className, ...attrs } = Astro.props as Props;
 
     &.expanded :global(img),
     &.expanded :global(picture) {
-      position: absolute;
       cursor: zoom-out;
     }
   }
@@ -108,6 +107,7 @@ const { class: className, ...attrs } = Astro.props as Props;
         const expandedHeight = Math.min(naturalHeight, innerHeight - 40);
         const expandedWidth = Math.min(naturalWidth, innerWidth - 40);
 
+        img.style.position = "absolute";
         img.style.height = placeholder.style.height = imgHeight + "px";
         img.style.width = placeholder.style.width = imgWidth + "px";
         img.style.top = imgScrollTop + "px";
@@ -132,8 +132,6 @@ const { class: className, ...attrs } = Astro.props as Props;
       if (figure.classList.contains("expanded")) {
         closeExpandedImage();
       } else if (wrapper.contains(e.target as Node)) {
-        const windowScrollTop = window.scrollY;
-
         openExpandedImage();
 
         figure.classList.add("expanded");
