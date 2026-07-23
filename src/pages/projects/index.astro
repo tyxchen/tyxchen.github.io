@@ -1,0 +1,72 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import Page from "$layouts/Page.astro";
+import Showcase from "$components/collections/Showcase.astro";
+
+const projects = Object.fromEntries(
+  (await getCollection("projects")).map((proj) => [proj.id, proj]),
+);
+---
+
+<Page title="Projects">
+  <Showcase
+    id="mss-csec"
+    title="Markville CSEC"
+    summary="Markville Secondary School's Computer Science Education Club needed a better system than Google Drive to store and disseminate its lessons. A new website let us carry out our mission of teaching competitive programming to high school students."
+    link="https://mss-csec.github.io"
+  >
+    <!-- <Image src={mssCsecCover} alt="Screenshot of home page" /> -->
+  </Showcase>
+
+  <Showcase
+    id="evdo"
+    title="Everything Dojo"
+    summary="When it came time to redesign and rebuild this website from scratch, I designed mockups, refined the UI, and helped write a custom CMS to replace phpBB."
+    link="http://www.everythingdojo.com"
+  >
+    <!-- <Image src={evdoCover} alt="Screenshot of home page" /> -->
+  </Showcase>
+
+  <Showcase
+    id="city"
+    title="City.css"
+    summary="A theme I developed for blogs on Art of Problem Solving. One of the most popular and well-liked themes in the history of the community."
+    link="https://github.com/tyxchen/aops-city"
+  >
+    <!-- <Image src={cityCover} alt="Screenshot of theme" /> -->
+  </Showcase>
+</Page>
+
+<style>
+  h2 {
+    font-weight: var(--font-weight-regular);
+  }
+
+  .date {
+    display: inline-block;
+    width: 9.5ch;
+    color: var(--color-fg3);
+  }
+
+  .title {
+    color: var(--title-color);
+    text-decoration: underline;
+  }
+
+  a {
+    display: inline-block;
+
+    &:hover {
+      opacity: 1;
+
+      .date {
+        color: color-mix(var(--trianglify-color), var(--color-fg3) 60%);
+      }
+
+      .title {
+        color: var(--trianglify-color);
+      }
+    }
+  }
+</style>

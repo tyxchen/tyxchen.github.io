@@ -18,7 +18,7 @@ const posts = defineCollection({
       heroInvertColours: z.boolean().optional(),
     }),
 });
-const portfolio = defineCollection({
+const projects = defineCollection({
   loader: glob({ base: './src/content/projects', pattern: '**/*.{md,mdx}' }),
   schema: ({ image }) =>
     z.object({
@@ -30,4 +30,4 @@ const portfolio = defineCollection({
     }),
 });
 
-export const collections = { posts, portfolio };
+export const collections = { posts, projects };

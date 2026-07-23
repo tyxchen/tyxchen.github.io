@@ -36,6 +36,7 @@ export default defineConfig({
   //prefetch: true,
   redirects: {
     '/archive': '/posts',
+    '/portfolio': '/projects',
   },
   vite: {
     server: {

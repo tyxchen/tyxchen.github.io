@@ -5,6 +5,8 @@ type Props = {
   foreground?: string;
   background?: string;
   inline?: boolean;
+  inverted?: boolean;
+  noAutoHoverStyle?: boolean;
   pill?: boolean;
   class?: string;
 } & (
@@ -28,6 +30,8 @@ const {
   foreground,
   background,
   inline = false,
+  inverted = false,
+  noAutoHoverStyle = false,
   pill = false,
   class: className,
   extraAttributes = {},
@@ -36,6 +40,8 @@ const {
 const classList = [
   "btn",
   inline ? "inline" : "",
+  inverted ? "inverted" : "",
+  noAutoHoverStyle ? "" : "auto-hover-style",
   pill ? "pill" : "",
   className ?? "",
 ];
@@ -50,52 +56,21 @@ extraAttributes.style = {
 <>
   {
     props.el == "a" && (
-      <a
-        class:list={[
-          "btn",
-          `fg-${foreground}`,
-          `bg-${background}`,
-          inline ? "inline" : "",
-          pill ? "pill" : "",
-          className ?? "",
-        ]}
-        {...{ href: props.href }}
-        {...extraAttributes}
-      >
+      <a class:list={classList} {...{ href: props.href }} {...extraAttributes}>
         <slot />
       </a>
     )
   }
   {
     props.el == "button" && (
-      <button
-        class:list={[
-          "btn",
-          `fg-${foreground}`,
-          `bg-${background}`,
-          inline ? "inline" : "",
-          pill ? "pill" : "",
-          className ?? "",
-        ]}
-        {...extraAttributes}
-      >
+      <button class:list={classList} {...extraAttributes}>
         <slot />
       </button>
     )
   }
   {
     props.el == "span" && (
-      <span
-        class:list={[
-          "btn",
-          `fg-${foreground}`,
-          `bg-${background}`,
-          inline ? "inline" : "",
-          pill ? "pill" : "",
-          className ?? "",
-        ]}
-        {...extraAttributes}
-      >
+      <span class:list={classList} {...extraAttributes}>
         <slot />
       </span>
     )
@@ -115,7 +90,7 @@ extraAttributes.style = {
       border: 2px solid var(--fg-color);
       border-radius: 0.3em;
 
-      &:hover {
+      &.auto-hover-style:hover {
         color: color-mix(in hsl, var(--fg-color), var(--color-fg1) 50%);
         background-color: color-mix(
           in hsl,
@@ -125,7 +100,7 @@ extraAttributes.style = {
         border-color: color-mix(in hsl, var(--fg-color) 80%, var(--color-fg1));
       }
 
-      &:not([style*="--bg-color"]):hover {
+      &.auto-hover-style:not([style*="--bg-color"]):hover {
         background-color: color-mix(
           in lch,
           var(--fg-color) 10%,
@@ -133,7 +108,7 @@ extraAttributes.style = {
         );
       }
 
-      &:not([style*="--bg-color"]):hover {
+      &.auto-hover-style:not([style*="--bg-color"]):hover {
         background-color: color-mix(
           in lch,
           var(--fg-color) 10%,
@@ -167,97 +142,24 @@ extraAttributes.style = {
       padding: 0.3em;
     }
 
+    .btn.inverted {
+      color: var(--bg-color);
+      background-color: var(--fg-color);
+      border-color: var(--fg-color);
+
+      &.auto-hover-style:hover {
+        color: color-mix(in hsl, var(--bg-color), var(--color-bg1) 50%);
+        background-color: color-mix(
+          in hsl,
+          var(--fg-color) 80%,
+          var(--color-fg1)
+        );
+        border-color: color-mix(in hsl, var(--fg-color) 80%, var(--color-fg1));
+      }
+    }
+
     .btn.pill {
       border-radius: 100px;
-    }
-
-    .btn.fg-default {
-      color: var(--fg-color);
-    }
-
-    .btn.fg-or,
-    .btn.bg-or {
-      border-color: var(--color-or3);
-
-      &:hover {
-        border-color: var(--color-or4);
-      }
-    }
-
-    .btn.fg-or:hover {
-      color: var(--color-or4);
-    }
-
-    .btn.bg-or:hover {
-      background-color: var(--color-or3);
-    }
-
-    .btn.fg-rd,
-    .btn.bg-rd {
-      border-color: var(--color-rd3);
-
-      &:hover {
-        border-color: var(--color-rd4);
-      }
-    }
-
-    .btn.fg-rd:hover {
-      color: var(--color-rd4);
-    }
-
-    .btn.bg-rd:hover {
-      background-color: var(--color-rd3);
-    }
-
-    .btn.fg-pu,
-    .btn.bg-pu {
-      border-color: var(--color-pu3);
-
-      &:hover {
-        border-color: var(--color-pu4);
-      }
-    }
-
-    .btn.fg-pu:hover {
-      color: var(--color-pu4);
-    }
-
-    .btn.bg-pu:hover {
-      background-color: var(--color-pu3);
-    }
-
-    .btn.fg-bu,
-    .btn.bg-bu {
-      border-color: var(--color-bu3);
-
-      &:hover {
-        border-color: var(--color-bu4);
-      }
-    }
-
-    .btn.fg-bu:hover {
-      color: var(--color-bu4);
-    }
-
-    .btn.bg-bu:hover {
-      background-color: var(--color-bu3);
-    }
-
-    .btn.fg-gn,
-    .btn.bg-gn {
-      border-color: var(--color-gn3);
-
-      &:hover {
-        border-color: var(--color-gn4);
-      }
-    }
-
-    .btn.fg-gn:hover {
-      color: var(--color-gn4);
-    }
-
-    .btn.bg-gn:hover {
-      background-color: var(--color-gn3);
     }
   </style>
 </>
