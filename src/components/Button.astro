@@ -2,32 +2,49 @@
 import type { HTMLAttributes } from "astro/types";
 
 type Props = {
-  foreground?: "rd" | "or" | "pu" | "bu" | "gn";
-  background?: "rd" | "or" | "pu" | "bu" | "gn";
+  foreground?: string;
+  background?: string;
   inline?: boolean;
   pill?: boolean;
   class?: string;
-} & ({
-  el: "button";
-  extraAttributes?: Omit<HTMLAttributes<"button">, "class">;
-} | {
-  el: "a";
-  href: string;
-  extraAttributes?: Omit<HTMLAttributes<"a">, "class" | "href">;
-} | {
-  el?: "span";
-  extraAttributes?: Omit<HTMLAttributes<"span">, "class">;
-});
+} & (
+  | {
+      el: "button";
+      extraAttributes?: Omit<HTMLAttributes<"button">, "class">;
+    }
+  | {
+      el: "a";
+      href: string;
+      extraAttributes?: Omit<HTMLAttributes<"a">, "class" | "href">;
+    }
+  | {
+      el?: "span";
+      extraAttributes?: Omit<HTMLAttributes<"span">, "class">;
+    }
+);
 
 const props = Astro.props as Props;
 const {
-  foreground = "default",
-  background = "default",
+  foreground,
+  background,
   inline = false,
   pill = false,
   class: className,
   extraAttributes = {},
 } = props;
+
+const classList = [
+  "btn",
+  inline ? "inline" : "",
+  pill ? "pill" : "",
+  className ?? "",
+];
+
+extraAttributes.style = {
+  "--fg-color": foreground,
+  "--bg-color": background,
+  ...("style" in extraAttributes ? extraAttributes.style : {}),
+};
 ---
 
 <>
@@ -86,15 +103,43 @@ const {
 
   <style>
     @import "$styles/variables.css";
-    
+
     .btn {
       @apply --font-accent;
 
       display: inline-block;
+      color: var(--fg-color);
+      background-color: var(--bg-color);
       font-weight: var(--font-weight-bold);
       padding: 0.5em;
-      border: 2px solid;
+      border: 2px solid var(--fg-color);
       border-radius: 0.3em;
+
+      &:hover {
+        color: color-mix(in hsl, var(--fg-color), var(--color-fg1) 50%);
+        background-color: color-mix(
+          in hsl,
+          var(--bg-color) 80%,
+          var(--color-bg1)
+        );
+        border-color: color-mix(in hsl, var(--fg-color) 80%, var(--color-fg1));
+      }
+
+      &:not([style*="--bg-color"]):hover {
+        background-color: color-mix(
+          in lch,
+          var(--fg-color) 10%,
+          light-dark(white, black)
+        );
+      }
+
+      &:not([style*="--bg-color"]):hover {
+        background-color: color-mix(
+          in lch,
+          var(--fg-color) 10%,
+          light-dark(white, black)
+        );
+      }
     }
 
     a.btn {

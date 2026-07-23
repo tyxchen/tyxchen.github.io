@@ -15,8 +15,10 @@ const { videoID, caption, class: className, ...attrs } = Astro.props as Props;
     src={`https://www.youtube-nocookie.com/embed/${videoID}`}
     title="YouTube video player"
     frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    allowfullscreen></iframe>
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture; web-share"
+    allowfullscreen=""
+    loading="lazy"
+  ></iframe>
   {caption && <figcaption>{caption}</figcaption>}
 </figure>
 

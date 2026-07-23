@@ -9,26 +9,48 @@ const posts = (await getCollection("posts")).sort(
 ---
 
 <Page title="Post archive">
-  {posts.map((post) => ( 
-    <h2><a href={`/posts/${post.id}`}><span class="date faded">{formatDate(post.data.date)}</span> <span class="title">{post.data.title}</span></a></h2>
-  ))}
+  {
+    posts.map((post) => (
+      <h2>
+        <a href={`/posts/${post.id}`}>
+          <span class="date small">{formatDate(post.data.date)}</span>
+          <span class="title">{post.data.title}</span>
+        </a>
+      </h2>
+    ))
+  }
   {posts.length === 0 && <em>No posts available.</em>}
 </Page>
 
 <style>
-  h2 a {
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
+  h2 {
     font-weight: var(--font-weight-regular);
-    text-decoration: none;
   }
+
   .date {
+    display: inline-block;
     width: 9.5ch;
-    font-size: 0.9em;
+    color: var(--color-fg3);
   }
+
   .title {
-    flex: 1;
-    font-weight: 600;
+    color: var(--title-color);
+    text-decoration: underline;
+  }
+
+  a {
+    display: inline-block;
+
+    &:hover {
+      opacity: 1;
+
+      .date {
+        color: color-mix(var(--trianglify-color), var(--color-fg3) 60%);
+      }
+
+      .title {
+        color: var(--trianglify-color);
+      }
+    }
   }
 </style>

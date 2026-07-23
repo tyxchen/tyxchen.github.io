@@ -49,21 +49,24 @@ const extra_employment = cv.employment
 
         <footer id="header-links">
           <!-- <a href="mailto:tyxchen@outlook.com"><Icon name="ph:envelope" /></a> -->
-          <!-- <a href="/assets/resume.pdf"><Icon name="ph:read-cv-logo" /></a> -->
-          <a rel="noreferrer" href="https://github.com/tyxchen">
-            <Icon name="fa7-brands:github" />
-            <span>tyxchen</span>
+          <a href="/assets/resume.pdf">
+            <Icon name="ph:read-cv-logo" title="CV" />
+            <u>Resume</u>
           </a>
-          <a
+          <a rel="noreferrer" href="https://github.com/tyxchen">
+            <Icon name="fa7-brands:github" title="GitHub" />
+            <u>tyxchen</u>
+          </a>
+          <!-- <a
             rel="noreferrer"
             href="https://bsky.app/profile/tyxchen.bsky.social"
           >
-            <Icon name="fa7-brands:bluesky" />
-            <span>@tyxchen.bsky.social</span>
-          </a>
+            <Icon name="fa7-brands:bluesky" title="Bluesky" />
+            <u>@tyxchen.bsky.social</u>
+          </a> -->
           <a rel="noreferrer" href="https://www.linkedin.com/in/tyxchen">
-            <Icon name="fa7-brands:linkedin" />
-            <span>Terry Chen</span>
+            <Icon name="fa7-brands:linkedin" title="LinkedIn" />
+            <u>Terry Chen</u>
           </a>
         </footer>
       </section>
@@ -217,11 +220,10 @@ const extra_employment = cv.employment
 <style>
   @import "$styles/variables.css";
 
-  html {
+  :root {
+    --link-color: var(--trianglify-color);
+    
     @apply --font-accent;
-  }
-  :global(a) {
-    color: var(--trianglify-color);
   }
   main {
     flex: 1;
@@ -275,7 +277,7 @@ const extra_employment = cv.employment
     align-items: start;
     font-size: 0.9em;
   }
-  #header-links span {
+  #header-links u {
     text-decoration: underline;
   }
   #qualifications {
