@@ -1,0 +1,60 @@
+---
+import Layout from "$layouts/Layout.astro";
+
+type Props = {
+  layout?: string;
+  title: string;
+  subtitle?: string;
+};
+
+const { layout = "page", title, subtitle } = Astro.props;
+---
+
+<Layout layout={layout} title={title}>
+  <header id="header">
+    <h1 id="title">{title}</h1>
+    {subtitle && <h2 class="subtitle">{subtitle}</h2>}
+    <slot name="header" />
+  </header>
+  <div>
+    <slot />
+  </div>
+</Layout>
+
+<style>
+  @import "../styles/variables.css";
+
+  #header {
+    line-height: 1.2;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+
+    @media (--gt-than-tablet) {
+      /* margin-top: 4rem; */
+      margin-bottom: 2rem;
+    }
+  }
+
+  #title {
+    color: var(--title-color);
+    font-size: 2.5rem;
+    font-weight: var(--font-weight-title);
+    line-height: 1;
+    margin: 0;
+    transition: color var(--tn-fcn);
+
+    @media (--gt-than-tablet) {
+      font-size: 3.5rem;
+    }
+  }
+
+  .subtitle {
+    color: var(--subtitle-color);
+    font-weight: var(--font-weight-bold);
+    margin: 0.1em 0;
+
+    a {
+      color: var(--color-fg2);
+    }
+  }
+</style>

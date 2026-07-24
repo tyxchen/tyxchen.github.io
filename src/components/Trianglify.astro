@@ -1,0 +1,111 @@
+---
+import type { colors } from "$lib/colours";
+import { toConditionalValue } from "$lib/utils";
+
+type Props = {
+  animate?: boolean;
+  cellSize?: number;
+  colour?: keyof typeof colors | "shuffle";
+  controlKey: string;
+  interactive?: boolean;
+  overrideContrastPreference?: boolean;
+};
+
+const {
+  animate = false,
+  cellSize = 16,
+  colour = "shuffle",
+  controlKey,
+  interactive = false,
+  overrideContrastPreference = false,
+} = Astro.props as Props;
+---
+
+<>
+  <span
+    class="trianglify"
+    data-animate={toConditionalValue(animate)}
+    data-cell-size={cellSize}
+    data-colour={colour}
+    data-control-key={controlKey}
+    data-interactive={toConditionalValue(interactive)}
+    data-override-contrast-preference={toConditionalValue(
+      overrideContrastPreference,
+    )}
+  >
+    <slot />
+  </span>
+
+  <style>
+    .trianglify[data-interactive] {
+      cursor: pointer;
+      user-select: none;
+
+      :global(.trianglify-svg) {
+        user-select: text !important;
+      }
+    }
+
+    .trianglify :global(.trianglify-canvas) {
+      filter: brightness(0.8) contrast(1.25);
+
+      @media (prefers-color-scheme: dark) {
+        filter: none;
+      }
+
+      :root:is(.dark) & {
+        filter: none;
+      }
+    }
+
+    @media print {
+      .trianglify {
+        color: currentColor !important;
+
+        :global(.trianglify-canvas),
+        :global(.trianglify-svg) {
+          display: none;
+        }
+      }
+    }
+  </style>
+</>
+
+<script>
+  import { colors } from "$lib/colours";
+  import { Trianglify } from "$lib/trianglify.ts";
+  import { $$ } from "$lib/utils.ts";
+
+  const init = (el: HTMLElement) => {
+    if (
+      window.matchMedia("(prefers-contrast: more)").matches &&
+      !("overrideContrastPreference" in el.dataset)
+    ) {
+      return;
+    }
+
+    const colourSetInd =
+      el.dataset.colour === "shuffle"
+        ? Trianglify.shuffledColours[0]
+        : ((el.dataset.colour as keyof typeof colors) ?? "random");
+    const trianglify = new Trianglify(
+      el,
+      el.dataset.controlKey!,
+      colors[colourSetInd],
+      "animate" in el.dataset &&
+        !window.matchMedia("(prefers-reduced-motion)").matches,
+      el.dataset.cellSize ? parseInt(el.dataset.cellSize) : undefined,
+    );
+
+    if ("interactive" in el.dataset) {
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        Trianglify.changeAllToNextShuffledColour(trianglify.controlKey);
+      });
+    }
+  };
+
+  window.addEventListener("load", () => {
+    $$(".trianglify").forEach((el) => init(el as HTMLElement));
+  });
+</script>

@@ -1,0 +1,165 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = {
+  foreground?: string;
+  background?: string;
+  inline?: boolean;
+  inverted?: boolean;
+  noAutoHoverStyle?: boolean;
+  pill?: boolean;
+  class?: string;
+} & (
+  | {
+      el: "button";
+      extraAttributes?: Omit<HTMLAttributes<"button">, "class">;
+    }
+  | {
+      el: "a";
+      href: string;
+      extraAttributes?: Omit<HTMLAttributes<"a">, "class" | "href">;
+    }
+  | {
+      el?: "span";
+      extraAttributes?: Omit<HTMLAttributes<"span">, "class">;
+    }
+);
+
+const props = Astro.props as Props;
+const {
+  foreground,
+  background,
+  inline = false,
+  inverted = false,
+  noAutoHoverStyle = false,
+  pill = false,
+  class: className,
+  extraAttributes = {},
+} = props;
+
+const classList = [
+  "btn",
+  inline ? "inline" : "",
+  inverted ? "inverted" : "",
+  noAutoHoverStyle ? "" : "auto-hover-style",
+  pill ? "pill" : "",
+  className ?? "",
+];
+
+extraAttributes.style = {
+  "--fg-color": foreground,
+  "--bg-color": background,
+  ...("style" in extraAttributes ? extraAttributes.style : {}),
+};
+---
+
+<>
+  {
+    props.el == "a" && (
+      <a class:list={classList} {...{ href: props.href }} {...extraAttributes}>
+        <slot />
+      </a>
+    )
+  }
+  {
+    props.el == "button" && (
+      <button class:list={classList} {...extraAttributes}>
+        <slot />
+      </button>
+    )
+  }
+  {
+    props.el == "span" && (
+      <span class:list={classList} {...extraAttributes}>
+        <slot />
+      </span>
+    )
+  }
+
+  <style>
+    @import "../styles/variables.css";
+
+    .btn {
+      @apply --font-accent;
+
+      display: inline-block;
+      color: var(--fg-color);
+      background-color: var(--bg-color);
+      font-weight: var(--font-weight-bold);
+      padding: 0.5em;
+      border: 2px solid var(--fg-color);
+      border-radius: 0.3em;
+
+      &.auto-hover-style:hover {
+        color: color-mix(in hsl, var(--fg-color), var(--color-fg1) 50%);
+        background-color: color-mix(
+          in hsl,
+          var(--bg-color) 80%,
+          var(--color-bg1)
+        );
+        border-color: color-mix(in hsl, var(--fg-color) 80%, var(--color-fg1));
+      }
+
+      &.auto-hover-style:not([style*="--bg-color"]):hover {
+        background-color: color-mix(
+          in lch,
+          var(--fg-color) 10%,
+          light-dark(white, black)
+        );
+      }
+
+      &.auto-hover-style:not([style*="--bg-color"]):hover {
+        background-color: color-mix(
+          in lch,
+          var(--fg-color) 10%,
+          light-dark(white, black)
+        );
+      }
+    }
+
+    a.btn {
+      text-decoration: none;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    .btn.x-small {
+      border-width: 1px;
+    }
+
+    .btn.large {
+      border-width: 3px;
+    }
+
+    .btn.x-large {
+      border-width: 5px;
+    }
+
+    .btn.inline {
+      display: inline;
+      padding: 0.3em;
+    }
+
+    .btn.inverted {
+      color: var(--bg-color);
+      background-color: var(--fg-color);
+      border-color: var(--fg-color);
+
+      &.auto-hover-style:hover {
+        color: color-mix(in hsl, var(--bg-color), var(--color-bg1) 50%);
+        background-color: color-mix(
+          in hsl,
+          var(--fg-color) 80%,
+          var(--color-fg1)
+        );
+        border-color: color-mix(in hsl, var(--fg-color) 80%, var(--color-fg1));
+      }
+    }
+
+    .btn.pill {
+      border-radius: 100px;
+    }
+  </style>
+</>

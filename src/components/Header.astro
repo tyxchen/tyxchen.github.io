@@ -1,0 +1,374 @@
+---
+import Trianglify from "./Trianglify.astro";
+
+type Props = {
+  currentPage?: "home" | "blog" | "projects" | "about";
+};
+
+const { currentPage } = Astro.props as Props;
+---
+
+<header class="site-header" role="navigation">
+  <ul class="site-header__wrapper">
+    <li class="site-header__home" aria-label="Navigate to the home page">
+      <a id="header-home" href="/">
+        <Trianglify animate cellSize={8} controlKey="header"
+          >Terry Chen</Trianglify
+        >
+      </a>
+    </li>
+    <li class="site-header__spacer"></li>
+    {/*
+    <li><a href="/assets/resume.pdf">Resume</a></li>
+    {
+      /*
+      <li><a href="/portfolio">Portfolio</a></li>
+      <li><a href="/posts">Blog</a></li>
+    //
+    //}
+    <li class="site-header__menu-toggler">
+      <div
+        class="site-header__menu-background"
+        id="mobile-menu-bg"
+        aria-hidden="true"
+      >
+      </div>
+      <a
+        class="menu-button"
+        href="#"
+        role="button"
+        title="Open menu"
+        aria-label="Open menu"
+        aria-controls="mobile-menu"
+      >
+        <span class="menu-blip menu-blip__1"><span></span></span>
+        <span class="menu-blip menu-blip__2"><span></span></span>
+        <span class="menu-blip menu-blip__3"><span></span></span>
+        <span class="menu-blip menu-blip__4"><span></span></span>
+      </a>
+    </li>
+    */}
+  </ul>
+  {/*
+  <div
+    class="site-header__menu"
+    id="mobile-menu"
+    role="menu"
+    aria-hidden="true"
+  >
+    <ul class="site-header__menu-wrapper">
+      <li><a href="/assets/resume.pdf">Resume</a></li>
+      {
+        /*
+        <li><a href="/portfolio">Portfolio</a></li>
+        <li><a href="/archive">Blog</a></li>
+      //
+      }
+      <li class="close-menu">
+        <a
+          href="#"
+          class="close-button"
+          aria-label="Close menu"
+          aria-controls="mobile-menu">Close menu</a
+        >
+      </li>
+    </ul>
+  </div>
+  */}
+</header>
+
+<style>
+  @import "../styles/variables.css";
+
+  :root {
+    --trianglify-color-light: color-mix(
+      in hsl,
+      var(--trianglify-color-pre-mix),
+      black 25%
+    );
+    --trianglify-color-dark: color-mix(
+      in hsl,
+      var(--trianglify-color-pre-mix),
+      white 10%
+    );
+
+    --trianglify-color: light-dark(
+      var(--trianglify-color-light),
+      var(--trianglify-color-dark)
+    );
+  }
+
+  :global(.menu-open) {
+    overflow: hidden;
+  }
+
+  .site-header {
+    font-size: 1.2em;
+    z-index: 10;
+
+    &__wrapper {
+      display: flex;
+      width: 100%;
+      height: 3rem;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2em;
+      padding-left: 0;
+
+      li {
+        display: none;
+      }
+
+      .site-header__home,
+      .site-header__menu-toggler {
+        display: block;
+      }
+    }
+
+    a {
+      color: currentColor;
+    }
+
+    &__spacer {
+      flex: 1;
+    }
+
+    &__home {
+      font-weight: var(--font-weight-black);
+      font-size: 1.4em;
+      line-height: 1;
+      z-index: 1;
+    }
+
+    @media (--gt-than-tablet) {
+      &__wrapper li {
+        display: block;
+      }
+
+      &__wrapper .site-header__menu-toggler {
+        display: none;
+      }
+    }
+  }
+
+  .site-header__menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+
+    &-toggler {
+      position: relative;
+      display: block;
+      width: 2rem;
+      height: 2rem;
+    }
+
+    &-background {
+      position: absolute;
+      background-color: var(--color-bg3);
+      border-radius: 100%;
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+
+    &-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 90%;
+      height: calc(100vh - 10rem);
+      text-align: center;
+      padding-left: 0;
+      margin: 5rem auto;
+
+      li {
+        display: block;
+      }
+    }
+
+    .close-menu {
+      position: absolute;
+      bottom: 1rem;
+      width: 90%;
+      color: transparent;
+
+      .close-button:focus {
+        color: var(--fg-color);
+      }
+    }
+
+    :global(.menu-open) & {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    @media print, (--gt-than-tablet) {
+      display: none;
+    }
+  }
+
+  .menu-button {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .menu-blip {
+    position: absolute;
+    width: 0.3rem;
+    height: 0.3rem;
+    transition: transform var(--tn-fcn);
+
+    span {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--title-color);
+      transform-origin: 0 50%;
+      transition: transform var(--tn-fcn);
+    }
+
+    &__1 {
+      top: 0.4rem;
+      left: 0.6rem;
+      transform: translate(0.35rem, -0.1rem);
+
+      span {
+        transform: rotate(45deg);
+      }
+    }
+
+    &__2 {
+      bottom: 0.4rem;
+      left: 0.6rem;
+      transform: translate(-0.1rem, -0.35rem);
+
+      span {
+        transform: rotate(-45deg);
+      }
+    }
+
+    &__3 {
+      bottom: 0.4rem;
+      right: 0.2rem;
+      transform: translate(-0.35rem, 0.1rem);
+
+      span {
+        transform: rotate(-135deg);
+      }
+    }
+
+    &__4 {
+      top: 0.4rem;
+      right: 0.2rem;
+      transform: translate(0.1rem, 0.35rem);
+
+      span {
+        transform: rotate(135deg);
+      }
+    }
+  }
+
+  :global(.menu-open) .menu-blip {
+    transform: translate(0, 0);
+
+    &__1 span {
+      transform: rotate(45deg) scaleX(2.5);
+    }
+
+    &__2 span {
+      transform: rotate(-45deg) scaleX(2.5);
+    }
+
+    &__3 span {
+      transform: rotate(-135deg) scaleX(2.5);
+    }
+
+    &__4 span {
+      transform: rotate(135deg) scaleX(2.5);
+    }
+  }
+</style>
+
+<!--
+<script>
+  // Menu toggle logic
+  import { $, $$ } from "$lib/utils.ts";
+
+  const bodyClsList = $("body")!.classList;
+  const menu = $(".site-header__menu")!;
+  const menuBg = $(".site-header__menu-background")! as HTMLElement;
+  const toggler = $(".site-header__menu-toggler")!;
+
+  const closeMenu = () => {
+    bodyClsList.remove("menu-open");
+    $("html")!.classList.remove("menu-open");
+    menu.setAttribute("aria-hidden", "true");
+    $$(menu, "a").forEach((a) => a.setAttribute("tabindex", "-1"));
+    menuBg.style.transform = "scale(0)";
+    toggler.setAttribute("aria-label", "Open menu");
+    toggler.setAttribute("title", "Open menu");
+  };
+  const openMenu = () => {
+    bodyClsList.add("menu-open");
+    $("html")!.classList.add("menu-open");
+    menu.removeAttribute("aria-hidden");
+    $$(menu, "a").forEach((a) => a.removeAttribute("tabindex"));
+    menuBg.style.transform = "scale(1)";
+    toggler.setAttribute("aria-label", "Close menu");
+    toggler.setAttribute("title", "Close menu");
+  };
+
+  toggler.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    const bgDim =
+      2 *
+      Math.sqrt(
+        document.documentElement.clientHeight *
+          document.documentElement.clientHeight +
+          document.documentElement.clientWidth *
+            document.documentElement.clientWidth,
+      );
+
+    menuBg.style.top = menuBg.style.right = `calc(1rem - ${bgDim / 2}px)`;
+    menuBg.style.height = menuBg.style.width = `${bgDim}px`;
+
+    if (bodyClsList.contains("menu-open")) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  $(".site-header__menu .close-button")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    closeMenu();
+  });
+
+  closeMenu();
+</script>
+-->
+
+<script>
+  // Other header-related scripts
+  import { $ } from "$lib/utils.ts";
+
+  $("#header-home .trianglify")?.addEventListener(
+    "trianglify-change-colors",
+    (e) => {
+      const { colourSet } = (e as CustomEvent).detail;
+      document.documentElement.style.setProperty(
+        `--trianglify-color-pre-mix`,
+        colourSet[2],
+      );
+    },
+  );
+</script>

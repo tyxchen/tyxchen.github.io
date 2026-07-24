@@ -1,0 +1,305 @@
+---
+import { Icon } from "astro-icon/components";
+import Button from "$components/Button.astro";
+import { luminance, hexToRGB } from "$lib/colours";
+
+type Props = {
+  id: string;
+  color?: string;
+  draw?: boolean;
+  title: string;
+  summary: string;
+  link?: string;
+  learn?: boolean;
+};
+
+const props: Props = Astro.props;
+
+const adjustedColour =
+  props.color && luminance(hexToRGB(props.color)) > 0.5 ? "#222" : "#fff";
+---
+
+<div
+  class:list={["showcase", props.draw ? "draw" : undefined]}
+  id={props.id}
+  data-clr={props.color}
+  aria-describedby={`${props.id}-heading ${props.id}-summary`}
+  style={{
+    "--bg-color": props.color ?? "var(--color-bg1)",
+    "--fg-color": props.color ? adjustedColour : "var(--color-fg1)",
+    "border-color":
+      props.color && luminance(hexToRGB(props.color)) < 0.9
+        ? undefined
+        : "var(--fg-color)",
+  }}
+>
+  <picture>
+    <slot />
+  </picture>
+  <div class="showcase-bg" aria-hidden="true">
+    <canvas class="showcase-canvas"></canvas>
+  </div>
+  <div class="showcase-content">
+    <h2 class="showcase-heading" id={`${props.id}-heading`}>{props.title}</h2>
+    <p class="showcase-summary" id={`${props.id}-summary`}>{props.summary}</p>
+    <p class="showcase-footer" role="complementary">
+      {
+        props.link && (
+          <Button
+            el="a"
+            class="small"
+            href={props.link}
+            aria-label="Visit project site"
+            extraAttributes={{ target: "_blank", rel: "noopener noreferrer" }}
+            background="transparent"
+            noAutoHoverStyle
+            pill
+          >
+            Visit <Icon name="ph:arrow-square-out-bold" title="External link" />
+          </Button>
+        )
+      }
+      {
+        props.learn && (
+          <Button
+            el="a"
+            class="small"
+            href={`/projects/${props.id}`}
+            foreground={adjustedColour}
+            background={props.color}
+            inverted
+            noAutoHoverStyle
+            pill
+          >
+            Learn more <Icon name="ph:arrow-right-bold" />
+          </Button>
+        )
+      }
+    </p>
+  </div>
+</div>
+
+<style>
+  @import "../../styles/variables.css";
+
+  .showcase {
+    --bg-color: var(--color-fg2);
+    --fg-color: var(--color-bg1);
+
+    position: relative;
+    box-sizing: border-box;
+    background-color: var(--bg-color);
+    border: 5px solid var(--bg-color);
+    margin-bottom: 1em;
+    overflow: hidden;
+
+    /* 10.1em is exact height with only one line of summary */
+    &.loaded {
+      min-height: 10.1em;
+      transition: height var(--tn-fcn);
+    }
+
+    &.loaded:not(:hover):not(:target) {
+      height: 10.1em !important;
+    }
+
+    :global(img) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      transform: scale(1);
+      transition: var(--tn-fcn);
+    }
+
+    &-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background-color: var(--bg-color);
+      opacity: 0;
+      transition: opacity var(--tn-fcn);
+    }
+
+    &-canvas {
+      opacity: 0.6;
+    }
+
+    &-content {
+      color: var(--fg-color);
+      margin: 1em;
+      transform: translateY(5.6em);
+      transition: transform var(--tn-fcn);
+    }
+
+    &-content > :not(&-heading) {
+      opacity: 0;
+      transition: opacity var(--tn-fcn);
+    }
+
+    &-content a {
+      color: currentColor;
+      text-decoration: underline;
+    }
+
+    &-heading {
+      position: relative;
+      display: inline-block;
+      color: var(--fg-color);
+      padding: 0 5px;
+      margin: 0;
+      transform: translateX(0);
+      transition: transform var(--tn-fcn);
+    }
+
+    &-heading::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background-color: var(--bg-color);
+      opacity: 1;
+      z-index: -1;
+      transition: opacity var(--tn-fcn);
+    }
+
+    @media (--gt-than-tablet) {
+      &-footer {
+        text-align: right;
+      }
+    }
+
+    :global(.btn) {
+      text-decoration: none;
+      padding: 0.3em 1em;
+      margin-right: 1em;
+      margin-bottom: 0.3em;
+      opacity: 0.9;
+      transition: opacity var(--tn-fcn);
+    }
+
+    :global(.btn:last-child) {
+      margin-right: 0;
+    }
+
+    :global(.btn) [data-icon] {
+      height: 1em;
+      vertical-align: -0.15em;
+      margin-left: 0.1em;
+      transform: translate(0);
+      transition: transform var(--tn-fcn);
+    }
+
+    :global(.btn:hover) {
+      opacity: 1;
+    }
+
+    :global(.btn:hover) [data-icon="ph:arrow-square-out-bold"] {
+      transform: translate(0.1em, -0.1em);
+    }
+
+    :global(.btn:hover) [data-icon="ph:arrow-right-bold"] {
+      transform: translate(0.14em, 0);
+    }
+
+    &:hover :global(img),
+    &:target :global(img) {
+      opacity: 0.4;
+      transform: scale(1.02);
+    }
+
+    &:hover &-bg,
+    &:target &-bg {
+      opacity: 0.6;
+    }
+
+    &:hover &-content,
+    &:target &-content {
+      transform: translateY(0);
+    }
+
+    &:hover &-content > :global(*),
+    &:target &-content > :global(*) {
+      opacity: 1;
+    }
+
+    &:hover &-heading,
+    &:target &-heading {
+      background-color: transparent;
+      transform: translateX(-5px);
+    }
+
+    &:hover &-heading::before,
+    &:target &-heading::before {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  import { $, $$, chooseRandomFromArray } from "$lib/utils";
+  import { mix, hexToRGB, RGBToHex } from "$lib/colours";
+  import { generate_triangles } from "$lib/trianglify";
+  import Resizer from "$lib/resizer";
+
+  if ($(".showcase")) {
+    for (const el_ of $$(".showcase")) {
+      const el = el_ as HTMLElement;
+      const bgClr = el.dataset.clr ?? "#fff";
+      const draw = el.classList.contains("draw");
+      let dims = el.getBoundingClientRect();
+
+      async function drawBg() {
+        const canvas = $(el, ".showcase-canvas") as HTMLCanvasElement;
+        const ctx = canvas.getContext("2d")!;
+        const mixClrs = [
+          hexToRGB("#666"),
+          hexToRGB("#777"),
+          hexToRGB("#888"),
+          hexToRGB("#999"),
+        ].map((c) => RGBToHex(mix(hexToRGB(bgClr), c, 0.3)));
+        const mesh = generate_triangles(dims.width, dims.height);
+
+        canvas.width = dims.width;
+        canvas.height = dims.height;
+
+        for (let i = 0; i < mesh.triangles.length; i++) {
+          mesh.draw(ctx, i, chooseRandomFromArray(mixClrs));
+        }
+      }
+
+      el.style.height = dims.height + "px";
+      el.classList.add("loaded");
+
+      if (draw) drawBg();
+
+      if (location.hash.slice(1) === el.id) {
+        const listener = () => {
+          location.hash = "null";
+          history.replaceState({}, "", location.pathname);
+          document.removeEventListener("click", listener);
+        };
+        document.addEventListener("click", listener);
+      }
+
+      Resizer.addListener(() => {
+        el.style.height = "auto";
+        el.classList.remove("loaded");
+
+        dims = el.getBoundingClientRect();
+
+        el.classList.add("loaded");
+        el.style.height = dims.height + "px";
+
+        if (draw) drawBg();
+      });
+    }
+  }
+</script>

@@ -1,0 +1,33 @@
+---
+layout: $layouts/MarkdownPage.astro
+title: Blender
+---
+
+import YouTube from "$components/YouTube.astro";
+import LightBox from "$components/LightBox.astro";
+import { Image } from "astro:assets";
+
+import stand from "$assets/blender/stand.png";
+import car from "$assets/blender/car.png";
+import officeOasisDay from "$assets/blender/office-oasis-day.png";
+import officeOasisNight from "$assets/blender/office-oasis-night.png";
+
+I like to play with Blender in my spare time. Here's some of the stuff I've made:
+
+<YouTube videoID="WHouZasu_8E" caption="A Jon Bois-esque video I made for one of my courses, animated and edited in Blender." />
+
+<LightBox>
+  <Image src={stand} alt="On the left, a screenshot of Blender showing a 3D model with a thick base and a deep vertical slit on the top. On the right, two physical copies of the model, with pieces of paper stuck in the slits." />
+</LightBox>
+
+<LightBox>
+  <Image src={car} alt="A black sports car in a dark, foggy room, illuminated only by white fluorescent lighting from above, and cyan and magenta light bars on the sides." />
+</LightBox>
+
+<LightBox>
+  <Image src={officeOasisDay} alt="Office Oasis (day)" />
+</LightBox>
+
+<LightBox>
+  <Image src={officeOasisNight} alt="Office Oasis (night)" />
+</LightBox>

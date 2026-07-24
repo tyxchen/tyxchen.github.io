@@ -1,0 +1,215 @@
+---
+import "normalize.css";
+import "$styles/core.css";
+
+type Props = { layout: string; title: string };
+
+const canonicalUrl = new URL(
+  Astro.url.pathname,
+  Astro.site || Astro.url.origin,
+);
+
+const { layout, title } = Astro.props as Props;
+---
+
+<!doctype html>
+<html lang="en-ca" class={`no-js no-katex layout-${layout}`}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content={[
+        "default-src 'self'",
+        "frame-src 'self' youtube-nocookie.com www.youtube-nocookie.com",
+        "style-src 'self' 'unsafe-inline' rsms.me fonts.googleapis.com cdn.jsdelivr.net",
+        "script-src 'self' 'unsafe-inline' cdn.jsdelivr.net",
+        "font-src rsms.me fonts.gstatic.com cdn.jsdelivr.net",
+        "img-src 'self' https:",
+      ].join(";")}
+    />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,minimum-scale=1,shrink-to-fit=no"
+    />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+    <link rel="shortcut icon" href="/favicon.png?v20181206" type="image/png" />
+
+    <title>{title}</title>
+
+    <meta property="og:title" content={title} />
+    <meta name="author" content="Terry Chen" />
+    <meta property="og:locale" content="en_CA" />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="Terry Chen" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <meta property="twitter:title" content={title} />
+    <meta
+      name="google-site-verification"
+      content="CLb9XzC8Rg43i0QoiVfwDKQ0LcAWs6bkkLWilZIVAUs"
+    />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        author: { "@type": "Person", name: "Terry Chen" },
+        headline: "Home",
+        name: "Terry Chen",
+        publisher: {
+          "@type": "Organization",
+          logo: {
+            "@type": "ImageObject",
+            url: `${Astro.site}/favicon.png?v20181206`,
+          },
+          name: "Terry Chen",
+        },
+        url: Astro.url,
+      })}
+    />
+
+    <script is:inline>
+      document.documentElement.classList.remove("no-js");
+    </script>
+
+    <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inconsolata:wdth@100..112.5&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- KaTeX fallback when JS is disabled -->
+    <noscript class="katex-fallback">
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/katex@0.16.44/dist/katex.min.css"
+        integrity="sha256-PUnv8l7l2UADIBJsGSebmAIqyXYrUn/8KlB17AYsbLw="
+        crossorigin="anonymous"
+        onload="document.documentElement.classList.remove('no-katex')"
+      />
+    </noscript>
+
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+  </body>
+
+  <style is:global>
+    @import "../styles/variables.css";
+
+    :root {
+      --color-bg1: light-dark(#fefdfa, #050723);
+      --color-bg2: light-dark(#eaeae8, #0b0d3e);
+      --color-bg3: light-dark(#ddd, #0e1058);
+
+      --color-fg1: light-dark(#222, #e7e7f1);
+      --color-fg2: light-dark(#333, #bbc);
+      --color-fg3: light-dark(#767676, #889);
+
+      --bg-color: var(--color-bg1);
+      --fg-color: var(--color-fg1);
+      --title-color: light-dark(#111, #eef);
+      --subtitle-color: var(--color-fg3);
+      --link-color: light-dark(#13f, #47f);
+
+      --trianglify-color-light: color-mix(
+        in hsl,
+        var(--trianglify-color-pre-mix),
+        black 25%
+      );
+      --trianglify-color-dark: color-mix(
+        in hsl,
+        var(--trianglify-color-pre-mix),
+        white 10%
+      );
+      --trianglify-color: light-dark(
+        var(--trianglify-color-light),
+        var(--trianglify-color-dark)
+      );
+
+      --font-family-accent: Inter, sans-serif;
+      --font-family-mono: Inconsolata, monospace;
+      --font-weight-regular: 400;
+      --font-weight-bold: 700;
+      --font-weight-title: 800;
+      --font-weight-black: 900;
+
+      --max-content-width: 1136px;
+      --max-text-width: 64ch;
+
+      --tn-fcn: 0.25s ease;
+
+      @supports (font-variation-settings: normal) {
+        --font-family-accent: InterVariable, sans-serif;
+      }
+
+      color-scheme: light dark;
+
+      &:is(.light) {
+        color-scheme: light;
+      }
+      &:is(.dark) {
+        color-scheme: dark;
+      }
+    }
+
+    html {
+      @apply --font-copy;
+
+      background-color: var(--bg-color);
+      color: var(--fg-color);
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizelegibility;
+      transition:
+        background-color var(--tn-fcn),
+        color var(--tn-fcn);
+      touch-action: manipulation;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    @media print {
+      :root {
+        --bg-color: white !important;
+        --fg-color: black !important;
+      }
+      body {
+        display: block;
+      }
+    }
+
+    .site-header,
+    main {
+      width: 90%;
+      max-width: var(--max-content-width);
+      margin: 0 auto;
+    }
+
+    .no-katex .katex-html {
+      display: none;
+    }
+  </style>
+
+  <script>
+    // Lazy-load KaTeX CSS
+    if (document.querySelector(".katex")) {
+      document
+        .querySelector("head")
+        ?.insertAdjacentHTML(
+          "beforeend",
+          document.querySelector("noscript.katex-fallback")!.textContent,
+        );
+    }
+  </script>
+</html>

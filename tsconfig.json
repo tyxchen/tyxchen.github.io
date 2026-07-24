@@ -1,0 +1,43 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [
+    ".astro/types.d.ts",
+    "**/*",
+    "./src/**/*",
+    "eslint.config.js"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "ESNext",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "paths": {
+      "$components/*": [
+        "./src/components/*"
+      ],
+      "$layouts/*": [
+        "./src/layouts/*"
+      ],
+      "$styles/*": [
+        "./src/styles/*"
+      ],
+      "$assets/*": [
+        "./src/assets/*"
+      ],
+      "$lib/*": [
+        "./src/lib/*"
+      ]
+    },
+  }
+}

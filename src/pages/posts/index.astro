@@ -1,0 +1,56 @@
+---
+import { getCollection } from "astro:content";
+import Page from "$layouts/Page.astro";
+import { formatDate } from "$lib/utils";
+
+const posts = (await getCollection("posts")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<Page title="Post archive">
+  {
+    posts.map((post) => (
+      <h2>
+        <a href={`/posts/${post.id}`}>
+          <span class="date small">{formatDate(post.data.date)}</span>
+          <span class="title">{post.data.title}</span>
+        </a>
+      </h2>
+    ))
+  }
+  {posts.length === 0 && <em>No posts available.</em>}
+</Page>
+
+<style>
+  h2 {
+    font-weight: var(--font-weight-regular);
+  }
+
+  .date {
+    display: inline-block;
+    width: 9.5ch;
+    color: var(--color-fg3);
+  }
+
+  .title {
+    color: var(--title-color);
+    text-decoration: underline;
+  }
+
+  a {
+    display: inline-block;
+
+    &:hover {
+      opacity: 1;
+
+      .date {
+        color: color-mix(var(--trianglify-color), var(--color-fg3) 60%);
+      }
+
+      .title {
+        color: var(--trianglify-color);
+      }
+    }
+  }
+</style>

@@ -1,3 +1,4 @@
-[submodule "_includes/icons"]
-	path = _includes/icons
-	url = https://github.com/tyxchen/fa-svg-icons
+[submodule "src/content/posts"]
+	path = src/content/posts
+	url = git@github.com:tyxchen/website-personal-content.git
+	branch = master

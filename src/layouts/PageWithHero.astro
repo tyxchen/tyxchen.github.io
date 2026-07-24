@@ -1,0 +1,134 @@
+---
+import Layout from "$layouts/Layout.astro";
+import { Icon } from "astro-icon/components";
+
+type Props = {
+  layout?: string;
+  title: string;
+  subtitle?: string;
+  heroImage: string;
+  heroAttr?: string;
+  heroInvertColours?: boolean;
+};
+
+const { layout = "page", title, subtitle, heroImage, heroAttr, heroInvertColours = false } = Astro.props;
+---
+
+<Layout layout={layout} title={title}>
+  <header id="header" slot="preMain">
+    <div
+      class="cover-image"
+      style={`background-image:linear-gradient(to top,rgba(0,0,0,0.5),transparent 7rem),url(${heroImage})`}
+    >
+    </div>
+    {
+      heroAttr && (
+        <div class="text-right image-attr">
+          <em>
+            <Icon name="ph:camera-bold" />
+            &emsp;{heroAttr}
+          </em>
+        </div>
+      )
+    }
+    <div class="container">
+      <h1 id="title">{title}</h1>
+      {subtitle && <h2 class="subtitle">{subtitle}</h2>}
+      <slot name="header" />
+    </div>
+  </header>
+  <div>
+    <slot />
+  </div>
+</Layout>
+
+<style define:vars={{ "hero-fg": heroInvertColours ? "black" : "white" }}>
+  @import "../styles/variables.css";
+
+  #header {
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+
+    @media (--gt-than-tablet) {
+      /* margin-top: 4rem; */
+      margin-bottom: 3rem;
+    }
+
+    .cover-image {
+      width: 100%;
+      height: 30vh;
+      background-size: cover;
+      background-position: center 80%;
+
+      @media (--gt-than-tablet) {
+        height: 70vh;
+        background-attachment: scroll, fixed;
+      }
+
+      @media print {
+        display: none;
+      }
+    }
+
+    .image-attr {
+      color: var(--hero-fg);
+      margin-top: -2em;
+      overflow: hidden;
+
+      em {
+        display: inline-block;
+        opacity: 0.8;
+        transform: translateX(calc(100% - 2em));
+        transition: var(--tn-fcn);
+      }
+
+      em:hover {
+        opacity: 1;
+        transform: translateX(-1em);
+      }
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1136px;
+      margin: 0 auto;
+    }
+  }
+
+  #title {
+    color: var(--title-color);
+    font-size: 4rem;
+    font-weight: var(--font-weight-title);
+    line-height: 1;
+    margin-top: -1.2em;
+    margin-bottom: 0;
+    transition: color var(--tn-fcn);
+
+    &::first-line {
+      color: var(--hero-fg);
+      line-height: 1.2;
+    }
+
+    @media (--gt-than-tablet) {
+      font-size: 5rem;
+    }
+
+    @media print {
+      margin-top: 0;
+
+      &::first-line {
+        color: var(--fg-color);
+      }
+    }
+  }
+
+  .subtitle {
+    color: var(--subtitle-color);
+    font-weight: var(--font-weight-bold);
+    margin: 0.1em 0;
+
+    a {
+      color: var(--color-fg2);
+    }
+  }
+</style>

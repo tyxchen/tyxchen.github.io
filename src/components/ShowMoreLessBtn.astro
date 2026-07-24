@@ -1,0 +1,65 @@
+---
+import { Icon } from "astro-icon/components";
+
+type Props = {
+  type: "more" | "less";
+  ariaControls: string;
+  class?: string;
+};
+
+const { type, ariaControls, class: className } = Astro.props as Props;
+---
+
+<a
+  href="#"
+  class={`show-${type} hidden ${className ?? ""}`}
+  aria-controls={ariaControls}
+>
+  Show {type}
+  <Icon name={`ph:caret-${type === "more" ? "down" : "up"}-bold`} />
+</a>
+
+<style>
+  @import "../styles/variables.css";
+
+  .show-more,
+  .show-less {
+    @apply --font-accent;
+    
+    display: block;
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+    text-decoration: none;
+  }
+</style>
+
+<script>
+  import { $, $$ } from "$lib/utils";
+
+  for (const el of $$(".show-more")) {
+    el.classList.remove("hidden");
+
+    const targets = $$(
+      "#" + el.getAttribute("aria-controls")!.split(" ").join(", #"),
+    );
+
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      targets?.forEach((target) => target.classList.remove("hidden"));
+      el.classList.add("hidden");
+    });
+
+    $$(`.show-less[aria-controls="${el.getAttribute("aria-controls")}"]`).forEach((lessBtn) => {
+      lessBtn.classList.remove("hidden");
+      lessBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        targets?.forEach((target) => target.classList.add("hidden"));
+        el.classList.remove("hidden");
+      });
+    });
+
+    targets?.forEach((target) => target.classList.add("hidden"));
+  }
+</script>

@@ -1,0 +1,52 @@
+---
+import { getCollection, render } from "astro:content";
+import Page from "$layouts/Page.astro";
+import PageWithHero from "$layouts/PageWithHero.astro";
+import { formatDate } from "$lib/utils";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const Layout = post.data.heroImage ? PageWithHero : Page;
+const props = {
+  layout: `post${post.data.heroImage ? "-cover" : ""}`,
+  title: post.data.title,
+  subtitle: post.data.subtitle,
+  ...{
+    heroImage: post.data.heroImage ?? "",
+    heroAttr: post.data.heroAttr,
+  },
+};
+---
+
+<Layout {...props}>
+  <Fragment slot="header">
+    <p class="post-time">
+      <time>{formatDate(post.data.date, "%d %b %Y")}</time> &mdash; {
+        Math.ceil((post.body?.split(" ").length ?? 1) / 180)
+      } min read
+    </p>
+  </Fragment>
+  <article>
+    <Content />
+  </article>
+
+  <style>
+    :global(main) {
+      max-width: 800px;
+    }
+
+    .post-time {
+      font-size: 1rem;
+      font-variant-numeric: slashed-zero;
+    }
+  </style>
+</Layout>

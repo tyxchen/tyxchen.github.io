@@ -1,0 +1,13 @@
+@custom-media --gt-than-mobile (min-width: 540px);
+@custom-media --gt-than-tablet (min-width: 768px);
+@custom-media --gt-than-desktop (min-width: 1280px);
+
+@mixin --font-copy() {
+  font-family: Georgia, serif;
+  font-feature-settings: "dlig";
+}
+
+@mixin --font-accent() {
+  font-family: var(--font-family-accent);
+  font-feature-settings: "cv01", "cv05", "cv10", "dlig" off;
+}

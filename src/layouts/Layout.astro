@@ -1,0 +1,35 @@
+---
+import MetaLayout from "$layouts/MetaLayout.astro";
+import Header from "$components/Header.astro";
+
+type Props = { layout: string; title: string };
+
+const { layout, title } = Astro.props as Props;
+---
+
+<MetaLayout layout={layout} title={`${title} | Terry Chen`}>
+  <Header />
+
+  <slot name="preMain" />
+
+  <main>
+    <slot />
+  </main>
+
+  <footer></footer>
+
+  <slot name="end" />
+</MetaLayout>
+
+<style>
+  main {
+    flex: 1;
+    font-size: 20px;
+  }
+
+  footer {
+    text-align: center;
+    color: var(--color-fg3);
+    padding: 2rem 0 1rem;
+  }
+</style>
