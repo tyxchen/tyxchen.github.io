@@ -1,12 +1,15 @@
 ---
 import MetaLayout from "$layouts/MetaLayout.astro";
-import Header from "$components/Header.astro";
+// import Header from "$components/Header.astro";
 import ShowMoreLessBtn from "$components/ShowMoreLessBtn.astro";
 import Trianglify from "$components/Trianglify.astro";
+import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 
 import * as cv from "src/data/cv.json";
 import * as publications from "src/data/publications.json";
+
+import headshot from "$assets/IMG_2756.jpeg";
 
 const extra_employment = cv.employment
   .slice(2)
@@ -15,14 +18,17 @@ const extra_employment = cv.employment
 ---
 
 <MetaLayout layout="home" title="Terry Chen">
-  <Header />
+  <!-- <Header /> -->
 
   <main>
     <header id="header">
       <figure id="header-portrait">
-        <img
-          src="/assets/images/IMG_2756-compressed.jpeg"
+        <Image
+          src={headshot}
           alt="Terry's profile photo"
+          layout="fixed"
+          width="480"
+          height="368"
         />
       </figure>
       <section id="header-description">
@@ -222,7 +228,7 @@ const extra_employment = cv.employment
 
   :root {
     --link-color: var(--trianglify-color);
-    
+
     @apply --font-accent;
   }
   main {
@@ -241,10 +247,15 @@ const extra_employment = cv.employment
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 4em;
+    gap: 3em;
     line-height: 1.5;
-    margin-top: 2rem;
+    margin-top: 3rem;
     margin-bottom: 3rem;
+
+    @media (min-width: 978px) {
+      gap: 4em;
+      margin-top: 5rem;
+    }
   }
   #header-portrait {
     display: flex;
@@ -253,6 +264,10 @@ const extra_employment = cv.employment
     width: 480px;
     max-width: 100vw;
     margin: 0;
+  }
+  #header-portrait img {
+    width: 100%;
+    height: auto;
   }
   #header-description {
     display: flex;
@@ -386,3 +401,19 @@ const extra_employment = cv.employment
     margin: 0;
   }
 </style>
+
+<script>
+  // Other header-related scripts
+  import { $ } from "$lib/utils.ts";
+
+  $("#header .trianglify")?.addEventListener(
+    "trianglify-change-colors",
+    (e) => {
+      const { colourSet } = (e as CustomEvent).detail;
+      document.documentElement.style.setProperty(
+        `--trianglify-color-pre-mix`,
+        colourSet[2],
+      );
+    },
+  );
+</script>

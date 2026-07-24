@@ -12,7 +12,7 @@ const { type, ariaControls, class: className } = Astro.props as Props;
 
 <a
   href="#"
-  class={`show-${type} ${className ?? ""}`}
+  class={`show-${type} hidden ${className ?? ""}`}
   aria-controls={ariaControls}
 >
   Show {type}
@@ -37,6 +37,8 @@ const { type, ariaControls, class: className } = Astro.props as Props;
   import { $, $$ } from "$lib/utils";
 
   for (const el of $$(".show-more")) {
+    el.classList.remove("hidden");
+
     const targets = $$(
       "#" + el.getAttribute("aria-controls")!.split(" ").join(", #"),
     );
@@ -49,6 +51,7 @@ const { type, ariaControls, class: className } = Astro.props as Props;
     });
 
     $$(`.show-less[aria-controls="${el.getAttribute("aria-controls")}"]`).forEach((lessBtn) => {
+      lessBtn.classList.remove("hidden");
       lessBtn.addEventListener("click", (e) => {
         e.preventDefault();
 

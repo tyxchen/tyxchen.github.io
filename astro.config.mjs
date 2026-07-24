@@ -17,6 +17,9 @@ export default defineConfig({
     host: true,
   },
   output: 'static',
+  image: {
+    layout: "constrained"
+  },
   integrations: [icon(), mdx(), svelte()],
   markdown: {
     remarkPlugins: [

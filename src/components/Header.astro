@@ -18,13 +18,14 @@ const { currentPage } = Astro.props as Props;
       </a>
     </li>
     <li class="site-header__spacer"></li>
+    {/*
     <li><a href="/assets/resume.pdf">Resume</a></li>
     {
       /*
       <li><a href="/portfolio">Portfolio</a></li>
       <li><a href="/posts">Blog</a></li>
-    */
-    }
+    //
+    //}
     <li class="site-header__menu-toggler">
       <div
         class="site-header__menu-background"
@@ -46,7 +47,9 @@ const { currentPage } = Astro.props as Props;
         <span class="menu-blip menu-blip__4"><span></span></span>
       </a>
     </li>
+    */}
   </ul>
+  {/*
   <div
     class="site-header__menu"
     id="mobile-menu"
@@ -59,7 +62,7 @@ const { currentPage } = Astro.props as Props;
         /*
         <li><a href="/portfolio">Portfolio</a></li>
         <li><a href="/archive">Blog</a></li>
-      */
+      //
       }
       <li class="close-menu">
         <a
@@ -71,6 +74,7 @@ const { currentPage } = Astro.props as Props;
       </li>
     </ul>
   </div>
+  */}
 </header>
 
 <style>
@@ -135,36 +139,6 @@ const { currentPage } = Astro.props as Props;
       line-height: 1;
       z-index: 1;
     }
-
-    /*
-    &__about,
-    &__portfolio,
-    &__resume,
-    &__blog,
-    &__contact {
-      font-weight: var(--font-weight-bold);
-    }
-
-    &__about {
-      color: var(--about-color);
-    }
-
-    &__portfolio {
-      color: var(--portfolio-color);
-    }
-
-    &__resume {
-      color: var(--home-color);
-    }
-
-    &__blog {
-      color: var(--blog-color);
-    }
-
-    &__contact {
-      color: var(--contact-color);
-    }
-    */
 
     @media (--gt-than-tablet) {
       &__wrapper li {
@@ -323,6 +297,7 @@ const { currentPage } = Astro.props as Props;
   }
 </style>
 
+<!--
 <script>
   // Menu toggle logic
   import { $, $$ } from "$lib/utils.ts";
@@ -380,6 +355,7 @@ const { currentPage } = Astro.props as Props;
 
   closeMenu();
 </script>
+-->
 
 <script>
   // Other header-related scripts
