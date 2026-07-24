@@ -30,13 +30,12 @@
     "astro-icon": "^1.1.5",
     "autoprefixer": "^10.5.4",
     "delaunator": "^5.1.0",
+    "katex": "^0.18.1",
     "normalize.css": "^8.0.1",
     "postcss-atroot": "^0.2.4",
     "postcss-custom-media": "^12.0.1",
     "postcss-import": "^16.1.1",
     "postcss-nested": "^7.0.2",
-    "rehype-katex": "^7.0.1",
-    "remark-math": "^6.0.0",
     "svelte": "^5.56.7",
     "typescript": "^5.9.3"
   }

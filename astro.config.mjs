@@ -2,9 +2,8 @@ import { defineConfig } from 'astro/config';
 import icon from 'astro-icon';
 
 import mdx from '@astrojs/mdx';
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
 import { satteri } from '@astrojs/markdown-satteri';
+import satteriMath from './src/plugins/satteri-math.js';
 import svelte from '@astrojs/svelte';
 
 const SITE = Deno.env.get('SITE') ?? 'https://localhost:4321';
@@ -27,7 +26,8 @@ export default defineConfig({
       features: {
         math: { singleDollarTextMath: false },
         smartPunctuation: true,
-      }
+      },
+      mdastPlugins: [satteriMath()],
     }),
     shikiConfig: {
       langs: [slangGrammar],
