@@ -4,8 +4,10 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
+const isProduction = Deno.env.get('NODE_ENV') === 'production';
+
 const posts = defineCollection({
-  loader: glob({ base: './src/content/posts', pattern: '**/*.{md,mdx}' }),
+  loader: glob({ base: './src/content/posts', pattern: ['**/*.{md,mdx}', isProduction ? '!**/_*.{md,mdx}' : ''] }),
   // Type-check frontmatter using a schema
   schema: () =>
     z.object({
@@ -19,7 +21,7 @@ const posts = defineCollection({
     }),
 });
 const projects = defineCollection({
-  loader: glob({ base: './src/content/projects', pattern: '**/*.{md,mdx}' }),
+  loader: glob({ base: './src/content/projects', pattern: ['**/*.{md,mdx}', isProduction ? '!**/_*.{md,mdx}' : ''] }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
