@@ -4,6 +4,7 @@ import icon from 'astro-icon';
 import mdx from '@astrojs/mdx';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import { satteri } from '@astrojs/markdown-satteri';
 import svelte from '@astrojs/svelte';
 
 const SITE = Deno.env.get('SITE') ?? 'https://localhost:4321';
@@ -22,10 +23,12 @@ export default defineConfig({
   },
   integrations: [icon(), mdx(), svelte()],
   markdown: {
-    remarkPlugins: [
-      [remarkMath, { singleDollarTextMath: false }],
-    ],
-    rehypePlugins: [rehypeKatex],
+    processor: satteri({
+      features: {
+        math: { singleDollarTextMath: false },
+        smartPunctuation: true,
+      }
+    }),
     shikiConfig: {
       langs: [slangGrammar],
       langAlias: { slang: 'Slang' },
@@ -46,6 +49,9 @@ export default defineConfig({
       watch: {
         ignored: ["vendor/**/*"],
       },
+    },
+    resolve: {
+      tsconfigPaths: true,
     },
   },
 });

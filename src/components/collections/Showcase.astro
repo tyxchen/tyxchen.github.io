@@ -2,7 +2,6 @@
 import { Icon } from "astro-icon/components";
 import Button from "$components/Button.astro";
 import { luminance, hexToRGB } from "$lib/colours";
-import { undefined } from "astro:schema";
 
 type Props = {
   id: string;
@@ -81,7 +80,7 @@ const adjustedColour =
 </div>
 
 <style>
-  @import "$styles/variables.css";
+  @import "../../styles/variables.css";
 
   .showcase {
     --bg-color: var(--color-fg2);
