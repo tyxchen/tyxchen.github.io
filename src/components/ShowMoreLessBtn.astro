@@ -15,7 +15,7 @@ const { type, ariaControls, class: className } = Astro.props as Props;
   class={`show-${type} hidden ${className ?? ""}`}
   aria-controls={ariaControls}
 >
-  Show {type}
+  Show {type}{" "}
   <Icon name={`ph:caret-${type === "more" ? "down" : "up"}-bold`} />
 </a>
 

@@ -46,32 +46,32 @@ const extra_employment = cv.employment
 
         <p>
           I&CloseCurlyQuote;m also a master&CloseCurlyQuote;s student under the
-          supervision of <a href="https://profs.etsmtl.ca/agruson/"
-            >Prof. Adrien Gruson</a
-          > and
-          <a href="https://cim.mcgill.ca/~derek/">Prof. Derek Nowrouzezahrai</a
-          >, researching improvements to real-time rendering algorithms.
+          supervision of <a href="https://profs.etsmtl.ca/agruson/">
+            Prof. Adrien Gruson
+          </a> and <a href="https://cim.mcgill.ca/~derek/">
+            Prof. Derek Nowrouzezahrai
+          </a>, researching improvements to real-time rendering algorithms.
         </p>
 
         <footer id="header-links">
           <!-- <a href="mailto:tyxchen@outlook.com"><Icon name="ph:envelope" /></a> -->
           <a href="/assets/resume.pdf">
-            <Icon name="ph:read-cv-logo" title="CV" />
+            <Icon name="ph:read-cv-logo" title="CV" />{" "}
             <u>Resume</u>
           </a>
           <a rel="noreferrer" href="https://github.com/tyxchen">
-            <Icon name="fa7-brands:github" title="GitHub" />
+            <Icon name="fa7-brands:github" title="GitHub" />{" "}
             <u>tyxchen</u>
           </a>
           <!-- <a
             rel="noreferrer"
             href="https://bsky.app/profile/tyxchen.bsky.social"
           >
-            <Icon name="fa7-brands:bluesky" title="Bluesky" />
+            <Icon name="fa7-brands:bluesky" title="Bluesky" />{" "}
             <u>@tyxchen.bsky.social</u>
           </a> -->
           <a rel="noreferrer" href="https://www.linkedin.com/in/tyxchen">
-            <Icon name="fa7-brands:linkedin" title="LinkedIn" />
+            <Icon name="fa7-brands:linkedin" title="LinkedIn" />{" "}
             <u>Terry Chen</u>
           </a>
         </footer>
@@ -193,6 +193,7 @@ const extra_employment = cv.employment
               </p>
               <p>
                 {paper.project && <a href={paper.project}>[project]</a>}
+                {paper.project && paper.paper && " "}
                 {paper.paper && (
                   <a
                     href={paper.paper.replace(
