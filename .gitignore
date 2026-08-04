@@ -4,3 +4,5 @@ node_modules/
 *.sublime-workspace
 
 .astro
+
+.DS_Store
