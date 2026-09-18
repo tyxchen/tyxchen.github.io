@@ -6,6 +6,19 @@
   },
   "papers": [
     {
+      "id": "MastersThesis",
+      "title": "Optimized Shift Mapping Operators for Rendering",
+      "authors": ["Terry Chen"],
+      "year": 2026,
+      "conference": "Master’s Thesis",
+      "journal": "MASc",
+      "thumb": "$PubDir/thumbnail.png",
+      "meta": {
+        "paper": "$PubDir/Thesis.pdf",
+        "presentation": "$PubDir/Presentation.pdf"
+      }
+    },
+    {
       "id": "WoB2023",
       "title": "A Practical Walk-on-Boundary Method for Boundary Value Problems",
       "authors": [
@@ -16,11 +29,13 @@
         "Toshiya Hachisuka"
       ],
       "year": 2023,
-      "conference": "SIGGRAPH North America 2023",
+      "conference": "SIGGRAPH NA",
       "journal": "ACM Transactions on Graphics",
-      "paper": "$PubDir/WoBforBVPs.pdf",
-      "project": "https://rsugimoto.net/WoBforBVPsProject/",
-      "thumb": "$PubDir/WoB-thumbnail.png"
+      "thumb": "$PubDir/WoB-thumbnail.png",
+      "meta": {
+        "project": "https://rsugimoto.net/WoBforBVPsProject/",
+        "paper": "$PubDir/WoBforBVPs.pdf"
+      }
     }
   ]
 }

@@ -45,7 +45,7 @@ const extra_employment = cv.employment
         </p>
 
         <p>
-          I&CloseCurlyQuote;m also a master&CloseCurlyQuote;s student under the
+          Until recently, I was also a master&CloseCurlyQuote;s student under the
           supervision of <a href="https://profs.etsmtl.ca/agruson/">
             Prof. Adrien Gruson
           </a> and <a href="https://cim.mcgill.ca/~derek/">
@@ -148,7 +148,7 @@ const extra_employment = cv.employment
       <h2>Publications</h2>
 
       {
-        publications.papers.toReversed().map((paper) => (
+        publications.papers.map((paper) => (
           <article class="publication">
             <aside>
               <img
@@ -162,22 +162,24 @@ const extra_employment = cv.employment
               <h3>{paper.title}</h3>
               <p>
                 {paper.authors
-                  .map((author, i) => {
+                  .map((author) => {
                     if (author === "Terry Chen") {
-                      return <strong>T. Chen</strong>;
+                      // return <strong>{paper.authors.length > 1 ? "T." : "Terry"} Chen</strong>;
+                      return <strong>Terry Chen</strong>;
                     } else {
-                      const authorNames = author.split(" ");
+                      // const authorNames = author.split(" ");
                       const collaboratorLink =
                         publications.collaborators[
                           author as keyof typeof publications.collaborators
                         ] ?? null;
-                      const authorInitialsName = authorNames
-                        .map((name, j) =>
-                          j === authorNames.length - 1
-                            ? ` ${name}`
-                            : `${name[0]}.`,
-                        )
-                        .join("");
+                      // const authorInitialsName = authorNames
+                      //   .map((name, j) =>
+                      //     j === authorNames.length - 1
+                      //       ? ` ${name}`
+                      //       : `${name[0]}.`,
+                      //   )
+                      //   .join("");
+                      const authorInitialsName = author;
                       return collaboratorLink ? (
                         <a href={collaboratorLink}>{authorInitialsName}</a>
                       ) : (
@@ -185,25 +187,24 @@ const extra_employment = cv.employment
                       );
                     }
                   })
-                  .reduce((prev, curr) => [prev, ", ", curr])}
+                  .flatMap((author, i) => i === 0 ? author : [", ", author])}
               </p>
               <p>
                 {paper.conference}
                 {paper.journal && ` (${paper.journal})`}, {paper.year}
               </p>
               <p>
-                {paper.project && <a href={paper.project}>[project]</a>}
-                {paper.project && paper.paper && " "}
-                {paper.paper && (
-                  <a
-                    href={paper.paper.replace(
-                      "$PubDir",
-                      `/assets/publications/${paper.id}`,
-                    )}
-                  >
-                    [paper]
-                  </a>
-                )}
+                {Object.entries(paper.meta)
+                  .map(([title, href]) => (
+                    <a
+                      href={href
+                        .replace("$PubDir", `/assets/publications/${paper.id}`)
+                        .replace("$ProjDir", paper.id)}
+                    >
+                      [{title}]
+                    </a>
+                  ))
+                  .flatMap((entry, i) => i === 0 ? entry : [" ", entry])}
               </p>
             </div>
           </article>
@@ -274,7 +275,7 @@ const extra_employment = cv.employment
     display: flex;
     flex-direction: column;
     flex: 1;
-    min-width: 320px;
+    min-width: 240px;
     gap: 1em;
   }
   #header-description h1 {
